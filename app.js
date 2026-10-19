@@ -1,43 +1,76 @@
 /**
- * AETHER - Pure Mathematical Generative Spatial Constellation Engine
- * Zero External Libraries (No Three.js, No Spline, No Frameworks)
- * 100% Pure HTML5 Canvas & Web Audio API Generative Mathematics
+ * FEYNMAN VAULT - First-Principles Deep Learning & Memory System
+ * Richard Feynman Technique & Ebbinghaus Spaced Repetition Engine
+ * 100% Client-Side • LocalStorage Persistence • Web Audio API Synthesis
  */
 
 (function () {
   'use strict';
 
   // =========================================================================
-  // Vector2 Mathematical Physics Core
+  // Initial Seed Concepts (Scientific / IIT-Style First Principles Models)
   // =========================================================================
-  class Vec2 {
-    constructor(x = 0, y = 0) {
-      this.x = x;
-      this.y = y;
+  const SEED_CONCEPTS = [
+    {
+      id: 'c-1',
+      title: "Newton's Third Law of Motion",
+      subject: 'Physics',
+      bookDef: 'To every action, there is always an equal and opposite reaction.',
+      feynmanExp: 'Aap kisi cheez ko jitne zor se dhakka doge, woh cheez bhi aapko utne hi zor se wapas dhakka degi. Agar aap zameen par na dabein, toh aap ek kadam bhi aage nahi chal sakte!',
+      analogy: 'Nav (boat) se kinaray par jump karte waqt: aap aage jump karte ho toh nav peeche paani mein chali jaati hai.',
+      rootCause: 'Conservation of Momentum (Gati ka Sanrakshan) - Force akele kabhi paida nahi ho sakti, hamesha pairs mein hoti hai.',
+      level: 1, // 1: Day 1, 2: Day 3, 3: Day 7, 4: Mastered
+      lastReviewed: Date.now() - 86400000, // Due today
+      created: Date.now() - 86400000
+    },
+    {
+      id: 'c-2',
+      title: 'Binary Search Algorithm',
+      subject: 'Computer Science',
+      bookDef: 'An efficient search algorithm that finds the position of a target value within a sorted array in O(log N) time.',
+      feynmanExp: 'Agar aap moti dictionary mein word dhoondh rahe ho, toh aap page 1 se shuru nahi karte. Aap beech mein se kholte ho. Agar aapka word peeche hai, toh aage ke 500 pages ko ek second mein kachre ki tarah chhod dete ho!',
+      analogy: 'Dictionary ya telephone directory mein naam dhoondhna.',
+      rootCause: 'Logarithmic Divide & Conquer - Har step par aadha kaam khatam kar dena.',
+      level: 4,
+      lastReviewed: Date.now() - 1000000,
+      created: Date.now() - 7 * 86400000
+    },
+    {
+      id: 'c-3',
+      title: 'Compound Interest (Chakravriddhi Byaj)',
+      subject: 'Mathematics',
+      bookDef: 'Interest calculated on the initial principal and the accumulated interest of previous periods: A = P(1 + r/n)^nt.',
+      feynmanExp: 'Aapke paise ka bachha hota hai, aur phir aage chalkar us bachhe ke bhi bachhe hone lagte hain! Shuruwat mein yeh bohot chhota lagta hai, lekin 10 saal baad yeh vishal banta hai.',
+      analogy: 'Baraf ke pahaad se girta hua chhota snowball jo neeche aate-aate bohot bada ban jata hai.',
+      rootCause: 'Exponential Geometric Progression (Gunaatmak Vridhi) vs Linear Growth.',
+      level: 2,
+      lastReviewed: Date.now(),
+      created: Date.now() - 3 * 86400000
     }
-    set(x, y) { this.x = x; this.y = y; return this; }
-    add(v) { this.x += v.x; this.y += v.y; return this; }
-    sub(v) { this.x -= v.x; this.y -= v.y; return this; }
-    mult(n) { this.x *= n; this.y *= n; return this; }
-    div(n) { if (n !== 0) { this.x /= n; this.y /= n; } return this; }
-    mag() { return Math.sqrt(this.x * this.x + this.y * this.y); }
-    dist(v) { const dx = this.x - v.x, dy = this.y - v.y; return Math.sqrt(dx * dx + dy * dy); }
-    normalize() { const m = this.mag(); if (m !== 0) this.div(m); return this; }
-    clone() { return new Vec2(this.x, this.y); }
+  ];
+
+  // Load from LocalStorage or use Seeds
+  let concepts = [];
+  try {
+    const saved = localStorage.getItem('feynman_vault_concepts');
+    concepts = saved ? JSON.parse(saved) : SEED_CONCEPTS;
+  } catch (e) {
+    concepts = SEED_CONCEPTS;
   }
 
-  // Archetype Color Profiles
-  const ARCHETYPES = {
-    cyan: { primary: '#00f0ff', secondary: '#0284c7', glow: 'rgba(0, 240, 255, 0.4)', name: 'Singularity' },
-    gold: { primary: '#fbbf24', secondary: '#d97706', glow: 'rgba(251, 191, 36, 0.4)', name: 'Solaris' },
-    violet: { primary: '#c084fc', secondary: '#7c3aed', glow: 'rgba(192, 132, 252, 0.4)', name: 'Ethereal' },
-    rose: { primary: '#f43f5e', secondary: '#be123c', glow: 'rgba(244, 63, 94, 0.4)', name: 'Supernova' }
-  };
+  function saveConcepts() {
+    try {
+      localStorage.setItem('feynman_vault_concepts', JSON.stringify(concepts));
+    } catch (e) {
+      console.warn('LocalStorage save failed:', e);
+    }
+    updateMetrics();
+  }
 
   // =========================================================================
-  // Web Audio Harmonic Synthesizer (432 Hz Tuning)
+  // Web Audio Procedural Study Sound & Chimes (Zero External Files)
   // =========================================================================
-  class HarmonicAudio {
+  class StudyAudio {
     constructor() {
       this.ctx = null;
       this.enabled = false;
@@ -53,75 +86,44 @@
         this.ctx.resume();
       }
       this.enabled = true;
-      this.startSpaceDrone();
+      this.startFocusDrone();
     }
 
-    startSpaceDrone() {
+    startFocusDrone() {
       if (!this.enabled || !this.ctx) return;
-      // 432 Hz Fundamental Harmonic & Sub-harmonics
-      const baseFreq = 108.0; // 432 / 4
-      const harmonics = [baseFreq, baseFreq * 1.5, baseFreq * 2, baseFreq * 2.667];
-
+      // 432 Hz Calming Focus Chord (Beta to Alpha brainwave transition)
+      const freqs = [108, 162, 216, 288];
       this.droneGain = this.ctx.createGain();
       this.droneGain.gain.setValueAtTime(0.015, this.ctx.currentTime);
       this.droneGain.connect(this.ctx.destination);
 
-      harmonics.forEach(freq => {
+      freqs.forEach(f => {
         const osc = this.ctx.createOscillator();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        osc.frequency.setValueAtTime(f, this.ctx.currentTime);
         osc.connect(this.droneGain);
         osc.start();
       });
     }
 
-    playCrystalResonance(archetype = 'cyan') {
-      if (!this.enabled || !this.ctx) return;
+    playSuccessChime() {
+      if (!this.ctx) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        this.ctx = new AudioCtx();
+      }
       const now = this.ctx.currentTime;
-      const freqs = archetype === 'gold' ? [432, 540, 648] : [432, 518.4, 648, 864];
-      
-      freqs.forEach((f, idx) => {
+      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+      notes.forEach((freq, idx) => {
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(f, now + idx * 0.05);
-        gain.gain.setValueAtTime(0.04, now + idx * 0.05);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.05 + 0.6);
+        osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+        gain.gain.setValueAtTime(0.06, now + idx * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.5);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
-        osc.start(now + idx * 0.05);
-        osc.stop(now + idx * 0.05 + 0.65);
-      });
-    }
-
-    playDetonation() {
-      if (!this.enabled || !this.ctx) return;
-      const now = this.ctx.currentTime;
-      // Low bass impact + shimmering high chime
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(150, now);
-      osc.frequency.exponentialRampToValueAtTime(30, now + 0.5);
-      gain.gain.setValueAtTime(0.12, now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.55);
-
-      // Celestial shimmer
-      [864, 1080, 1296, 1728].forEach((f, i) => {
-        const hOsc = this.ctx.createOscillator();
-        const hGain = this.ctx.createGain();
-        hOsc.type = 'sine';
-        hOsc.frequency.setValueAtTime(f, now + 0.1 + i * 0.07);
-        hGain.gain.setValueAtTime(0.05, now + 0.1 + i * 0.07);
-        hGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1 + i * 0.07 + 0.8);
-        hOsc.connect(hGain);
-        hGain.connect(this.ctx.destination);
-        hOsc.start(now + 0.1 + i * 0.07);
-        hOsc.stop(now + 0.1 + i * 0.07 + 0.85);
+        osc.start(now + idx * 0.08);
+        osc.stop(now + idx * 0.08 + 0.55);
       });
     }
 
@@ -137,628 +139,472 @@
     }
   }
 
-  const audio = new HarmonicAudio();
+  const audio = new StudyAudio();
 
   // =========================================================================
-  // Generative Mind / Thought Node Class
+  // Pomodoro Timer Engine
   // =========================================================================
-  class AetherNode {
-    constructor(id, title, desc, archetype = 'cyan', mass = 1.0, x, y) {
-      this.id = id;
-      this.title = title;
-      this.desc = desc;
-      this.archetype = archetype;
-      this.mass = mass;
-      this.baseRadius = 26 * mass;
-      this.radius = this.baseRadius;
-      
-      this.pos = new Vec2(x || window.innerWidth / 2, y || window.innerHeight / 2);
-      this.vel = new Vec2((Math.random() - 0.5) * 0.8, (Math.random() - 0.5) * 0.8);
-      this.acc = new Vec2(0, 0);
+  let pomoTime = 25 * 60; // 25 mins
+  let pomoRunning = false;
+  let pomoInterval = null;
 
-      this.resonance = Math.floor(Math.random() * 40) + 40; // 0 - 100%
-      this.phase = Math.random() * Math.PI * 2;
-      this.satellites = Math.floor(Math.random() * 3) + 2; // Orbital sub-particles
-      this.isHovered = false;
-      this.isDragging = false;
-    }
+  function initPomodoro() {
+    const dock = document.getElementById('pomodoro-dock');
+    const headerDisplay = document.getElementById('header-timer-display');
+    const display = document.getElementById('pomo-display');
+    const btnToggle = document.getElementById('btn-toggle-timer');
+    const btnClose = document.getElementById('btn-close-pomo');
+    const btnStart = document.getElementById('btn-pomo-start');
+    const btnReset = document.getElementById('btn-pomo-reset');
 
-    update(time, mode) {
-      this.phase += 0.03;
-      // Organic breathing radius using harmonic trigonometric waves
-      this.radius = this.baseRadius + Math.sin(this.phase) * 3;
-
-      // Gravitational physics modes
-      if (mode === 'vortex') {
-        const center = new Vec2(window.innerWidth / 2, window.innerHeight / 2);
-        const toCenter = center.clone().sub(this.pos);
-        const d = Math.max(toCenter.mag(), 50);
-        // Tangential angular force + inward gravity
-        const tangent = new Vec2(-toCenter.y, toCenter.x).normalize().mult(1.8);
-        toCenter.normalize().mult(120 / d);
-        this.acc.add(tangent).add(toCenter);
-      } else if (mode === 'neural') {
-        // High damping, crystalline structure
-        this.vel.mult(0.92);
-      } else if (mode === 'chaos') {
-        // Random micro quantum impulses
-        this.acc.add(new Vec2((Math.random() - 0.5) * 0.4, (Math.random() - 0.5) * 0.4));
-      }
-
-      this.vel.add(this.acc);
-      this.vel.mult(0.96); // Drag coefficient
-      this.pos.add(this.vel);
-      this.acc.set(0, 0);
-
-      // Soft Boundary Reflection
-      const pad = this.radius + 40;
-      if (this.pos.x < pad) { this.pos.x = pad; this.vel.x *= -0.8; }
-      if (this.pos.x > window.innerWidth - pad) { this.pos.x = window.innerWidth - pad; this.vel.x *= -0.8; }
-      if (this.pos.y < pad + 60) { this.pos.y = pad + 60; this.vel.y *= -0.8; }
-      if (this.pos.y > window.innerHeight - pad - 60) { this.pos.y = window.innerHeight - pad - 60; this.vel.y *= -0.8; }
-    }
-
-    draw(ctx, time) {
-      const colors = ARCHETYPES[this.archetype] || ARCHETYPES.cyan;
-
-      ctx.save();
-      ctx.translate(this.pos.x, this.pos.y);
-
-      // 1. Multi-Layer Volumetric Bioluminescent Glow
-      const glowGrad = ctx.createRadialGradient(0, 0, this.radius * 0.2, 0, 0, this.radius * 2.8);
-      glowGrad.addColorStop(0, colors.glow);
-      glowGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
-      ctx.fillStyle = glowGrad;
-      ctx.beginPath();
-      ctx.arc(0, 0, this.radius * 2.8, 0, Math.PI * 2);
-      ctx.fill();
-
-      // 2. Quantum Membrane Rings
-      ctx.strokeStyle = colors.primary;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
-      ctx.stroke();
-
-      // Inner refractive core
-      const coreGrad = ctx.createRadialGradient(-this.radius * 0.3, -this.radius * 0.3, 2, 0, 0, this.radius);
-      coreGrad.addColorStop(0, '#ffffff');
-      coreGrad.addColorStop(0.4, colors.primary);
-      coreGrad.addColorStop(1, colors.secondary);
-      ctx.fillStyle = coreGrad;
-      ctx.beginPath();
-      ctx.arc(0, 0, this.radius * 0.85, 0, Math.PI * 2);
-      ctx.fill();
-
-      // 3. Orbital Satellites (Sub-task quantum particles)
-      for (let i = 0; i < this.satellites; i++) {
-        const satAngle = time * (1.5 + i * 0.4) + (i * (Math.PI * 2 / this.satellites));
-        const satDist = this.radius + 14 + Math.sin(time * 2 + i) * 4;
-        const sx = Math.cos(satAngle) * satDist;
-        const sy = Math.sin(satAngle) * satDist;
-
-        ctx.fillStyle = '#ffffff';
-        ctx.shadowColor = colors.primary;
-        ctx.shadowBlur = 8;
-        ctx.beginPath();
-        ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
-
-      // 4. Node Typography Label
-      ctx.fillStyle = '#f8fafc';
-      ctx.font = '600 13px "Outfit", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(this.title, 0, this.radius + 22);
-
-      ctx.fillStyle = colors.primary;
-      ctx.font = '500 10px "JetBrains Mono", monospace';
-      ctx.fillText(`${this.resonance}% RESONANCE`, 0, this.radius + 36);
-
-      ctx.restore();
-    }
-  }
-
-  // =========================================================================
-  // Background Cosmic Dust & Starfield System
-  // =========================================================================
-  class StarfieldDust {
-    constructor(count = 140) {
-      this.particles = [];
-      for (let i = 0; i < count; i++) {
-        this.particles.push({
-          x: Math.random() * window.innerWidth,
-          y: Math.random() * window.innerHeight,
-          size: Math.random() * 1.8 + 0.4,
-          speed: Math.random() * 0.2 + 0.05,
-          alpha: Math.random() * 0.6 + 0.2,
-          pulse: Math.random() * Math.PI * 2
-        });
-      }
-    }
-
-    resize(w, h) {
-      this.particles.forEach(p => {
-        p.x = Math.random() * w;
-        p.y = Math.random() * h;
-      });
-    }
-
-    updateAndDraw(ctx, time) {
-      ctx.save();
-      this.particles.forEach(p => {
-        p.y -= p.speed;
-        p.pulse += 0.02;
-        if (p.y < 0) p.y = window.innerHeight;
-
-        const dynamicAlpha = p.alpha + Math.sin(p.pulse) * 0.2;
-        ctx.fillStyle = `rgba(224, 242, 254, ${Math.max(dynamicAlpha, 0.1)})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      ctx.restore();
-    }
-  }
-
-  // =========================================================================
-  // Shockwave Pulse Ring System
-  // =========================================================================
-  class ShockwaveRing {
-    constructor(x, y, color = '#00f0ff') {
-      this.x = x;
-      this.y = y;
-      this.radius = 10;
-      this.maxRadius = Math.max(window.innerWidth, window.innerHeight) * 0.7;
-      this.color = color;
-      this.alpha = 0.8;
-      this.active = true;
-    }
-
-    update() {
-      this.radius += 18;
-      this.alpha -= 0.018;
-      if (this.alpha <= 0) this.active = false;
-    }
-
-    draw(ctx) {
-      if (!this.active) return;
-      ctx.save();
-      ctx.strokeStyle = this.color;
-      ctx.globalAlpha = Math.max(this.alpha, 0);
-      ctx.lineWidth = 3;
-      ctx.shadowColor = this.color;
-      ctx.shadowBlur = 20;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.restore();
-    }
-  }
-
-  // =========================================================================
-  // Generative Universe Controller & Engine
-  // =========================================================================
-  let canvas, ctx;
-  let nodes = [];
-  let starfield;
-  let shockwaves = [];
-  let activeMode = 'constellation';
-  let hoveredNode = null;
-  let draggedNode = null;
-  let selectedNode = null;
-
-  const mouse = new Vec2(-1000, -1000);
-  const dragOffset = new Vec2(0, 0);
-
-  // Initial Presets
-  const INITIAL_CONSTELLATIONS = [
-    { title: 'Neural Operating System', desc: 'Synthesizing kernel abstractions with zero-latency thread dispatching.', arch: 'cyan', mass: 1.4 },
-    { title: 'Autonomous Micro-Agents', desc: 'Self-coordinating spatial agents solving architectural bottlenecks.', arch: 'gold', mass: 1.2 },
-    { title: 'Harmonic 432Hz Sound Core', desc: 'Generative wave synthesis aligned to natural frequency mathematics.', arch: 'violet', mass: 1.0 },
-    { title: 'Zero-Library Web Canvas', desc: 'Bypassing generic 3D frameworks for direct mathematical GPU memory manipulation.', arch: 'cyan', mass: 1.3 },
-    { title: 'Quantum Memory Palace', desc: 'Non-linear spatial thought filing system for deep work focus.', arch: 'rose', mass: 1.1 }
-  ];
-
-  function initUniverse() {
-    canvas = document.getElementById('generative-canvas');
-    ctx = canvas.getContext('2d');
-
-    resizeCanvas();
-    starfield = new StarfieldDust(160);
-
-    // Spawn Initial Living Nodes in an organic spatial orbit
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
-    const spread = Math.min(window.innerWidth, window.innerHeight) * 0.32;
-
-    INITIAL_CONSTELLATIONS.forEach((data, idx) => {
-      const angle = (idx / INITIAL_CONSTELLATIONS.length) * Math.PI * 2;
-      const x = cx + Math.cos(angle) * spread + (Math.random() - 0.5) * 60;
-      const y = cy + Math.sin(angle) * spread + (Math.random() - 0.5) * 60;
-      const node = new AetherNode('n-' + idx, data.title, data.desc, data.arch, data.mass, x, y);
-      nodes.push(node);
+    btnToggle.addEventListener('click', () => {
+      dock.classList.toggle('active');
     });
 
-    // Window & Mouse Events
-    window.addEventListener('resize', onResize);
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointerup', onPointerUp);
-
-    initUI();
-    renderLoop();
-  }
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth * window.devicePixelRatio;
-    canvas.height = window.innerHeight * window.devicePixelRatio;
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-  }
-
-  function onResize() {
-    resizeCanvas();
-    if (starfield) starfield.resize(window.innerWidth, window.innerHeight);
-  }
-
-  // =========================================================================
-  // Physics & Particle Math Computations
-  // =========================================================================
-  function applyInterNodeForces() {
-    const maxConnectionDist = 260;
-
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const nA = nodes[i];
-        const nB = nodes[j];
-
-        const delta = nB.pos.clone().sub(nA.pos);
-        const dist = Math.max(delta.mag(), 1);
-
-        if (dist < maxConnectionDist) {
-          // Spring Equilibrium Force (Constellation Connection)
-          const targetDist = 180 * (nA.mass + nB.mass) * 0.5;
-          const forceMag = (dist - targetDist) * 0.0006;
-          const force = delta.clone().normalize().mult(forceMag);
-
-          if (!nA.isDragging) nA.acc.add(force);
-          if (!nB.isDragging) nB.acc.sub(force);
-        }
-
-        // Particle Repulsion (Avoid overlapping)
-        const minDist = nA.radius + nB.radius + 30;
-        if (dist < minDist) {
-          const repelMag = (minDist - dist) * 0.04;
-          const repel = delta.clone().normalize().mult(repelMag);
-          if (!nA.isDragging) nA.acc.sub(repel);
-          if (!nB.isDragging) nB.acc.add(repel);
-        }
-      }
-    }
-
-    // Mouse Magnetic Interaction Lens
-    nodes.forEach(node => {
-      const dMouse = mouse.dist(node.pos);
-      if (dMouse < 180 && !node.isDragging) {
-        // Subtle magnetic repulsion with gentle lens curvature
-        const repelForce = node.pos.clone().sub(mouse).normalize().mult((180 - dMouse) * 0.08);
-        node.acc.add(repelForce);
-      }
-    });
-  }
-
-  // =========================================================================
-  // Bioluminescent Synaptic Filaments Drawing
-  // =========================================================================
-  function drawConstellationFilaments(time) {
-    const maxDist = 260;
-
-    ctx.save();
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const nA = nodes[i];
-        const nB = nodes[j];
-        const d = nA.pos.dist(nB.pos);
-
-        if (d < maxDist) {
-          const alpha = (1 - (d / maxDist)) * 0.7;
-
-          // Vibrating curved bezier string
-          const midX = (nA.pos.x + nB.pos.x) / 2;
-          const midY = (nA.pos.y + nB.pos.y) / 2;
-          // Organic sine wave flex
-          const wave = Math.sin(time * 3 + (i * 2 + j)) * 8;
-          const ctrlX = midX + wave;
-          const ctrlY = midY - wave;
-
-          // Gradient filament between nodes
-          const grad = ctx.createLinearGradient(nA.pos.x, nA.pos.y, nB.pos.x, nB.pos.y);
-          grad.addColorStop(0, ARCHETYPES[nA.archetype].primary);
-          grad.addColorStop(1, ARCHETYPES[nB.archetype].primary);
-
-          ctx.strokeStyle = grad;
-          ctx.globalAlpha = alpha;
-          ctx.lineWidth = 1.6;
-          ctx.beginPath();
-          ctx.moveTo(nA.pos.x, nA.pos.y);
-          ctx.quadraticCurveTo(ctrlX, ctrlY, nB.pos.x, nB.pos.y);
-          ctx.stroke();
-
-          // Energy Packet Pulse traveling along the filament
-          const packetT = (time * 0.8 + (i * 0.3)) % 1;
-          const px = (1 - packetT) * (1 - packetT) * nA.pos.x + 2 * (1 - packetT) * packetT * ctrlX + packetT * packetT * nB.pos.x;
-          const py = (1 - packetT) * (1 - packetT) * nA.pos.y + 2 * (1 - packetT) * packetT * ctrlY + packetT * packetT * nB.pos.y;
-
-          ctx.fillStyle = '#ffffff';
-          ctx.shadowColor = ARCHETYPES[nA.archetype].primary;
-          ctx.shadowBlur = 10;
-          ctx.beginPath();
-          ctx.arc(px, py, 2.2, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.shadowBlur = 0;
-        }
-      }
-    }
-    ctx.restore();
-  }
-
-  // =========================================================================
-  // Main Mathematical Render Loop (120 FPS capable)
-  // =========================================================================
-  let clockTime = 0;
-
-  function renderLoop() {
-    requestAnimationFrame(renderLoop);
-    clockTime += 0.016;
-
-    // 1. Clear with deep void atmospheric fade (leaving ethereal motion trails)
-    ctx.fillStyle = 'rgba(3, 5, 11, 0.35)';
-    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-
-    // 2. Starfield Ethereal Dust
-    starfield.updateAndDraw(ctx, clockTime);
-
-    // 3. Shockwave Rings
-    shockwaves.forEach(sw => {
-      sw.update();
-      sw.draw(ctx);
-    });
-    shockwaves = shockwaves.filter(sw => sw.active);
-
-    // 4. Inter-Node Physics & Gravitational Calculations
-    applyInterNodeForces();
-
-    // 5. Synaptic Energy Filaments
-    drawConstellationFilaments(clockTime);
-
-    // 6. Draw Living Nodes
-    nodes.forEach(node => {
-      node.update(clockTime, activeMode);
-      node.draw(ctx, clockTime);
+    btnClose.addEventListener('click', () => {
+      dock.classList.remove('active');
     });
 
-    // 7. Update Entropy Metric in Real-Time
-    updateLiveMetrics();
-  }
+    function updatePomoDisplay() {
+      const mins = Math.floor(pomoTime / 60);
+      const secs = pomoTime % 60;
+      const str = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      display.innerText = str;
+      headerDisplay.innerText = str;
+    }
 
-  function updateLiveMetrics() {
-    const entropyEl = document.getElementById('metric-entropy');
-    const nodesEl = document.getElementById('metric-nodes');
-    if (entropyEl && Math.random() < 0.05) {
-      const e = (0.038 + Math.random() * 0.008).toFixed(3);
-      entropyEl.innerText = `${e} λ`;
-    }
-    if (nodesEl) {
-      nodesEl.innerText = `${nodes.length} Active`;
-    }
+    btnStart.addEventListener('click', () => {
+      if (!pomoRunning) {
+        pomoRunning = true;
+        btnStart.innerText = 'Pause';
+        pomoInterval = setInterval(() => {
+          if (pomoTime > 0) {
+            pomoTime--;
+            updatePomoDisplay();
+          } else {
+            clearInterval(pomoInterval);
+            pomoRunning = false;
+            btnStart.innerText = 'Start';
+            audio.playSuccessChime();
+            showToast('🎓 Focus Session Complete! Take a 5-minute breather.');
+          }
+        }, 1000);
+      } else {
+        clearInterval(pomoInterval);
+        pomoRunning = false;
+        btnStart.innerText = 'Start';
+      }
+    });
+
+    btnReset.addEventListener('click', () => {
+      clearInterval(pomoInterval);
+      pomoRunning = false;
+      btnStart.innerText = 'Start';
+      pomoTime = 25 * 60;
+      updatePomoDisplay();
+    });
+
+    updatePomoDisplay();
   }
 
   // =========================================================================
-  // Interactive Pointer Events (Dragging & Clicking)
+  // Spaced Repetition Formula & Intervals (Ebbinghaus Curve)
   // =========================================================================
-  function onPointerMove(e) {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
+  function getLevelMeta(level) {
+    switch (level) {
+      case 1: return { name: 'Day 1 Review', class: 'retention-l1', intervalDays: 1 };
+      case 2: return { name: 'Day 3 Review', class: 'retention-l2', intervalDays: 3 };
+      case 3: return { name: 'Day 7 Review', class: 'retention-l3', intervalDays: 7 };
+      case 4: return { name: 'Permanent Memory 🎓', class: 'retention-mastered', intervalDays: 21 };
+      default: return { name: 'Level 1', class: 'retention-l1', intervalDays: 1 };
+    }
+  }
 
-    if (draggedNode) {
-      draggedNode.pos.x = mouse.x - dragOffset.x;
-      draggedNode.pos.y = mouse.y - dragOffset.y;
-      draggedNode.vel.set(0, 0);
+  function isReviewDue(concept) {
+    if (concept.level >= 4) return false;
+    const meta = getLevelMeta(concept.level);
+    const requiredIntervalMs = meta.intervalDays * 86400000;
+    return (Date.now() - (concept.lastReviewed || 0)) >= requiredIntervalMs;
+  }
+
+  // =========================================================================
+  // Render: All Concepts (Tab 1)
+  // =========================================================================
+  let currentSubjectFilter = 'all';
+  let currentSearchQuery = '';
+
+  function renderConceptsGrid() {
+    const grid = document.getElementById('concepts-grid');
+    grid.innerHTML = '';
+
+    const filtered = concepts.filter(c => {
+      const matchSubject = currentSubjectFilter === 'all' || c.subject.toLowerCase() === currentSubjectFilter.toLowerCase();
+      const matchSearch = !currentSearchQuery || 
+        c.title.toLowerCase().includes(currentSearchQuery) ||
+        c.feynmanExp.toLowerCase().includes(currentSearchQuery) ||
+        c.rootCause.toLowerCase().includes(currentSearchQuery);
+      return matchSubject && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #94a3b8;">
+          <p style="font-size: 1.1rem; margin-bottom: 8px;">No concepts found matching your query.</p>
+          <small>Click <strong>"+ Learn New Concept"</strong> to add a new fundamental principle!</small>
+        </div>
+      `;
       return;
     }
 
-    // Check hover state
-    let foundHover = null;
-    nodes.forEach(n => {
-      if (mouse.dist(n.pos) < n.radius + 10) {
-        foundHover = n;
-      }
-    });
+    filtered.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'concept-card';
 
-    if (foundHover !== hoveredNode) {
-      hoveredNode = foundHover;
-      canvas.style.cursor = hoveredNode ? 'grab' : 'crosshair';
-    }
+      const tagClass = getSubjectTagClass(c.subject);
+      const levelMeta = getLevelMeta(c.level);
+      const due = isReviewDue(c);
+
+      card.innerHTML = `
+        <div class="concept-card-header">
+          <span class="subject-tag ${tagClass}">${c.subject}</span>
+          <span class="retention-badge ${levelMeta.class}">
+            ${due ? '⚠️ Due for Review' : levelMeta.name}
+          </span>
+        </div>
+
+        <h3 class="concept-title">${c.title}</h3>
+
+        <div class="feynman-box">
+          <span class="box-label">👦 10-YEAR-OLD FEYNMAN EXPLANATION</span>
+          <p>${c.feynmanExp}</p>
+        </div>
+
+        <div class="analogy-box">
+          <strong>🌍 Everyday Example:</strong> ${c.analogy}
+        </div>
+
+        <div class="analogy-box" style="border-left: 2px solid var(--color-purple);">
+          <strong>⚡ First Principles Root:</strong> ${c.rootCause}
+        </div>
+
+        <div class="concept-footer">
+          <span>Formula: ${c.bookDef.slice(0, 32)}...</span>
+          <button class="btn-review-mini" data-id="${c.id}">
+            ${due ? '⚡ Review Now' : 'Quick Review'}
+          </button>
+        </div>
+      `;
+
+      card.querySelector('.btn-review-mini').addEventListener('click', () => {
+        startQuizWithSingle(c.id);
+      });
+
+      grid.appendChild(card);
+    });
   }
 
-  function onPointerDown(e) {
-    // Ignore clicks on HUD elements
-    if (e.target.closest('.spatial-hud, .bottom-dock, .node-inspector, .creation-modal')) {
+  function getSubjectTagClass(subject) {
+    const s = subject.toLowerCase();
+    if (s.includes('physics')) return 'tag-physics';
+    if (s.includes('computer')) return 'tag-cs';
+    if (s.includes('math')) return 'tag-math';
+    if (s.includes('chemistry')) return 'tag-chem';
+    return 'tag-general';
+  }
+
+  // =========================================================================
+  // Render: Spaced Memory Vault (Tab 2)
+  // =========================================================================
+  function renderSpacedVault() {
+    const listL1 = document.getElementById('list-l1');
+    const listL2 = document.getElementById('list-l2');
+    const listL3 = document.getElementById('list-l3');
+    const listMastered = document.getElementById('list-mastered');
+
+    listL1.innerHTML = '';
+    listL2.innerHTML = '';
+    listL3.innerHTML = '';
+    listMastered.innerHTML = '';
+
+    const counts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+
+    concepts.forEach(c => {
+      const lvl = Math.min(Math.max(c.level, 1), 4);
+      counts[lvl]++;
+
+      const card = document.createElement('div');
+      card.className = 'stage-card-mini';
+      const due = isReviewDue(c);
+
+      card.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.65rem; color: #94a3b8; font-family: var(--font-mono);">${c.subject.toUpperCase()}</span>
+          ${due ? '<span style="color: var(--color-rose); font-size: 0.65rem; font-weight: bold;">● DUE</span>' : ''}
+        </div>
+        <strong>${c.title}</strong>
+        <p style="font-size: 0.75rem; color: #94a3b8; line-height: 1.3;">${c.feynmanExp.slice(0, 75)}...</p>
+      `;
+
+      card.addEventListener('click', () => {
+        startQuizWithSingle(c.id);
+      });
+
+      if (lvl === 1) listL1.appendChild(card);
+      else if (lvl === 2) listL2.appendChild(card);
+      else if (lvl === 3) listL3.appendChild(card);
+      else listMastered.appendChild(card);
+    });
+
+    document.getElementById('count-l1').innerText = counts[1];
+    document.getElementById('count-l2').innerText = counts[2];
+    document.getElementById('count-l3').innerText = counts[3];
+    document.getElementById('count-mastered').innerText = counts[4];
+  }
+
+  // =========================================================================
+  // Active Recall Quiz Arena (Tab 3)
+  // =========================================================================
+  let quizQueue = [];
+  let currentQuizIndex = 0;
+
+  function initActiveRecall() {
+    const btnStart = document.getElementById('btn-start-quiz');
+    const welcomeCard = document.getElementById('recall-welcome');
+    const activeCard = document.getElementById('recall-active-card');
+    const btnReveal = document.getElementById('btn-reveal-answer');
+    const gradeButtons = document.getElementById('quiz-grade-buttons');
+    const answerBox = document.getElementById('quiz-answer-box');
+
+    const btnForgot = document.getElementById('btn-quiz-forgot');
+    const btnRemembered = document.getElementById('btn-quiz-remembered');
+
+    btnStart.addEventListener('click', () => {
+      quizQueue = [...concepts];
+      if (quizQueue.length === 0) {
+        showToast('Add some concepts first!');
+        return;
+      }
+      currentQuizIndex = 0;
+      welcomeCard.style.display = 'none';
+      activeCard.style.display = 'block';
+      loadQuizCard();
+    });
+
+    btnReveal.addEventListener('click', () => {
+      answerBox.style.display = 'flex';
+      btnReveal.style.display = 'none';
+      gradeButtons.style.display = 'flex';
+    });
+
+    btnForgot.addEventListener('click', () => {
+      handleQuizAnswer(false);
+    });
+
+    btnRemembered.addEventListener('click', () => {
+      handleQuizAnswer(true);
+    });
+  }
+
+  function startQuizWithSingle(conceptId) {
+    const target = concepts.find(c => c.id === conceptId);
+    if (!target) return;
+
+    // Switch to recall tab
+    switchTab('recall');
+    quizQueue = [target];
+    currentQuizIndex = 0;
+    document.getElementById('recall-welcome').style.display = 'none';
+    document.getElementById('recall-active-card').style.display = 'block';
+    loadQuizCard();
+  }
+
+  function loadQuizCard() {
+    const c = quizQueue[currentQuizIndex];
+    if (!c) {
+      // Completed Session
+      document.getElementById('recall-active-card').style.display = 'none';
+      document.getElementById('recall-welcome').style.display = 'flex';
+      document.getElementById('recall-welcome').innerHTML = `
+        <div class="arena-icon">🎉</div>
+        <h2>Recall Session Complete!</h2>
+        <p>You have actively strengthened your neural synapses. Concepts reviewed are now locked deeper into long-term memory.</p>
+        <button class="btn-highlight btn-large" id="btn-restart-quiz">Review More Concepts</button>
+      `;
+      document.getElementById('btn-restart-quiz').addEventListener('click', () => {
+        location.reload();
+      });
+      audio.playSuccessChime();
       return;
     }
 
-    if (hoveredNode) {
-      draggedNode = hoveredNode;
-      draggedNode.isDragging = true;
-      dragOffset.set(mouse.x - draggedNode.pos.x, mouse.y - draggedNode.pos.y);
-      canvas.style.cursor = 'grabbing';
-      audio.playCrystalResonance(draggedNode.archetype);
-    }
+    document.getElementById('quiz-subject').innerText = c.subject;
+    document.getElementById('quiz-progress-text').innerText = `Card ${currentQuizIndex + 1} of ${quizQueue.length}`;
+    document.getElementById('quiz-title').innerText = c.title;
+
+    document.getElementById('quiz-feynman-ans').innerText = c.feynmanExp;
+    document.getElementById('quiz-analogy-ans').innerText = c.analogy;
+    document.getElementById('quiz-root-ans').innerText = c.rootCause;
+
+    // Reset card state
+    document.getElementById('quiz-answer-box').style.display = 'none';
+    document.getElementById('btn-reveal-answer').style.display = 'block';
+    document.getElementById('quiz-grade-buttons').style.display = 'none';
   }
 
-  function onPointerUp(e) {
-    if (draggedNode) {
-      draggedNode.isDragging = false;
-      // If barely moved, treat as inspection click
-      if (draggedNode.pos.dist(mouse) < 15 || Math.abs(dragOffset.x) + Math.abs(dragOffset.y) < 10) {
-        openNodeInspector(draggedNode);
+  function handleQuizAnswer(remembered) {
+    const c = quizQueue[currentQuizIndex];
+    const original = concepts.find(item => item.id === c.id);
+
+    if (original) {
+      if (remembered) {
+        // Upgrade stage
+        original.level = Math.min((original.level || 1) + 1, 4);
+        original.lastReviewed = Date.now();
+        showToast(`✅ Synapse Strengthened! Level ${original.level}`);
+        audio.playSuccessChime();
+      } else {
+        // Reset to Level 1 for immediate re-learning
+        original.level = 1;
+        original.lastReviewed = Date.now();
+        showToast('⚠️ Reset to Level 1: Will review again tomorrow!');
       }
-      draggedNode = null;
-      canvas.style.cursor = 'grab';
+      saveConcepts();
+      renderConceptsGrid();
+      renderSpacedVault();
     }
+
+    currentQuizIndex++;
+    loadQuizCard();
   }
 
   // =========================================================================
-  // Inspector & UI Modal Controllers
+  // Global Metrics & UI Handlers
   // =========================================================================
-  function openNodeInspector(node) {
-    selectedNode = node;
-    const card = document.getElementById('node-inspector');
-    document.getElementById('inspect-tag').innerText = `${node.archetype.toUpperCase()} SINGULARITY`;
-    document.getElementById('inspect-title').innerText = node.title;
-    document.getElementById('inspect-desc').innerText = node.desc;
-    document.getElementById('inspect-energy-val').innerText = `${node.resonance}%`;
-    document.getElementById('inspect-energy-fill').style.width = `${node.resonance}%`;
+  function updateMetrics() {
+    const total = concepts.length;
+    const dueCount = concepts.filter(isReviewDue).length;
+    const masteredCount = concepts.filter(c => c.level >= 4).length;
 
-    card.classList.add('active');
+    document.getElementById('stat-total').innerText = total;
+    document.getElementById('stat-due').innerText = dueCount;
+    document.getElementById('stat-mastered').innerText = masteredCount;
+
+    const badge = document.getElementById('tab-due-badge');
+    if (badge) badge.innerText = dueCount;
   }
 
-  function closeNodeInspector() {
-    document.getElementById('node-inspector').classList.remove('active');
-    selectedNode = null;
+  function switchTab(tabKey) {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === tabKey);
+    });
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.classList.toggle('active', content.id === `tab-${tabKey}`);
+    });
+    if (tabKey === 'spaced') renderSpacedVault();
   }
 
   function initUI() {
-    // Mode Buttons in Bottom Dock
-    document.querySelectorAll('.dock-btn').forEach(btn => {
+    // Mode Tab Switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.dock-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeMode = btn.dataset.mode;
-        showToast(`🌌 Mode Switched: ${btn.innerText}`);
-        triggerQuantumPulse(window.innerWidth / 2, window.innerHeight / 2);
+        switchTab(btn.dataset.tab);
       });
     });
 
-    // Sound Toggle Button
-    const btnSound = document.getElementById('btn-sound');
+    // Subject Filter Chips
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        currentSubjectFilter = chip.dataset.subject;
+        renderConceptsGrid();
+      });
+    });
+
+    // Search Input Real-Time
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', e => {
+      currentSearchQuery = e.target.value.toLowerCase().trim();
+      renderConceptsGrid();
+    });
+
+    // Study Sound Toggle
+    const btnSound = document.getElementById('btn-toggle-sound');
     btnSound.addEventListener('click', () => {
       const on = audio.toggle();
-      if (on) {
-        btnSound.classList.add('active');
-        btnSound.querySelector('.btn-text').innerText = 'Harmonic: 432Hz ON';
-        showToast('✦ 432Hz Harmonic Frequency Active');
-      } else {
-        btnSound.classList.remove('active');
-        btnSound.querySelector('.btn-text').innerText = 'Harmonic Sound';
-        showToast('🔇 Audio Muted');
-      }
+      btnSound.classList.toggle('active', on);
+      showToast(on ? '🎵 432Hz Study Ambience Active' : '🔇 Audio Muted');
     });
 
-    // Quantum Pulse Shockwave Button
-    const btnPulse = document.getElementById('btn-pulse');
-    btnPulse.addEventListener('click', () => {
-      triggerQuantumPulse(window.innerWidth / 2, window.innerHeight / 2);
-      audio.playDetonation();
-      showToast('⚡ Gravitational Shockwave Released');
-    });
-
-    // Manifest Node (New Node Modal)
-    const btnCreate = document.getElementById('btn-create-node');
-    const modal = document.getElementById('creation-modal');
+    // New Concept Modal
+    const btnAdd = document.getElementById('btn-add-concept');
+    const modal = document.getElementById('concept-modal');
     const btnCloseModal = document.getElementById('btn-close-modal');
     const btnCancelModal = document.getElementById('btn-cancel-modal');
+    const form = document.getElementById('concept-form');
 
-    btnCreate.addEventListener('click', () => {
+    const openModal = () => {
       modal.classList.add('active');
-      document.getElementById('node-name').focus();
-    });
-
+      document.getElementById('form-title').focus();
+    };
     const closeModal = () => modal.classList.remove('active');
+
+    btnAdd.addEventListener('click', openModal);
     btnCloseModal.addEventListener('click', closeModal);
     btnCancelModal.addEventListener('click', closeModal);
 
-    // Form Submission
-    document.getElementById('creation-form').addEventListener('submit', e => {
+    form.addEventListener('submit', e => {
       e.preventDefault();
-      const title = document.getElementById('node-name').value.trim();
-      const arch = document.getElementById('node-archetype').value;
-      const mass = parseFloat(document.getElementById('node-mass').value);
-      const desc = document.getElementById('node-notes').value.trim();
+      const title = document.getElementById('form-title').value.trim();
+      const subject = document.getElementById('form-subject').value;
+      const bookDef = document.getElementById('form-book-def').value.trim();
+      const feynmanExp = document.getElementById('form-feynman-exp').value.trim();
+      const analogy = document.getElementById('form-analogy').value.trim();
+      const rootCause = document.getElementById('form-root-cause').value.trim();
 
-      if (!title) return;
+      if (!title || !feynmanExp) return;
 
-      // Spawn at center with initial burst velocity
-      const newNode = new AetherNode(
-        'n-' + Date.now(),
+      const newConcept = {
+        id: 'c-' + Date.now(),
         title,
-        desc || 'Neural thought wave igniting the constellation web.',
-        arch,
-        mass,
-        window.innerWidth / 2 + (Math.random() - 0.5) * 80,
-        window.innerHeight / 2 + (Math.random() - 0.5) * 80
-      );
-      newNode.vel.set((Math.random() - 0.5) * 6, (Math.random() - 0.5) * 6);
-      nodes.push(newNode);
+        subject,
+        bookDef,
+        feynmanExp,
+        analogy,
+        rootCause,
+        level: 1, // Freshly learned, due tomorrow
+        lastReviewed: Date.now(),
+        created: Date.now()
+      };
 
-      triggerQuantumPulse(newNode.pos.x, newNode.pos.y, ARCHETYPES[arch].primary);
-      audio.playCrystalResonance(arch);
-      showToast(`✦ Manifested: "${title}"`);
-
+      concepts.unshift(newConcept);
+      saveConcepts();
+      renderConceptsGrid();
+      renderSpacedVault();
       closeModal();
-      document.getElementById('creation-form').reset();
+      form.reset();
+
+      audio.playSuccessChime();
+      showToast(`⚛ "${title}" Deconstructed & Saved!`);
     });
 
-    // Close Inspector
-    document.getElementById('btn-close-inspector').addEventListener('click', closeNodeInspector);
-
-    // Resonate Node Button
-    document.getElementById('btn-resonate-node').addEventListener('click', () => {
-      if (selectedNode) {
-        selectedNode.resonance = Math.min(selectedNode.resonance + 15, 100);
-        document.getElementById('inspect-energy-val').innerText = `${selectedNode.resonance}%`;
-        document.getElementById('inspect-energy-fill').style.width = `${selectedNode.resonance}%`;
-        audio.playCrystalResonance(selectedNode.archetype);
-        triggerQuantumPulse(selectedNode.pos.x, selectedNode.pos.y, ARCHETYPES[selectedNode.archetype].primary);
-        showToast(`✨ Amplified Resonance: ${selectedNode.resonance}%`);
-      }
-    });
-
-    // Detonate (Complete) Node Button
-    document.getElementById('btn-dissolve-node').addEventListener('click', () => {
-      if (selectedNode) {
-        const idx = nodes.indexOf(selectedNode);
-        if (idx !== -1) {
-          triggerQuantumPulse(selectedNode.pos.x, selectedNode.pos.y, '#f43f5e');
-          audio.playDetonation();
-          showToast(`💥 Singularity Completed & Dissolved!`);
-          nodes.splice(idx, 1);
-          closeNodeInspector();
-        }
-      }
-    });
-  }
-
-  function triggerQuantumPulse(x, y, color = '#00f0ff') {
-    shockwaves.push(new ShockwaveRing(x, y, color));
-    // Physical repulsive impulse on all nearby nodes
-    nodes.forEach(n => {
-      const d = n.pos.dist(new Vec2(x, y));
-      if (d < 400 && d > 0) {
-        const force = n.pos.clone().sub(new Vec2(x, y)).normalize().mult((400 - d) * 0.08);
-        n.acc.add(force);
-      }
-    });
+    initPomodoro();
+    initActiveRecall();
+    renderConceptsGrid();
+    renderSpacedVault();
+    updateMetrics();
   }
 
   function showToast(msg) {
-    const toast = document.getElementById('aether-toast');
+    const hub = document.getElementById('toast-hub');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
     toast.innerText = msg;
-    toast.classList.add('visible');
-    setTimeout(() => toast.classList.remove('visible'), 2800);
+    hub.appendChild(toast);
+    setTimeout(() => {
+      if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 3000);
   }
 
-  // Initialize on Window Load
-  window.addEventListener('DOMContentLoaded', initUniverse);
+  window.addEventListener('DOMContentLoaded', initUI);
 })();
