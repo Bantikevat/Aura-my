@@ -1,0 +1,2 @@
+import { create } from 'zustand'; import { demoTasks } from '../data/demoTasks';
+export const useWorkspace = create((set) => ({ tasks: demoTasks, selectedId: '1', view: 'spatial', selectTask: id => set({ selectedId:id }), setView: view => set({ view }), addTask: task => set(s => ({ tasks:[{ ...task, id:crypto.randomUUID(), status:'ready', due:'New', position:{x:(Math.random()-.5)*5,y:(Math.random()-.5)*3,z:0} }, ...s.tasks] })), completeTask: id => set(s => ({ tasks:s.tasks.map(t => t.id === id ? { ...t, status:'done' } : t) })) }));

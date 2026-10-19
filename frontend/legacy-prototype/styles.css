@@ -1,0 +1,13 @@
+/* ORBIT workspace micro-interactions */
+.glass { background: rgba(12, 18, 35, .72); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,.08); }
+.task-card { transition: transform .2s ease, border-color .2s ease, background .2s ease; }
+.task-card:hover { transform: translateY(-2px); border-color: rgba(111, 224, 255, .36); background: rgba(25,35,61,.88); }
+.task-card.selected { border-color: #70dcff; box-shadow: 0 0 0 1px rgba(112,220,255,.18), 0 12px 30px rgba(0,0,0,.22); }
+.view-btn.active { color: #07111d; background: #9be7ff; }
+.nav-item.active { background: rgba(108, 211, 255, .12); color: #d7f5ff; border-color: rgba(108, 211, 255, .22); }
+.priority-high { color: #ff9f9f; background: rgba(255,107,107,.12); }
+.priority-med { color: #ffd58a; background: rgba(255,190,92,.12); }
+.priority-low { color: #8ee8bc; background: rgba(81,213,151,.12); }
+#space-canvas canvas { display:block; width:100%!important; height:100%!important; }
+dialog::backdrop { background: rgba(2,6,15,.74); backdrop-filter: blur(5px); }
+dialog { color: #f1f5f9; background:#10192e; border:1px solid rgba(255,255,255,.12); border-radius:24px; }

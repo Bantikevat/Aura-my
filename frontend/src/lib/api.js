@@ -1,0 +1,2 @@
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+export async function api(path, options = {}) { const token = localStorage.getItem('orbit-token'); const response = await fetch(`${BASE_URL}${path}`, { ...options, headers: { 'Content-Type':'application/json', ...(token ? { Authorization:`Bearer ${token}` } : {}), ...options.headers } }); if (!response.ok) throw new Error((await response.json().catch(() => ({}))).message || 'Request failed'); return response.status === 204 ? null : response.json(); }

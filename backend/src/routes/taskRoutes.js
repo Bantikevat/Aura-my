@@ -1,0 +1,2 @@
+import { Router } from 'express'; import { createTask, deleteTask, listTasks, updateTask } from '../controllers/taskController.js'; import { requireAuth } from '../middleware/auth.js';
+const router = Router(); router.use(requireAuth); router.get('/workspace/:workspaceId', listTasks); router.post('/workspace/:workspaceId', createTask); router.patch('/:taskId', updateTask); router.delete('/:taskId', deleteTask); export default router;

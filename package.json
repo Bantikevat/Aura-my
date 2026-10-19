@@ -1,0 +1,13 @@
+{
+  "name": "orbit-workspace",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": ["frontend", "backend"],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace frontend\" \"npm run dev --workspace backend\"",
+    "frontend": "npm run dev --workspace frontend",
+    "backend": "npm run dev --workspace backend",
+    "build": "npm run build --workspace frontend"
+  },
+  "devDependencies": { "concurrently": "^9.1.2" }
+}

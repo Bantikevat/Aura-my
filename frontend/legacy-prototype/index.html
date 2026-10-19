@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>ORBIT — Spatial work command center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Space Grotesk','system-ui']},colors:{ink:'#070b16',navy:'#0d1427',line:'#26334e',ice:'#9be7ff',mint:'#87edba'}}}}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen bg-ink text-slate-100 selection:bg-ice/30">
+  <div class="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_70%_0%,rgba(38,122,171,.18),transparent_30%),radial-gradient(circle_at_0%_100%,rgba(91,57,154,.14),transparent_27%)]"></div>
+  <div class="min-h-screen flex">
+    <aside class="w-[232px] shrink-0 border-r border-white/10 p-4 flex flex-col bg-[#090f20]/75">
+      <div class="flex items-center gap-3 px-2 mb-9"><div class="h-9 w-9 grid place-items-center rounded-xl bg-ice text-slate-950 font-display font-bold">O</div><div><p class="font-display font-bold tracking-wide">ORBIT</p><p class="text-[10px] tracking-[.16em] text-slate-500">WORKSPACE OS</p></div></div>
+      <nav class="space-y-1 text-sm">
+        <button class="nav-item active w-full text-left rounded-xl border border-transparent px-3 py-2.5 flex gap-3" data-nav="Command"><span>⌘</span> Command center</button>
+        <button class="nav-item w-full text-left rounded-xl border border-transparent px-3 py-2.5 flex gap-3 text-slate-400" data-nav="My work"><span>◉</span> My work <b id="my-count" class="ml-auto text-xs">4</b></button>
+        <button class="nav-item w-full text-left rounded-xl border border-transparent px-3 py-2.5 flex gap-3 text-slate-400" data-nav="Timeline"><span>◷</span> Timeline</button>
+        <button class="nav-item w-full text-left rounded-xl border border-transparent px-3 py-2.5 flex gap-3 text-slate-400" data-nav="Insights"><span>◫</span> Insights</button>
+      </nav>
+      <div class="mt-8"><p class="px-3 text-[10px] font-semibold tracking-[.15em] text-slate-500 uppercase mb-2">Spaces</p><div id="space-list" class="space-y-1"></div></div>
+      <div class="mt-auto glass rounded-2xl p-3"><div class="flex justify-between text-xs text-slate-400"><span>Focus streak</span><span class="text-mint">7 days</span></div><div class="h-1.5 rounded-full bg-white/10 mt-3 overflow-hidden"><div class="h-full w-[72%] bg-gradient-to-r from-ice to-mint rounded-full"></div></div><p class="text-[11px] text-slate-500 mt-2">3 deep-work sessions left</p></div>
+      <div class="mt-4 flex items-center gap-2 px-2"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-fuchsia-400 to-indigo-500 grid place-items-center text-xs font-bold">SK</div><div class="text-xs"><p class="font-semibold">Sam Keval</p><p class="text-slate-500">Personal workspace</p></div></div>
+    </aside>
+    <main class="flex-1 min-w-0 p-5 lg:p-7 overflow-hidden">
+      <header class="flex items-center justify-between gap-4 mb-7"><div><p class="font-mono text-[11px] text-ice tracking-wider">MONDAY, OCT 19 · 09:41</p><h1 class="font-display text-3xl font-semibold mt-1">Good morning, Sam.</h1></div><div class="flex items-center gap-3"><button id="focus-toggle" class="hidden sm:block text-xs text-slate-400 hover:text-white border border-white/10 rounded-lg px-3 py-2">◌ Focus mode</button><button id="new-task" class="rounded-xl bg-ice text-slate-950 px-4 py-2.5 text-sm font-bold hover:bg-white transition">+ New task</button></div></header>
+      <section class="grid grid-cols-1 xl:grid-cols-[1fr_330px] gap-5 min-h-0">
+        <div class="min-w-0 space-y-5">
+          <div class="glass rounded-2xl p-5 relative overflow-hidden"><div class="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4"><div><p class="text-xs text-slate-400 mb-1">Your day, in one glance</p><div class="flex items-baseline gap-3"><h2 class="font-display text-4xl font-bold" id="completion">62%</h2><span class="text-sm text-mint">↑ 14% from yesterday</span></div><p class="text-sm text-slate-400 mt-1"><span id="done-count">5</span> of <span id="total-count">8</span> meaningful tasks complete</p></div><div class="flex gap-5 text-xs"><div><p class="text-slate-500">Focus time</p><p class="font-mono text-ice mt-1">3h 42m</p></div><div><p class="text-slate-500">Next energy peak</p><p class="font-mono text-amber-300 mt-1">10:30 AM</p></div></div></div><div class="absolute right-0 top-0 h-full w-1/2 opacity-40 bg-[radial-gradient(circle_at_90%_50%,#1db9db,transparent_56%)]"></div></div>
+          <div class="glass rounded-2xl overflow-hidden"><div class="px-5 pt-5 flex flex-wrap items-center justify-between gap-3"><div><h2 class="font-display text-lg font-semibold">Work radar</h2><p class="text-xs text-slate-500 mt-1">Click a node to inspect it. Drag to orbit your workload.</p></div><div class="flex rounded-lg bg-black/25 p-1"><button class="view-btn active text-xs px-3 py-1.5 rounded-md" data-view="spatial">Spatial</button><button class="view-btn text-xs px-3 py-1.5 rounded-md text-slate-400" data-view="list">List</button></div></div><div id="space-canvas" class="h-[340px] relative"><div class="absolute z-10 left-5 bottom-4 flex gap-3 text-[10px] text-slate-400"><span><i class="inline-block rounded-full bg-rose-400 w-2 h-2 mr-1"></i>Critical</span><span><i class="inline-block rounded-full bg-amber-300 w-2 h-2 mr-1"></i>In progress</span><span><i class="inline-block rounded-full bg-mint w-2 h-2 mr-1"></i>Ready</span></div></div><div id="list-view" class="hidden px-5 pb-5"></div></div>
+          <div><div class="flex items-center justify-between mb-3"><h2 class="font-display text-lg font-semibold">Priority lane</h2><button class="text-xs text-ice" id="clear-completed">Clear completed</button></div><div id="task-lane" class="grid md:grid-cols-2 gap-3"></div></div>
+        </div>
+        <aside class="space-y-5"><section class="glass rounded-2xl p-5"><div class="flex items-center justify-between"><div><p class="text-xs text-slate-500">NOW IN FOCUS</p><h2 class="font-display text-lg font-semibold mt-1" id="focus-name">No task selected</h2></div><button id="start-focus" class="rounded-full border border-ice/40 text-ice text-xs px-3 py-1.5">Start 25m</button></div><div class="mt-5 h-2 rounded-full bg-white/10"><div id="focus-progress" class="h-full rounded-full bg-ice w-0 transition-all"></div></div><p id="focus-meta" class="text-xs text-slate-500 mt-3">Choose any task from the radar.</p></section>
+          <section class="glass rounded-2xl p-5"><div class="flex justify-between items-center"><h2 class="font-display text-lg font-semibold">Momentum</h2><span class="text-xs text-mint">healthy</span></div><div class="flex gap-1 mt-5 h-20 items-end" id="momentum-bars"></div><div class="flex justify-between text-[10px] text-slate-500 mt-2"><span>Mon</span><span>Today</span><span>Sun</span></div></section>
+          <section class="glass rounded-2xl p-5"><div class="flex justify-between"><h2 class="font-display text-lg font-semibold">Activity pulse</h2><span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span></div><div class="mt-4 space-y-4 text-xs" id="activity"></div></section>
+        </aside>
+      </section>
+    </main>
+  </div>
+  <dialog id="task-dialog" class="w-[min(92vw,480px)] p-0"><form method="dialog" class="p-6"><div class="flex justify-between items-center"><h2 class="font-display text-xl font-semibold">Create a new mission</h2><button class="text-slate-400">✕</button></div><label class="block text-xs text-slate-400 mt-5 mb-2">What needs to move?</label><input id="task-title" required autocomplete="off" placeholder="e.g. Ship the landing page" class="w-full rounded-xl bg-black/20 border border-white/10 px-4 py-3 outline-none focus:border-ice"><div class="grid grid-cols-2 gap-3 mt-4"><select id="task-space" class="rounded-xl bg-black/20 border border-white/10 p-3"><option>Product launch</option><option>Design system</option><option>Personal</option></select><select id="task-priority" class="rounded-xl bg-black/20 border border-white/10 p-3"><option value="high">High priority</option><option value="medium">Medium priority</option><option value="low">Low priority</option></select></div><button class="mt-5 w-full rounded-xl bg-ice text-slate-950 font-bold py-3">Add to work radar</button></form></dialog>
+  <script src="app.js"></script>
+</body></html>
