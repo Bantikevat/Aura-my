@@ -3,190 +3,195 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OmniLab 3D | Interactive Science & Physics Simulation Lab</title>
-  <meta name="description" content="A real-time 3D interactive physics and science laboratory designed to make IIT, Quantum, and Fundamental Science concepts 100x easier to master through visual experimentation.">
+  <title>AlgoVerse 3D | Interactive Computer Science, DSA & AI Neural Lab</title>
+  <meta name="description" content="An interactive 3D WebGL laboratory for Computer Science students to visualize Data Structures, Algorithms, Big-O Complexity, and Deep Neural Networks in real time.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <!-- Three.js & OrbitControls -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
-<body class="lab-body">
-  <!-- 3D WebGL Simulation Viewport -->
+<body class="cs-body">
+  <!-- 3D WebGL Viewport -->
   <div id="canvas-container"></div>
 
-  <!-- Top Global Laboratory HUD -->
-  <header class="lab-nav">
-    <div class="lab-brand">
-      <div class="brand-atom">⚛</div>
+  <!-- Top Global CS Laboratory HUD -->
+  <header class="cs-nav">
+    <div class="cs-brand">
+      <div class="brand-terminal">&gt;_</div>
       <div class="brand-text">
-        <h1>OMNILAB <span>3D</span></h1>
-        <p class="brand-sub">Visual Science & Physics Simulation Engine</p>
+        <h1>ALGOVERSE <span>3D</span></h1>
+        <p class="brand-sub">Computer Science, DSA & AI Neural Lab</p>
       </div>
     </div>
 
-    <!-- Active Experiment Selector Tabs -->
-    <div class="experiment-tabs">
-      <button class="exp-tab active" data-exp="gravity">
-        <span class="tab-icon">🪐</span>
-        <span class="tab-title">1. Gravity & Orbits</span>
+    <!-- CS Modules Navigation Tabs -->
+    <div class="module-tabs">
+      <button class="mod-tab active" data-mod="neural">
+        <span class="tab-icon">🧠</span>
+        <span class="tab-title">1. AI Neural Network</span>
       </button>
-      <button class="exp-tab" data-exp="atom">
-        <span class="tab-icon">⚛️</span>
-        <span class="tab-title">2. Quantum Bohr Atom</span>
+      <button class="mod-tab" data-mod="bst">
+        <span class="tab-icon">🌲</span>
+        <span class="tab-title">2. Binary Search Tree</span>
       </button>
-      <button class="exp-tab" data-exp="prism">
-        <span class="tab-icon">🌈</span>
-        <span class="tab-title">3. Prism Light Dispersion</span>
+      <button class="mod-tab" data-mod="sorting">
+        <span class="tab-icon">📊</span>
+        <span class="tab-title">3. 3D Sorting & Big-O</span>
       </button>
     </div>
 
-    <!-- Top Action Controls -->
-    <div class="nav-actions">
-      <button class="nav-btn" id="btn-sound" title="Toggle Science Audio Synthesizer">
+    <!-- Header Actions -->
+    <div class="cs-nav-actions">
+      <button class="btn-hud" id="btn-sound" title="Toggle Synthesizer Sound">
         <span class="btn-icon">🎵</span>
         <span class="btn-text">Audio: ON</span>
       </button>
-      <button class="nav-btn btn-primary" id="btn-reset-exp" title="Reset Current Simulation">
+      <button class="btn-hud btn-reset" id="btn-reset-module">
         <span class="btn-icon">↺</span>
         <span class="btn-text">Reset Lab</span>
       </button>
     </div>
   </header>
 
-  <!-- Right Floating Physics Control Panel (Interactive Parameters) -->
-  <aside class="physics-panel" id="physics-panel">
+  <!-- Right Floating CS Control Panel -->
+  <aside class="cs-panel" id="cs-panel">
     <div class="panel-header">
-      <span class="panel-tag" id="panel-exp-tag">PHYSICS CONTROLLER</span>
-      <h3 id="panel-exp-title">Gravitational Mechanics</h3>
+      <span class="panel-tag" id="panel-cs-tag">ARTIFICIAL INTELLIGENCE</span>
+      <h3 id="panel-cs-title">Deep Neural Network</h3>
     </div>
 
-    <!-- Dynamic Sliders / Controls (Switched per Experiment) -->
-    <div class="controls-body" id="controls-container">
-      <!-- Gravity Controls (Default) -->
-      <div class="exp-controls-group" id="controls-gravity">
-        <div class="ctrl-row">
-          <label for="slider-g-const">Gravitational Constant ($G$): <span id="val-g-const">1.0x</span></label>
-          <input type="range" id="slider-g-const" min="0.2" max="3.0" step="0.1" value="1.0">
-        </div>
-        <div class="ctrl-row">
-          <label for="slider-sun-mass">Central Star Mass ($M$): <span id="val-sun-mass">1000 M☉</span></label>
-          <input type="range" id="slider-sun-mass" min="200" max="2500" step="100" value="1000">
-        </div>
-        <div class="ctrl-row">
-          <label for="slider-sim-speed">Simulation Speed: <span id="val-sim-speed">1.0x</span></label>
-          <input type="range" id="slider-sim-speed" min="0.2" max="2.5" step="0.1" value="1.0">
-        </div>
-        <div class="ctrl-actions">
-          <button class="btn-ctrl btn-add-planet" id="btn-add-planet">+ Launch New Planet</button>
-          <button class="btn-ctrl" id="btn-clear-trails">Clear Orbits</button>
-        </div>
-      </div>
-
-      <!-- Quantum Atom Controls -->
-      <div class="exp-controls-group" id="controls-atom" style="display: none;">
-        <div class="ctrl-row">
-          <label>Target Electron Shell ($n$):</label>
-          <div class="shell-buttons">
-            <button class="btn-shell" data-shell="1">n = 1 (Ground)</button>
-            <button class="btn-shell active" data-shell="2">n = 2</button>
-            <button class="btn-shell" data-shell="3">n = 3</button>
-            <button class="btn-shell" data-shell="4">n = 4</button>
+    <div class="panel-body">
+      <!-- 1. Neural Network Controls -->
+      <div class="mod-controls" id="ctrls-neural">
+        <div class="ctrl-group">
+          <label>Neural Architecture:</label>
+          <div class="layer-pill-row">
+            <span class="pill">Input (3)</span>
+            <span class="pill-arrow">➔</span>
+            <span class="pill">Hidden (5)</span>
+            <span class="pill-arrow">➔</span>
+            <span class="pill">Hidden (4)</span>
+            <span class="pill-arrow">➔</span>
+            <span class="pill">Output (2)</span>
           </div>
         </div>
-        <div class="ctrl-row">
-          <label for="slider-electron-speed">Orbital Frequency: <span id="val-electron-speed">1.0x</span></label>
-          <input type="range" id="slider-electron-speed" min="0.5" max="3.0" step="0.1" value="1.0">
+        <div class="ctrl-group">
+          <label for="slider-weight-intensity">Synaptic Weight Density:</label>
+          <input type="range" id="slider-weight-intensity" min="0.5" max="2.0" step="0.1" value="1.0">
         </div>
         <div class="ctrl-actions">
-          <button class="btn-ctrl btn-leap" id="btn-quantum-leap">⚡ Trigger Quantum Leap</button>
+          <button class="btn-action btn-fire" id="btn-forward-prop">⚡ Run Forward Propagation</button>
+          <button class="btn-action" id="btn-train-epoch">↻ Train 1 Epoch (Backprop)</button>
         </div>
-        <div class="photon-meter">
-          <span class="meter-title">EMITTED PHOTON METRICS:</span>
-          <div class="meter-row">
-            <span>Wavelength ($\lambda$):</span>
-            <strong class="text-cyan" id="meter-wavelength">656 nm (Balmer Red)</strong>
+        <div class="metric-hud">
+          <div class="m-row">
+            <span>Loss / Error (MSE):</span>
+            <strong class="text-cyan" id="meter-loss">0.0412</strong>
           </div>
-          <div class="meter-row">
-            <span>Energy ($\Delta E$):</span>
-            <strong class="text-green" id="meter-energy">1.89 eV</strong>
+          <div class="m-row">
+            <span>Activation Function:</span>
+            <strong class="text-purple">ReLU / Sigmoid</strong>
           </div>
         </div>
       </div>
 
-      <!-- Prism Light Controls -->
-      <div class="exp-controls-group" id="controls-prism" style="display: none;">
-        <div class="ctrl-row">
-          <label for="slider-beam-angle">Light Incident Angle ($\theta$): <span id="val-beam-angle">45°</span></label>
-          <input type="range" id="slider-beam-angle" min="20" max="75" step="1" value="45">
-        </div>
-        <div class="ctrl-row">
-          <label for="slider-glass-ior">Glass Refractive Index ($n$): <span id="val-glass-ior">1.52 (Crown Glass)</span></label>
-          <input type="range" id="slider-glass-ior" min="1.3" max="2.4" step="0.02" value="1.52">
-        </div>
-        <div class="ctrl-row">
-          <label for="slider-dispersion-width">Dispersion Spread: <span id="val-disp-width">1.0x</span></label>
-          <input type="range" id="slider-dispersion-width" min="0.5" max="2.5" step="0.1" value="1.0">
+      <!-- 2. BST Controls -->
+      <div class="mod-controls" id="ctrls-bst" style="display: none;">
+        <div class="ctrl-group">
+          <label for="input-bst-val">Insert Value into Tree:</label>
+          <div class="input-action-row">
+            <input type="number" id="input-bst-val" placeholder="e.g. 42" min="1" max="99" value="42">
+            <button class="btn-action-sm btn-fire" id="btn-bst-insert">+ Insert</button>
+          </div>
         </div>
         <div class="ctrl-actions">
-          <button class="btn-ctrl" id="btn-toggle-ray-paths">Toggle Normal Lines</button>
+          <button class="btn-action" id="btn-bst-inorder">Traverse: In-Order (Sorted)</button>
+          <button class="btn-action" id="btn-bst-reset">Generate Random Tree</button>
+        </div>
+        <div class="metric-hud">
+          <div class="m-row">
+            <span>Time Complexity:</span>
+            <strong class="text-cyan">O(log N) Average</strong>
+          </div>
+          <div class="m-row">
+            <span>Tree Height ($h$):</span>
+            <strong class="text-green" id="meter-bst-height">3 Levels</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Sorting Controls -->
+      <div class="mod-controls" id="ctrls-sorting" style="display: none;">
+        <div class="ctrl-group">
+          <label for="select-algo">Sorting Algorithm:</label>
+          <select id="select-algo">
+            <option value="quicksort">QuickSort — O(N log N) Divide & Conquer</option>
+            <option value="bubblesort">BubbleSort — O(N²) Comparison</option>
+          </select>
+        </div>
+        <div class="ctrl-group">
+          <label for="slider-sort-speed">Execution Speed:</label>
+          <input type="range" id="slider-sort-speed" min="1" max="5" step="1" value="3">
+        </div>
+        <div class="ctrl-actions">
+          <button class="btn-action btn-fire" id="btn-start-sort">▶ Start Sorting Simulation</button>
+          <button class="btn-action" id="btn-shuffle-array">🔀 Shuffle Array</button>
+        </div>
+        <div class="metric-hud">
+          <div class="m-row">
+            <span>Array Size ($N$):</span>
+            <strong class="text-cyan">18 Elements</strong>
+          </div>
+          <div class="m-row">
+            <span>Comparisons Made:</span>
+            <strong class="text-amber" id="meter-sort-comparisons">0</strong>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Live Energy & Formula Monitor -->
-    <div class="telemetry-box">
-      <span class="telemetry-label">REAL-TIME PHYSICS TELEMETRY:</span>
-      <div class="telemetry-line">
-        <span id="telem-label-1">Kinetic Energy:</span>
-        <strong id="telem-val-1">4.82 x 10³ J</strong>
+    <!-- Live Code Preview (Python / JS) -->
+    <div class="code-preview-box">
+      <div class="code-header">
+        <span class="code-tab-title" id="code-lang-label">Python (First-Principles)</span>
       </div>
-      <div class="telemetry-line">
-        <span id="telem-label-2">Potential Energy:</span>
-        <strong id="telem-val-2">-1.24 x 10⁴ J</strong>
-      </div>
-      <div class="telemetry-line">
-        <span id="telem-label-3">Total Conservation:</span>
-        <strong class="text-green" id="telem-val-3">CONSERVED (ΔE = 0)</strong>
-      </div>
+      <pre class="code-snippet"><code id="code-display"># Forward Propagation Matrix
+def forward(X, W, b):
+    z = np.dot(X, W) + b
+    return 1 / (1 + np.exp(-z))</code></pre>
     </div>
   </aside>
 
-  <!-- Bottom Scientific Concept Breakdown Dock (The First-Principles Explainer) -->
-  <div class="concept-dock" id="concept-dock">
-    <button class="dock-toggle-btn" id="btn-toggle-dock">
+  <!-- Bottom Explainer Dock (First-Principles CS Concepts) -->
+  <div class="cs-dock" id="cs-dock">
+    <button class="dock-toggle" id="btn-toggle-dock">
       <span class="dock-arrow">▼</span>
-      <span class="dock-title">FIRST-PRINCIPLES & IIT THEORY EXPLAINER</span>
+      <span class="dock-title">FIRST-PRINCIPLES COMPUTER SCIENCE EXPLAINER</span>
     </button>
-    
-    <div class="dock-content">
+    <div class="dock-grid">
       <div class="dock-col">
-        <div class="dock-badge">📐 FUNDAMENTAL EQUATION</div>
-        <div class="formula-display" id="dock-formula">F = G (m₁ m₂) / r²</div>
-        <p class="formula-desc" id="dock-formula-desc">Newton's Universal Gravitation Law: Every particle attracts every other particle with a force proportional to the product of their masses and inversely proportional to the square of the distance.</p>
+        <span class="dock-subhead">📐 CORE ALGORITHMIC LOGIC</span>
+        <div class="formula-text" id="dock-logic">z = Σ (w_i · x_i) + b</div>
+        <p id="dock-logic-desc">Neuron ka basic maths: har input ko uske weight se multiply karo, bias jodo, aur activation function se pass karke output nikalo.</p>
       </div>
-
       <div class="dock-col">
-        <div class="dock-badge">👦 10-YEAR-OLD FEYNMAN EXPLANATION</div>
-        <p id="dock-feynman">Suraj ek vishal baraf ki trampoline par rakhi bhari ball jaisa hai jo chaaron taraf gadda bana deta hai. Planets us gadde mein girne ki koshish karte hain, lekin unki aage badhne ki speed unhe gol-gol ghumati rehti hai!</p>
+        <span class="dock-subhead">👦 10-YEAR-OLD FEYNMAN EXPLANATION</span>
+        <p id="dock-feynman">Neural network ek voting committee jaisa hai! Input layer fact dekhti hai, hidden layer aapas mein argue karke decision leti hai, aur output layer final answer deti hai (e.g., 'Yeh billi hai ya kutta?').</p>
       </div>
-
       <div class="dock-col">
-        <div class="dock-badge">🌍 REAL-WORLD / IIT EXAM IMPACT</div>
-        <p id="dock-impact">ISRO & NASA is law ka use karte hain gravitational slingshot karke Mangalyaan aur Voyager ko bina petrol/fuel ke doosre planets tak phenkne ke liye.</p>
+        <span class="dock-subhead">💼 REAL-WORLD & INTERVIEW IMPACT</span>
+        <p id="dock-impact">Google Gemini, ChatGPT aur Tesla Self-Driving Cars isi deep matrix multiplication par 100% chalte hain. Coding interviews mein yeh sabse high-paying domain hai!</p>
       </div>
     </div>
   </div>
 
-  <!-- Interactive 3D Click Overlay Tooltip -->
-  <div class="inspect-hud" id="inspect-hud"></div>
+  <!-- Toast Notification -->
+  <div class="cs-toast" id="cs-toast"></div>
 
-  <!-- Notification Toast -->
-  <div class="lab-toast" id="lab-toast"></div>
-
-  <!-- Main 3D Simulation Controller -->
+  <!-- CS 3D Engine Script -->
   <script src="app.js"></script>
 </body>
 </html>

@@ -1,54 +1,53 @@
-# 🔬 OMNILAB 3D: Interactive Science & Physics Simulation Engine
+# 💻 ALGOVERSE 3D: Interactive Computer Science, DSA & AI Neural Lab
 
-> An interactive 3D WebGL (Three.js) science laboratory designed to make IIT, Quantum Physics, and Fundamental Science concepts 100x easier to master through hands-on visual experimentation.
+> An interactive 3D WebGL (Three.js) laboratory designed specifically for Computer Science students to visualize Data Structures, Algorithms, Big-O Complexity, and Deep Neural Networks in real time.
 
 ![Three.js](https://img.shields.io/badge/Three.js-r128-black.svg)
-![Target](https://img.shields.io/badge/Designed%20For-IIT%20%7C%20Physics%20%7C%20Science%20Students-blue.svg)
-![Simulations](https://img.shields.io/badge/3D%20Labs-Gravity%20%7C%20Quantum%20Atom%20%7C%20Prism%20Optics-emerald.svg)
+![Target](https://img.shields.io/badge/For-CS%20%7C%20AI%2FML%20%7C%20DSA%20Students-blue.svg)
+![Simulations](https://img.shields.io/badge/Modules-Deep%20Neural%20Net%20%7C%20BST%20%7C%203D%20Sorting-emerald.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ---
 
-## 🌟 Why This Exists (100x Better than 2D Textbooks)
+## 🌟 Why This Exists (Why 2D Text Fails in Computer Science)
 
-Reading formulas in 2D textbooks or flat flashcards fails to build physical intuition:
-* In 2D, you cannot see how changing mass or velocity distorts space-time and bends planetary orbits.
-* In 2D, a "quantum leap" is just an equation $\Delta E = h\nu$, not an electron transitioning between quantized shells emitting a physical photon wavelength.
-* In 2D, Snell's law is a static ray diagram rather than real optical glass dispersing white light into 7 wavelengths.
+Computer Science textbooks explain abstract algorithms in flat text, leaving students confused about what actually happens inside CPU and GPU memory:
+* In 2D, a **Deep Neural Network** is just a flat matrix formula, not visual data pulses firing through layers of weights and biases.
+* In 2D, a **Binary Search Tree** is drawn statically on a whiteboard, not an interactive hierarchical space where numbers search and snap into place.
+* In 2D, **QuickSort vs BubbleSort** is a bunch of array indexes, not physical comparison sweeps and partition swaps.
 
-**OmniLab 3D turns passive reading into an interactive, real-time 3D experimental physics laboratory.**
-
----
-
-## 🚀 3 Interactive 3D Laboratories
-
-### 1. 🪐 Gravitational Orbits & Keplerian Mechanics
-* **Newton's Law of Gravitation:** $F = G \frac{m_1 m_2}{r^2}$
-* **Real-time 3D Gravity Simulation:** Sliders for Gravitational Constant ($G$), Star Mass ($M$), and Simulation Speed.
-* **Launch Custom Planets:** Add new celestial bodies in real time to witness elliptical orbits, escape velocities, and gravitational slingshots!
-* **Live Energy Conservation:** Real-time Kinetic Energy (KE), Potential Energy (PE), and Total Mechanical Energy tracking.
-
-### 2. ⚛️ Quantum Bohr Atom & Spectral Line Leaps
-* **Quantized Electron Shells:** Concentric shells ($n = 1, 2, 3, 4$) with orbiting de Broglie electron wave mechanics.
-* **Trigger Quantum Leap:** Transition electrons between shells (e.g. $n=3 \to n=2$) to release an expanding photon wave.
-* **Exact Wavelengths:** Calculates real spectral lines:
-  * $n=3 \to n=2$: **656 nm (Balmer Red)**
-  * $n=4 \to n=2$: **486 nm (Balmer Cyan)**
-  * Releases real acoustic frequencies via Web Audio API.
-
-### 3. 🌈 Optical Glass Prism & Snell's Law
-* **Wavelength-Dependent Refraction:** Cauchy's equation dispersion $n(\lambda) = A + \frac{B}{\lambda^2}$.
-* **Real 3D Prism Geometry:** Interactive triangular glass prism with high-transmission material.
-* **Full Spectrum Dispersion:** White collimated light beam splits into the 7 rainbow spectral beams (VIBGYOR).
-* **Interactive Parameters:** Sliders for Incident Light Angle ($\theta$), Glass Refraction Index ($n = 1.52$), and Dispersion Spread.
+**AlgoVerse 3D turns theoretical Computer Science into an interactive visual playground.**
 
 ---
 
-## 📐 First-Principles & IIT Theory Explainer Dock
-Every experiment includes an expandable bottom dock containing:
-1. **Fundamental Equation:** The exact mathematical formula.
-2. **10-Year-Old Feynman Explanation:** Intuitive, jargon-free analogies.
-3. **Real-World / IIT Application:** How ISRO, NASA, Lasers, and Fiber Optics leverage the law.
+## 🚀 3 Interactive 3D CS Laboratories
+
+### 1. 🧠 3D Deep Neural Network (AI & Machine Learning)
+* **Multi-Layer Perceptron (MLP):** 4 layers in 3D: Input (3) ➔ Hidden 1 (5) ➔ Hidden 2 (4) ➔ Output (2).
+* **Dense Synaptic Weight Matrix:** Dynamic connection lines reflecting weight magnitudes ($w_{ij}$).
+* **Forward Propagation:** Particle signal pulses travel from input to output, lighting up neurons with activation values ($\sigma(z)$ / ReLU).
+* **Backpropagation:** Error gradient descent pulses traveling in reverse, lowering Mean Squared Error (MSE) loss!
+
+### 2. 🌲 3D Binary Search Tree (Data Structures & Algorithms)
+* **Left < Root < Right:** Visualizing the core logarithmic property that powers database indexes (B-Trees).
+* **Interactive Number Insertion:** Type any value (e.g., `42`) and watch the tree balance and place it.
+* **In-Order Traversal:** Automatically traverses Left ➔ Root ➔ Right to prove that in-order traversal of a BST yields sorted order!
+
+### 3. 📊 3D Sorting Algorithms & Big-O Complexity
+* **Interactive 3D Bar Array:** 18 elements with real-time height visualization.
+* **Algorithms:**
+  * **QuickSort:** $O(N \log N)$ Divide & Conquer partition with gold pivot highlighting.
+  * **BubbleSort:** $O(N^2)$ brute-force adjacent comparisons.
+* **Acoustic Pitches:** Web Audio synthesizer plays pitches proportional to element values during swaps.
+
+---
+
+## 📐 Live Code & First-Principles CS Explainer
+Every module includes:
+1. **Real Python / JavaScript Implementation Code** displayed right on the side HUD.
+2. **First-Principles Algorithmic Logic** ($z = \sum w_i x_i + b$).
+3. **10-Year-Old Feynman Intuitive Analogy**.
+4. **Real-World & Tech Interview Impact** (How Google, ChatGPT, and databases use it).
 
 ---
 

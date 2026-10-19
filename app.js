@@ -1,48 +1,84 @@
 /**
- * OMNILAB 3D - Interactive Science & Physics Simulation Engine
- * Real-time 3D Three.js Laboratory for Fundamental Physics & IIT Concepts
- * 1. Gravity & Planetary Orbits (Kepler & Newton)
- * 2. Quantum Bohr Atom (Electron Energy Shells & Photon Emission)
- * 3. Optical Prism Light Dispersion (Snell's Law & Cauchy Wavelengths)
+ * ALGOVERSE 3D - Computer Science, DSA & AI Neural Network Simulation Lab
+ * Built with Three.js & Vanilla JavaScript
+ * 1. 3D Deep Neural Network (Forward Prop & Backprop)
+ * 2. 3D Binary Search Tree (Insertion & In-Order Traversal)
+ * 3. 3D Sorting Algorithms & Big-O Complexity (QuickSort vs BubbleSort)
  */
 
 (function () {
   'use strict';
 
   // =========================================================================
-  // Scientific Concept Data Models (IIT & First-Principles)
+  // CS Module Scientific Data & First-Principles Models
   // =========================================================================
-  const EXPERIMENT_DATA = {
-    gravity: {
-      tag: 'GRAVITATIONAL MECHANICS',
-      title: 'Planetary Orbits & General Relativity',
-      formula: 'F = G (m₁ m₂) / r²',
-      desc: "Newton's Universal Gravitation Law: Every particle attracts every other particle with a force proportional to the product of their masses and inversely proportional to the square of the distance.",
-      feynman: "Suraj ek vishal baraf ki trampoline par rakhi bhari ball jaisa hai jo chaaron taraf gadda bana deta hai. Planets us gadde mein girne ki koshish karte hain, lekin unki aage badhne ki speed unhe gol-gol ghumati rehti hai!",
-      impact: "ISRO & NASA is law ka use gravitational slingshot karke Mangalyaan aur Voyager spacecrafts ko bina fuel ke doosre planets tak phenkne ke liye karte hain."
+  const CS_MODULES = {
+    neural: {
+      tag: 'ARTIFICIAL INTELLIGENCE & DEEP LEARNING',
+      title: 'Deep Neural Network (Multi-Layer Perceptron)',
+      logic: 'z = Σ (w_i · x_i) + b | a = σ(z)',
+      desc: 'Deep Learning Core: Har neuron pehle inputs ka weighted sum (dot product) nikalta hai, bias jodta hai, aur activation function (ReLU ya Sigmoid) se non-linear output generate karta hai.',
+      feynman: 'Neural network ek voting committee jaisa hai! Input layer facts dekhti hai, hidden layer aapas mein argue karke decision leti hai, aur output layer final answer deti hai (e.g., "Yeh photo Cat hai ya Dog?").',
+      impact: 'ChatGPT, Google Gemini, Tesla FSD aur Midjourney 100% isi deep matrix multiplication aur backpropagation par kaam karte hain!',
+      codeTitle: 'Python / PyTorch (Forward Prop)',
+      code: `import numpy as np
+
+def forward_propagation(X, W1, b1, W2, b2):
+    # Hidden Layer activation (ReLU)
+    Z1 = np.dot(X, W1) + b1
+    A1 = np.maximum(0, Z1)
+    
+    # Output Layer activation (Softmax)
+    Z2 = np.dot(A1, W2) + b2
+    exp_Z = np.exp(Z2)
+    return exp_Z / np.sum(exp_Z, axis=1, keepdims=True)`
     },
-    atom: {
-      tag: 'QUANTUM MECHANICS',
-      title: 'Bohr Atomic Model & Quantum Leaps',
-      formula: 'ΔE = h ν = hc / λ',
-      desc: "Bohr's Postulate: Electrons only orbit in quantized non-radiating shells. When an electron jumps to a lower shell, it emits a single photon of light with energy equal to the difference.",
-      feynman: "Electron kisi building ki seedhiyon jaisa hai: aap seedhi 1 ya seedhi 2 par khade ho sakte ho, lekin hawa mein do seedhiyon ke beech nahi reh sakte! Jab electron neeche koodta hai, toh roshni (photon) ka jhatka nikalta hai.",
-      impact: "IIT & Modern Physics: Lasers, LEDs, aur Quantum Computing isi principle par kaam karte hain. Fireworks (patakho) ka rang bhi alag-alag atom ke electron jump se banta hai!"
+    bst: {
+      tag: 'DATA STRUCTURES & ALGORITHMS',
+      title: 'Binary Search Tree (BST)',
+      logic: 'Left < Root < Right | Time: O(log N)',
+      desc: 'Hierarchical Tree Structure: Har node ka left child chhota hota hai aur right child bada hota hai. Isse 10 Lakh (1 Million) elements mein se kisi bhi number ko sirf ~20 comparisons mein dhoondha ja sakta hai!',
+      feynman: 'Socho aap ek moti dictionary mein word dhoondh rahe ho. Aap page 1 se nahi dhoondhte. Aap beech mein se kholte ho—aur har baar aadha book ek jhatke mein chhod dete ho!',
+      impact: 'SQL Databases (MySQL, PostgreSQL B-Trees), Git version control, aur Linux Kernel file systems isi tree structure par instant search karte hain.',
+      codeTitle: 'JavaScript / Python (BST Insertion)',
+      code: `class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def insert_bst(root, val):
+    if not root:
+        return TreeNode(val)
+    if val < root.val:
+        root.left = insert_bst(root.left, val)
+    else:
+        root.right = insert_bst(root.right, val)
+    return root`
     },
-    prism: {
-      tag: 'WAVE OPTICS',
-      title: "Snell's Law & Light Dispersion",
-      formula: 'n₁ sin(θ₁) = n₂ sin(θ₂)',
-      desc: "Snell's Law & Cauchy's Dispersion: Glass ka refractive index wavelength par depend karta hai. Violet light sabse zyada bend hoti hai aur Red light sabse kam, jisse White light 7 rangon mein bat jaati hai.",
-      feynman: "White light 7 alag-alag bachhon ki team jaisi hai jo haath pakad ke daud rahe hain. Jaise hi woh kanch (glass) ke keechad mein ghuste hain, Violet bachha zyada slow ho jata hai aur Red tezi se nikal jata hai, jisse saare rang alag dikhte hain!",
-      impact: "IIT Optics: Rainbow banna, Fiber Optic internet cables, aur Space Telescopes (James Webb) isi se taaron ki chemical composition pata lagate hain."
+    sorting: {
+      tag: 'ALGORITHMIC EFFICIENCY & BIG-O',
+      title: 'Sorting Algorithms & Big-O Complexity',
+      logic: 'QuickSort: O(N log N) | BubbleSort: O(N²)',
+      desc: 'Divide & Conquer vs Brute Force: QuickSort ek pivot chunta hai aur array ko 2 hisso mein baant deta hai. BubbleSort bagal wale elements ko baar-baar compare karke swap karta hai.',
+      feynman: 'BubbleSort school ki line jaisa hai jahan har bachha apne peeche wale se height naapta hai (bohot slow). QuickSort monitor ko beech mein khada karke sabko chhote-bade mein turant divide kar deta hai!',
+      impact: 'Google Search index sorting, Amazon e-commerce product ranking, aur Stock market high-frequency trading mein sorting algorithms backbone hain.',
+      codeTitle: 'Python (QuickSort Divide & Conquer)',
+      code: `def quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quicksort(left) + middle + quicksort(right)`
     }
   };
 
   // =========================================================================
-  // Web Audio Scientific Synthesizer
+  // Web Audio Synthesizer for Algorithms
   // =========================================================================
-  class LabAudio {
+  class CSAudio {
     constructor() {
       this.ctx = null;
       this.enabled = true;
@@ -58,7 +94,7 @@
       }
     }
 
-    playQuantumChime(freq = 656) {
+    playPitch(freq = 440, duration = 0.08) {
       if (!this.enabled) return;
       this.init();
       const now = this.ctx.currentTime;
@@ -67,33 +103,23 @@
 
       osc.type = 'sine';
       osc.frequency.setValueAtTime(freq, now);
-      osc.frequency.exponentialRampToValueAtTime(freq * 1.5, now + 0.3);
 
-      gain.gain.setValueAtTime(0.08, now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+      gain.gain.setValueAtTime(0.04, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
       osc.start(now);
-      osc.stop(now + 0.65);
+      osc.stop(now + duration + 0.05);
     }
 
-    playGravityHum() {
+    playChime() {
       if (!this.enabled) return;
       this.init();
-      const now = this.ctx.currentTime;
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(110, now);
-      gain.gain.setValueAtTime(0.05, now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
-
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.35);
+      const notes = [523.25, 659.25, 783.99, 1046.50];
+      notes.forEach((f, i) => {
+        setTimeout(() => this.playPitch(f, 0.2), i * 60);
+      });
     }
 
     toggle() {
@@ -102,27 +128,26 @@
     }
   }
 
-  const audio = new LabAudio();
+  const audio = new CSAudio();
 
   // =========================================================================
-  // Global Simulation State & Three.js Viewport
+  // Global Viewport & Three.js Scene Setup
   // =========================================================================
   let scene, camera, renderer, controls;
-  let activeExperiment = 'gravity';
+  let activeModule = 'neural';
 
-  // Sub-groups for active experiment
-  let gravityGroup = new THREE.Group();
-  let atomGroup = new THREE.Group();
-  let prismGroup = new THREE.Group();
+  let neuralGroup = new THREE.Group();
+  let bstGroup = new THREE.Group();
+  let sortingGroup = new THREE.Group();
 
   function initThree() {
     const container = document.getElementById('canvas-container');
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x070a12);
+    scene.background = new THREE.Color(0x050811);
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.5, 200);
-    camera.position.set(0, 30, 42);
+    camera.position.set(0, 18, 38);
 
     renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -135,440 +160,561 @@
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.minDistance = 6;
-    controls.maxDistance = 120;
+    controls.maxDistance = 100;
     controls.target.set(0, 0, 0);
 
-    // Global Lighting
-    const ambientLight = new THREE.AmbientLight(0x334155, 1.2);
-    scene.add(ambientLight);
+    // Subtle Ambient Light + Key Directional Light
+    scene.add(new THREE.AmbientLight(0x1e293b, 1.2));
+    const dir = new THREE.DirectionalLight(0xffffff, 1.4);
+    dir.position.set(20, 30, 20);
+    scene.add(dir);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    dirLight.position.set(20, 40, 20);
-    scene.add(dirLight);
+    // Subtle Tech Grid on Ground
+    const grid = new THREE.GridHelper(60, 30, 0x00f0ff, 0x111e38);
+    grid.position.y = -8;
+    scene.add(grid);
 
-    scene.add(gravityGroup);
-    scene.add(atomGroup);
-    scene.add(prismGroup);
+    scene.add(neuralGroup);
+    scene.add(bstGroup);
+    scene.add(sortingGroup);
 
-    // Initialize the 3 simulations
-    buildGravitySim();
-    buildAtomSim();
-    buildPrismSim();
+    buildNeuralNetwork();
+    buildBinarySearchTree();
+    buildSortingArena();
 
-    switchExperiment('gravity');
+    switchModule('neural');
 
     window.addEventListener('resize', onResize);
     animate();
   }
 
   // =========================================================================
-  // SIMULATION 1: GRAVITY & PLANETARY ORBITS
+  // MODULE 1: 3D DEEP NEURAL NETWORK (AI/ML)
   // =========================================================================
-  let sunMesh, sunGlow;
-  let planets = [];
-  let gConstant = 1.0;
-  let sunMass = 1000;
-  let simSpeed = 1.0;
+  let neuralLayers = [];
+  let synapticLines = [];
+  let neuralPulses = [];
+  let lossVal = 0.0412;
 
-  function buildGravitySim() {
-    // 1. Central Glowing Sun
-    const sunGeo = new THREE.SphereGeometry(3.0, 32, 32);
-    const sunMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
-    sunMesh = new THREE.Mesh(sunGeo, sunMat);
-    gravityGroup.add(sunMesh);
+  function buildNeuralNetwork() {
+    // 4 Layers: Input (3), Hidden1 (5), Hidden2 (4), Output (2)
+    const layerConfigs = [
+      { name: 'Input', count: 3, x: -16, color: 0x00f0ff },
+      { name: 'Hidden1', count: 5, x: -5, color: 0xa855f7 },
+      { name: 'Hidden2', count: 4, x: 5, color: 0xa855f7 },
+      { name: 'Output', count: 2, x: 16, color: 0x10b981 }
+    ];
 
-    // Sun Corona Glow
-    const glowGeo = new THREE.SphereGeometry(3.8, 32, 32);
-    const glowMat = new THREE.MeshBasicMaterial({
-      color: 0xff7700,
-      transparent: true,
-      opacity: 0.35,
-      blending: THREE.AdditiveBlending
-    });
-    sunGlow = new THREE.Mesh(glowGeo, glowMat);
-    gravityGroup.add(sunGlow);
+    neuralLayers = [];
 
-    // Grid Floor Plane for Gravitational Curvature Reference
-    const grid = new THREE.GridHelper(70, 40, 0x00f0ff, 0x1e293b);
-    grid.position.y = -0.5;
-    gravityGroup.add(grid);
+    layerConfigs.forEach((cfg, layerIdx) => {
+      const neurons = [];
+      const spacingY = 3.2;
+      const startY = ((cfg.count - 1) * spacingY) / 2;
 
-    // Spawn 3 Initial Realistic Planets with Stable Elliptical Orbits
-    spawnPlanet(10, 0, 0, 0, 0, 9.8, 0x00f0ff, 0.65, 'Earth-like');
-    spawnPlanet(18, 0, 0, 0, 0, 7.4, 0xf59e0b, 1.1, 'Gas Giant');
-    spawnPlanet(-26, 0, 0, 0, 0, -6.1, 0xa855f7, 0.85, 'Outer Ice');
-  }
+      for (let i = 0; i < cfg.count; i++) {
+        const y = startY - i * spacingY;
+        const geo = new THREE.SphereGeometry(0.7, 24, 24);
+        const mat = new THREE.MeshStandardMaterial({
+          color: cfg.color,
+          roughness: 0.2,
+          metalness: 0.8
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(cfg.x, y, 0);
+        neuralGroup.add(mesh);
 
-  function spawnPlanet(px, py, pz, vx, vy, vz, colorHex, radius, name) {
-    const geo = new THREE.SphereGeometry(radius, 24, 24);
-    const mat = new THREE.MeshStandardMaterial({
-      color: colorHex,
-      roughness: 0.4,
-      metalness: 0.2
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.set(px, py, pz);
-    gravityGroup.add(mesh);
+        // Halo Ring
+        const ringGeo = new THREE.RingGeometry(0.85, 0.95, 32);
+        const ringMat = new THREE.MeshBasicMaterial({
+          color: cfg.color,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.5
+        });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.position.set(cfg.x, y, 0);
+        neuralGroup.add(ring);
 
-    // Trail Line Geometry
-    const maxTrail = 180;
-    const trailPositions = new Float32Array(maxTrail * 3);
-    for (let i = 0; i < maxTrail * 3; i += 3) {
-      trailPositions[i] = px;
-      trailPositions[i + 1] = py;
-      trailPositions[i + 2] = pz;
-    }
-    const trailGeo = new THREE.BufferGeometry();
-    trailGeo.setAttribute('position', new THREE.BufferAttribute(trailPositions, 3));
-    const trailMat = new THREE.LineBasicMaterial({
-      color: colorHex,
-      transparent: true,
-      opacity: 0.5
-    });
-    const trailLine = new THREE.Line(trailGeo, trailMat);
-    gravityGroup.add(trailLine);
-
-    planets.push({
-      mesh,
-      pos: new THREE.Vector3(px, py, pz),
-      vel: new THREE.Vector3(vx, vy, vz),
-      mass: radius * 2,
-      trailLine,
-      trailPoints: [],
-      maxTrail
-    });
-  }
-
-  function updateGravitySim(delta) {
-    const dt = delta * simSpeed;
-    let totalKE = 0;
-    let totalPE = 0;
-
-    planets.forEach(p => {
-      // Newton Gravitational Acceleration: a = -G * M / r^2 in direction of sun
-      const rVec = new THREE.Vector3(0, 0, 0).sub(p.pos);
-      const dist = Math.max(rVec.length(), 3.5); // Prevent singularity at center
-      const forceMag = (gConstant * sunMass) / (dist * dist);
-      const accel = rVec.normalize().multiplyScalar(forceMag);
-
-      p.vel.addScaledVector(accel, dt);
-      p.pos.addScaledVector(p.vel, dt);
-      p.mesh.position.copy(p.pos);
-
-      // Energy Telemetry
-      const v = p.vel.length();
-      totalKE += 0.5 * p.mass * v * v;
-      totalPE -= (gConstant * sunMass * p.mass) / dist;
-
-      // Update Trail
-      p.trailPoints.unshift(p.pos.clone());
-      if (p.trailPoints.length > p.maxTrail) p.trailPoints.pop();
-
-      const positions = p.trailLine.geometry.attributes.position.array;
-      for (let i = 0; i < p.trailPoints.length; i++) {
-        positions[i * 3] = p.trailPoints[i].x;
-        positions[i * 3 + 1] = p.trailPoints[i].y;
-        positions[i * 3 + 2] = p.trailPoints[i].z;
+        neurons.push({ mesh, ring, pos: new THREE.Vector3(cfg.x, y, 0), layerIdx });
       }
-      p.trailLine.geometry.attributes.position.needsUpdate = true;
+      neuralLayers.push(neurons);
     });
 
-    // Update Telemetry UI
-    document.getElementById('telem-label-1').innerText = 'Kinetic Energy (KE):';
-    document.getElementById('telem-val-1').innerText = `${Math.round(totalKE)} J`;
-    document.getElementById('telem-label-2').innerText = 'Potential Energy (PE):';
-    document.getElementById('telem-val-2').innerText = `${Math.round(totalPE)} J`;
-    document.getElementById('telem-label-3').innerText = 'Mechanical Energy (E):';
-    document.getElementById('telem-val-3').innerText = `${Math.round(totalKE + totalPE)} J (Conserved)`;
-  }
+    // Synaptic Connection Lines (Dense Layer Connections)
+    synapticLines = [];
+    for (let l = 0; l < neuralLayers.length - 1; l++) {
+      const currentLayer = neuralLayers[l];
+      const nextLayer = neuralLayers[l + 1];
 
-  // =========================================================================
-  // SIMULATION 2: QUANTUM BOHR ATOM & PHOTON EMISSION
-  // =========================================================================
-  let nucleusGroup = new THREE.Group();
-  let electronMesh, photonShockwave;
-  let electronShells = [];
-  let currentShellN = 2;
-  let targetShellN = 2;
-  let electronAngle = 0;
-  let electronSpeedFactor = 1.0;
-  let isLeaping = false;
-
-  const SHELL_RADII = { 1: 5, 2: 9, 3: 14, 4: 20 };
-
-  function buildAtomSim() {
-    atomGroup.add(nucleusGroup);
-
-    // 1. Clustered Nucleus (Protons & Neutrons)
-    const pGeo = new THREE.SphereGeometry(0.5, 16, 16);
-    const pMat = new THREE.MeshStandardMaterial({ color: 0xf43f5e, roughness: 0.3 }); // Protons (Red)
-    const nMat = new THREE.MeshStandardMaterial({ color: 0x3b82f6, roughness: 0.3 }); // Neutrons (Blue)
-
-    for (let i = 0; i < 14; i++) {
-      const isProton = i % 2 === 0;
-      const sphere = new THREE.Mesh(pGeo, isProton ? pMat : nMat);
-      sphere.position.set(
-        (Math.random() - 0.5) * 1.6,
-        (Math.random() - 0.5) * 1.6,
-        (Math.random() - 0.5) * 1.6
-      );
-      nucleusGroup.add(sphere);
-    }
-
-    // 2. Glowing Concentric Bohr Orbit Shells (n = 1, 2, 3, 4)
-    [1, 2, 3, 4].forEach(n => {
-      const r = SHELL_RADII[n];
-      const ringGeo = new THREE.RingGeometry(r - 0.04, r + 0.04, 64);
-      const ringMat = new THREE.MeshBasicMaterial({
-        color: 0xa855f7,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.4
+      currentLayer.forEach(n1 => {
+        nextLayer.forEach(n2 => {
+          const points = [n1.pos, n2.pos];
+          const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+          const weightVal = Math.random() * 0.8 + 0.2;
+          const lineMat = new THREE.LineBasicMaterial({
+            color: 0x38bdf8,
+            transparent: true,
+            opacity: weightVal * 0.35
+          });
+          const line = new THREE.Line(lineGeo, lineMat);
+          neuralGroup.add(line);
+          synapticLines.push({ line, p1: n1.pos, p2: n2.pos, weight: weightVal });
+        });
       });
-      const ring = new THREE.Mesh(ringGeo, ringMat);
-      ring.rotation.x = Math.PI / 2;
-      atomGroup.add(ring);
-      electronShells.push({ n, r, ring, ringMat });
-    });
-
-    // 3. The Orbiting Quantum Electron
-    const eGeo = new THREE.SphereGeometry(0.45, 16, 16);
-    const eMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
-    electronMesh = new THREE.Mesh(eGeo, eMat);
-    atomGroup.add(electronMesh);
-
-    // 4. Expanding Photon Wavefront (Shockwave Ring)
-    const pWaveGeo = new THREE.RingGeometry(0.1, 0.4, 32);
-    const pWaveMat = new THREE.MeshBasicMaterial({
-      color: 0x00f0ff,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0
-    });
-    photonShockwave = new THREE.Mesh(pWaveGeo, pWaveMat);
-    photonShockwave.rotation.x = Math.PI / 2;
-    atomGroup.add(photonShockwave);
+    }
   }
 
-  function updateAtomSim(time, delta) {
-    // 1. Subtle Nuclear Vibration
-    nucleusGroup.children.forEach((c, idx) => {
-      c.position.y += Math.sin(time * 15 + idx) * 0.005;
-    });
+  function triggerForwardProp() {
+    audio.playPitch(523, 0.1);
+    showToast('⚡ Forward Propagation Signal Dispatched!');
 
-    // 2. Electron Orbital Motion
-    const currentRadius = SHELL_RADII[currentShellN];
-    electronAngle += (2.5 / Math.sqrt(currentRadius)) * electronSpeedFactor * delta;
+    // Spawn animated signal pulses traveling from Input -> Hidden -> Output
+    for (let l = 0; l < neuralLayers.length - 1; l++) {
+      const fromLayer = neuralLayers[l];
+      const toLayer = neuralLayers[l + 1];
 
-    electronMesh.position.x = Math.cos(electronAngle) * currentRadius;
-    electronMesh.position.z = Math.sin(electronAngle) * currentRadius;
-    electronMesh.position.y = Math.sin(time * 6) * 0.2; // Quantum vertical oscillation
-
-    // 3. Photon Shockwave Expansion
-    if (photonShockwave.material.opacity > 0) {
-      photonShockwave.scale.multiplyScalar(1.08);
-      photonShockwave.material.opacity -= 0.02;
+      setTimeout(() => {
+        fromLayer.forEach(n1 => {
+          toLayer.forEach(n2 => {
+            if (Math.random() < 0.7) {
+              spawnSynapticPulse(n1.pos, n2.pos, 0x00f0ff);
+            }
+          });
+          // Flash neuron
+          n1.mesh.scale.set(1.4, 1.4, 1.4);
+          setTimeout(() => n1.mesh.scale.set(1, 1, 1), 200);
+        });
+        audio.playPitch(400 + l * 150, 0.08);
+      }, l * 280);
     }
 
-    // Telemetry
-    document.getElementById('telem-label-1').innerText = 'Principal Quantum Number:';
-    document.getElementById('telem-val-1').innerText = `n = ${currentShellN}`;
-    document.getElementById('telem-label-2').innerText = 'Orbital Energy (E_n):';
-    const energyEv = (-13.6 / (currentShellN * currentShellN)).toFixed(2);
-    document.getElementById('telem-val-2').innerText = `${energyEv} eV`;
-    document.getElementById('telem-label-3').innerText = 'de Broglie Wavelength:';
-    document.getElementById('telem-val-3').innerText = `${(0.33 * currentShellN).toFixed(2)} nm`;
+    setTimeout(() => {
+      audio.playChime();
+      showToast('🎯 Output Class Activated: 98.6% Confidence');
+    }, 3 * 280);
   }
 
-  function triggerQuantumTransition(targetN) {
-    if (targetN === currentShellN) return;
-    const oldN = currentShellN;
-    currentShellN = targetN;
+  function triggerBackprop() {
+    lossVal = Math.max(lossVal * 0.75, 0.0012);
+    document.getElementById('meter-loss').innerText = lossVal.toFixed(4);
 
-    const deltaE = Math.abs(-13.6 / (oldN * oldN) - -13.6 / (targetN * targetN));
-    const wavelengthNm = Math.round(1240 / deltaE);
+    audio.playPitch(350, 0.1);
+    showToast(`↻ Backpropagation: Gradient Descent Loss Reduced to ${lossVal.toFixed(4)}`);
 
-    // Color of emitted photon based on wavelength
-    let photonColor = 0x00f0ff;
-    let label = `${wavelengthNm} nm (Visible)`;
-    if (wavelengthNm > 600) { photonColor = 0xf43f5e; label = `${wavelengthNm} nm (Balmer Red)`; }
-    else if (wavelengthNm > 480) { photonColor = 0x00f0ff; label = `${wavelengthNm} nm (Balmer Cyan)`; }
-    else if (wavelengthNm > 420) { photonColor = 0x3b82f6; label = `${wavelengthNm} nm (Blue)`; }
-    else { photonColor = 0xa855f7; label = `${wavelengthNm} nm (Violet/UV)`; }
+    // Reverse pulses (Output -> Input)
+    for (let l = neuralLayers.length - 1; l > 0; l--) {
+      const fromLayer = neuralLayers[l];
+      const toLayer = neuralLayers[l - 1];
 
-    document.getElementById('meter-wavelength').innerText = label;
-    document.getElementById('meter-energy').innerText = `${deltaE.toFixed(2)} eV`;
-
-    // Trigger expanding photon shockwave from electron's current position
-    photonShockwave.position.copy(electronMesh.position);
-    photonShockwave.scale.set(1, 1, 1);
-    photonShockwave.material.color.setHex(photonColor);
-    photonShockwave.material.opacity = 1.0;
-
-    audio.playQuantumChime(wavelengthNm);
-    showToast(`⚡ Quantum Leap: n=${oldN} ➔ n=${targetN} | Emitted: ${label}`);
+      setTimeout(() => {
+        fromLayer.forEach(n1 => {
+          toLayer.forEach(n2 => {
+            if (Math.random() < 0.6) {
+              spawnSynapticPulse(n1.pos, n2.pos, 0xf43f5e);
+            }
+          });
+        });
+        audio.playPitch(700 - l * 100, 0.08);
+      }, (neuralLayers.length - 1 - l) * 250);
+    }
   }
 
-  // =========================================================================
-  // SIMULATION 3: OPTICAL PRISM LIGHT DISPERSION (SNELL'S LAW)
-  // =========================================================================
-  let prismMesh, incidentBeam, spectrumBeams = [];
-  let incidentAngleDeg = 45;
-  let glassIor = 1.52;
-  let dispersionSpread = 1.0;
+  function spawnSynapticPulse(p1, p2, colorHex) {
+    const geo = new THREE.SphereGeometry(0.2, 12, 12);
+    const mat = new THREE.MeshBasicMaterial({ color: colorHex });
+    const pulse = new THREE.Mesh(geo, mat);
+    pulse.position.copy(p1);
+    neuralGroup.add(pulse);
 
-  const SPECTRUM_COLORS = [
-    { name: 'Red', hex: 0xff0033, lambda: 700, iorOffset: -0.02 },
-    { name: 'Orange', hex: 0xff7700, lambda: 620, iorOffset: -0.012 },
-    { name: 'Yellow', hex: 0xffdd00, lambda: 580, iorOffset: -0.005 },
-    { name: 'Green', hex: 0x00ff66, lambda: 530, iorOffset: 0.002 },
-    { name: 'Cyan', hex: 0x00ffff, lambda: 490, iorOffset: 0.009 },
-    { name: 'Blue', hex: 0x0066ff, lambda: 450, iorOffset: 0.016 },
-    { name: 'Violet', hex: 0x8800ff, lambda: 400, iorOffset: 0.025 }
-  ];
-
-  function buildPrismSim() {
-    // 1. Triangular Glass Prism Geometry
-    const prismShape = new THREE.Shape();
-    const side = 12;
-    const h = (Math.sqrt(3) / 2) * side;
-    prismShape.moveTo(-side / 2, -h / 3);
-    prismShape.lineTo(side / 2, -h / 3);
-    prismShape.lineTo(0, (2 * h) / 3);
-    prismShape.closePath();
-
-    const extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.2, bevelThickness: 0.2 };
-    const prismGeo = new THREE.ExtrudeGeometry(prismShape, extrudeSettings);
-    prismGeo.center();
-
-    const prismMat = new THREE.MeshPhysicalMaterial({
-      color: 0xe0f2fe,
-      metalness: 0.1,
-      roughness: 0.05,
-      transmission: 0.9,
-      transparent: true,
-      opacity: 0.6,
-      ior: 1.52
-    });
-    prismMesh = new THREE.Mesh(prismGeo, prismMat);
-    prismGroup.add(prismMesh);
-
-    // 2. Incoming White Light Beam
-    const beamGeo = new THREE.CylinderGeometry(0.12, 0.12, 22, 16);
-    beamGeo.center();
-    const beamMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    incidentBeam = new THREE.Mesh(beamGeo, beamMat);
-    prismGroup.add(incidentBeam);
-
-    // 3. Outgoing Dispersed Rainbow Beams (7 Wavelengths)
-    SPECTRUM_COLORS.forEach(c => {
-      const rayGeo = new THREE.CylinderGeometry(0.08, 0.08, 26, 16);
-      rayGeo.center();
-      const rayMat = new THREE.MeshBasicMaterial({ color: c.hex });
-      const rayMesh = new THREE.Mesh(rayGeo, rayMat);
-      prismGroup.add(rayMesh);
-      spectrumBeams.push({ mesh: rayMesh, color: c });
-    });
-
-    // 4. White Projection Screen
-    const screenGeo = new THREE.BoxGeometry(0.3, 16, 26);
-    const screenMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.8 });
-    const screen = new THREE.Mesh(screenGeo, screenMat);
-    screen.position.set(16, 0, 0);
-    prismGroup.add(screen);
-
-    updatePrismBeams();
-  }
-
-  function updatePrismBeams() {
-    const thetaRad = (incidentAngleDeg * Math.PI) / 180;
-
-    // Position incoming beam hitting left face of prism
-    incidentBeam.position.set(-11, Math.tan(thetaRad - Math.PI / 4) * 4, 0);
-    incidentBeam.rotation.z = Math.PI / 2 + thetaRad * 0.4;
-
-    // Disperse outgoing rainbow rays
-    spectrumBeams.forEach((ray, i) => {
-      const spreadAngle = ((i - 3) * 0.06 * dispersionSpread) + (glassIor - 1.5) * 0.4;
-      ray.mesh.position.set(9, (i - 3) * 1.4 * dispersionSpread, 0);
-      ray.mesh.rotation.z = Math.PI / 2 - 0.25 + spreadAngle;
-    });
-
-    // Telemetry
-    document.getElementById('telem-label-1').innerText = 'Incident Angle (θ₁):';
-    document.getElementById('telem-val-1').innerText = `${incidentAngleDeg}°`;
-    document.getElementById('telem-label-2').innerText = 'Violet Dev Angle:';
-    document.getElementById('telem-val-2').innerText = `${(incidentAngleDeg * 1.15).toFixed(1)}° (Max Bend)`;
-    document.getElementById('telem-label-3').innerText = 'Red Dev Angle:';
-    document.getElementById('telem-val-3').innerText = `${(incidentAngleDeg * 0.92).toFixed(1)}° (Min Bend)`;
+    let t = 0;
+    const anim = setInterval(() => {
+      t += 0.06;
+      pulse.position.lerpVectors(p1, p2, t);
+      if (t >= 1) {
+        clearInterval(anim);
+        neuralGroup.remove(pulse);
+      }
+    }, 16);
   }
 
   // =========================================================================
-  // Experiment Switcher & UI Navigation
+  // MODULE 2: 3D BINARY SEARCH TREE (BST)
   // =========================================================================
-  function switchExperiment(key) {
-    activeExperiment = key;
+  let bstRoot = null;
+  let bstMeshes = [];
+  let bstLines = [];
 
-    // Toggle 3D Groups visibility
-    gravityGroup.visible = (key === 'gravity');
-    atomGroup.visible = (key === 'atom');
-    prismGroup.visible = (key === 'prism');
+  class BSTNode {
+    constructor(val) {
+      this.val = val;
+      this.left = null;
+      this.right = null;
+      this.x = 0;
+      this.y = 0;
+      this.z = 0;
+      this.mesh = null;
+    }
+  }
 
-    // Toggle Controls Panel Sub-groups
-    document.getElementById('controls-gravity').style.display = (key === 'gravity' ? 'block' : 'none');
-    document.getElementById('controls-atom').style.display = (key === 'atom' ? 'block' : 'none');
-    document.getElementById('controls-prism').style.display = (key === 'prism' ? 'block' : 'none');
+  function buildBinarySearchTree() {
+    clearBST();
+    // Insert Initial Balanced Tree: 50, 25, 75, 12, 38, 62, 88
+    [50, 25, 75, 12, 38, 62, 88].forEach(v => {
+      insertBSTValue(v, false);
+    });
+    repositionAndRenderBST();
+  }
 
-    // Update Tab UI
-    document.querySelectorAll('.exp-tab').forEach(tab => {
-      tab.classList.toggle('active', tab.dataset.exp === key);
+  function insertBSTValue(val, animateNew = true) {
+    if (!bstRoot) {
+      bstRoot = new BSTNode(val);
+      if (animateNew) {
+        repositionAndRenderBST();
+        audio.playPitch(600, 0.15);
+        showToast(`🌲 Root Node Created: [${val}]`);
+      }
+      return;
+    }
+
+    let curr = bstRoot;
+    while (curr) {
+      if (val < curr.val) {
+        if (!curr.left) {
+          curr.left = new BSTNode(val);
+          break;
+        }
+        curr = curr.left;
+      } else if (val > curr.val) {
+        if (!curr.right) {
+          curr.right = new BSTNode(val);
+          break;
+        }
+        curr = curr.right;
+      } else {
+        showToast(`Value [${val}] already exists in BST!`);
+        return; // Duplicate
+      }
+    }
+
+    if (animateNew) {
+      repositionAndRenderBST();
+      audio.playChime();
+      showToast(`🌲 Inserted [${val}] into BST according to Left < Root < Right`);
+    }
+  }
+
+  function calculateBSTPositions(node, x, y, spreadX) {
+    if (!node) return;
+    node.x = x;
+    node.y = y;
+    node.z = 0;
+
+    const nextSpread = spreadX * 0.52;
+    if (node.left) calculateBSTPositions(node.left, x - spreadX, y - 4.5, nextSpread);
+    if (node.right) calculateBSTPositions(node.right, x + spreadX, y - 4.5, nextSpread);
+  }
+
+  function repositionAndRenderBST() {
+    // Clear old visual meshes
+    bstMeshes.forEach(m => bstGroup.remove(m));
+    bstLines.forEach(l => bstGroup.remove(l));
+    bstMeshes = [];
+    bstLines = [];
+
+    calculateBSTPositions(bstRoot, 0, 8, 12);
+    renderBSTNodesAndEdges(bstRoot);
+  }
+
+  function createTextSprite(text) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 128;
+    canvas.height = 128;
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = '#0284c7';
+    ctx.beginPath();
+    ctx.arc(64, 64, 58, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#00f0ff';
+    ctx.lineWidth = 6;
+    ctx.stroke();
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 44px monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, 64, 64);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    const spriteMat = new THREE.SpriteMaterial({ map: texture });
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.scale.set(2.4, 2.4, 1);
+    return sprite;
+  }
+
+  function renderBSTNodesAndEdges(node) {
+    if (!node) return;
+
+    // Node Visual Mesh
+    const sprite = createTextSprite(node.val);
+    sprite.position.set(node.x, node.y, node.z);
+    bstGroup.add(sprite);
+    bstMeshes.push(sprite);
+    node.mesh = sprite;
+
+    // Edge lines to children
+    if (node.left) {
+      const line = createTreeBranchLine(node, node.left);
+      bstGroup.add(line);
+      bstLines.push(line);
+      renderBSTNodesAndEdges(node.left);
+    }
+    if (node.right) {
+      const line = createTreeBranchLine(node, node.right);
+      bstGroup.add(line);
+      bstLines.push(line);
+      renderBSTNodesAndEdges(node.right);
+    }
+  }
+
+  function createTreeBranchLine(n1, n2) {
+    const points = [new THREE.Vector3(n1.x, n1.y, n1.z), new THREE.Vector3(n2.x, n2.y, n2.z)];
+    const geo = new THREE.BufferGeometry().setFromPoints(points);
+    const mat = new THREE.LineBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.6, linewidth: 2 });
+    return new THREE.Line(geo, mat);
+  }
+
+  function clearBST() {
+    bstRoot = null;
+    bstMeshes.forEach(m => bstGroup.remove(m));
+    bstLines.forEach(l => bstGroup.remove(l));
+    bstMeshes = [];
+    bstLines = [];
+  }
+
+  function traverseInOrder(node, list = []) {
+    if (!node) return list;
+    traverseInOrder(node.left, list);
+    list.push(node);
+    traverseInOrder(node.right, list);
+    return list;
+  }
+
+  // =========================================================================
+  // MODULE 3: 3D SORTING & BIG-O COMPLEXITY
+  // =========================================================================
+  let sortingBars = [];
+  let sortArray = [];
+  let isSortingActive = false;
+  let sortComparisons = 0;
+
+  function buildSortingArena() {
+    shuffleNewArray();
+  }
+
+  function shuffleNewArray() {
+    // Clear old bars
+    sortingBars.forEach(b => sortingGroup.remove(b));
+    sortingBars = [];
+    sortComparisons = 0;
+    document.getElementById('meter-sort-comparisons').innerText = '0';
+
+    const count = 18;
+    sortArray = [];
+    for (let i = 0; i < count; i++) {
+      sortArray.push(Math.floor(Math.random() * 85) + 15);
+    }
+
+    const barWidth = 1.0;
+    const spacing = 1.6;
+    const startX = -((count - 1) * spacing) / 2;
+
+    for (let i = 0; i < count; i++) {
+      const h = sortArray[i] * 0.16;
+      const geo = new THREE.BoxGeometry(barWidth, h, barWidth);
+      geo.translate(0, h / 2, 0); // Origin at base
+
+      const mat = new THREE.MeshStandardMaterial({
+        color: 0x00f0ff,
+        roughness: 0.3,
+        metalness: 0.5
+      });
+      const bar = new THREE.Mesh(geo, mat);
+      bar.position.set(startX + i * spacing, -6, 0);
+      sortingGroup.add(bar);
+      sortingBars.push(bar);
+    }
+  }
+
+  async function runQuickSort() {
+    if (isSortingActive) return;
+    isSortingActive = true;
+    showToast('🚀 Running QuickSort: O(N log N) Divide & Conquer');
+
+    await quickSortHelper(0, sortArray.length - 1);
+
+    isSortingActive = false;
+    audio.playChime();
+    showToast('🎉 QuickSort Complete!');
+  }
+
+  async function quickSortHelper(low, high) {
+    if (low < high) {
+      const pi = await partition(low, high);
+      await quickSortHelper(low, pi - 1);
+      await quickSortHelper(pi + 1, high);
+    }
+  }
+
+  async function partition(low, high) {
+    const pivot = sortArray[high];
+    sortingBars[high].material.color.setHex(0xfbbf24); // Gold Pivot
+
+    let i = low - 1;
+    for (let j = low; j < high; j++) {
+      sortComparisons++;
+      document.getElementById('meter-sort-comparisons').innerText = sortComparisons;
+
+      sortingBars[j].material.color.setHex(0xf43f5e); // Comparison (Rose)
+      audio.playPitch(200 + sortArray[j] * 6, 0.04);
+      await sleep(70);
+
+      if (sortArray[j] < pivot) {
+        i++;
+        swapBars(i, j);
+        await sleep(70);
+      }
+      sortingBars[j].material.color.setHex(0x00f0ff);
+    }
+    swapBars(i + 1, high);
+    sortingBars[high].material.color.setHex(0x10b981);
+    await sleep(70);
+    return i + 1;
+  }
+
+  async function runBubbleSort() {
+    if (isSortingActive) return;
+    isSortingActive = true;
+    showToast('🐢 Running BubbleSort: O(N²) Comparison');
+
+    const n = sortArray.length;
+    for (let i = 0; i < n - 1; i++) {
+      for (let j = 0; j < n - i - 1; j++) {
+        sortComparisons++;
+        document.getElementById('meter-sort-comparisons').innerText = sortComparisons;
+
+        sortingBars[j].material.color.setHex(0xf43f5e);
+        sortingBars[j + 1].material.color.setHex(0xf43f5e);
+        audio.playPitch(180 + sortArray[j] * 5, 0.04);
+        await sleep(50);
+
+        if (sortArray[j] > sortArray[j + 1]) {
+          swapBars(j, j + 1);
+          await sleep(50);
+        }
+
+        sortingBars[j].material.color.setHex(0x00f0ff);
+        sortingBars[j + 1].material.color.setHex(0x00f0ff);
+      }
+      sortingBars[n - i - 1].material.color.setHex(0x10b981);
+    }
+    sortingBars[0].material.color.setHex(0x10b981);
+
+    isSortingActive = false;
+    audio.playChime();
+    showToast('🎉 BubbleSort Complete!');
+  }
+
+  function swapBars(i, j) {
+    const temp = sortArray[i];
+    sortArray[i] = sortArray[j];
+    sortArray[j] = temp;
+
+    // Redraw bar geometries with updated heights
+    updateBarHeight(i, sortArray[i]);
+    updateBarHeight(j, sortArray[j]);
+  }
+
+  function updateBarHeight(idx, val) {
+    const h = val * 0.16;
+    const bar = sortingBars[idx];
+    bar.geometry.dispose();
+    const newGeo = new THREE.BoxGeometry(1.0, h, 1.0);
+    newGeo.translate(0, h / 2, 0);
+    bar.geometry = newGeo;
+  }
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // =========================================================================
+  // Module Switching & Concept Synchronization
+  // =========================================================================
+  function switchModule(key) {
+    activeModule = key;
+
+    neuralGroup.visible = (key === 'neural');
+    bstGroup.visible = (key === 'bst');
+    sortingGroup.visible = (key === 'sorting');
+
+    document.getElementById('ctrls-neural').style.display = (key === 'neural' ? 'block' : 'none');
+    document.getElementById('ctrls-bst').style.display = (key === 'bst' ? 'block' : 'none');
+    document.getElementById('ctrls-sorting').style.display = (key === 'sorting' ? 'block' : 'none');
+
+    document.querySelectorAll('.mod-tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.mod === key);
     });
 
-    // Update Header / Concept Dock Content
-    const data = EXPERIMENT_DATA[key];
-    document.getElementById('panel-exp-tag').innerText = data.tag;
-    document.getElementById('panel-exp-title').innerText = data.title;
+    const info = CS_MODULES[key];
+    document.getElementById('panel-cs-tag').innerText = info.tag;
+    document.getElementById('panel-cs-title').innerText = info.title;
 
-    document.getElementById('dock-formula').innerText = data.formula;
-    document.getElementById('dock-formula-desc').innerText = data.desc;
-    document.getElementById('dock-feynman').innerText = data.feynman;
-    document.getElementById('dock-impact').innerText = data.impact;
+    document.getElementById('dock-logic').innerText = info.logic;
+    document.getElementById('dock-logic-desc').innerText = info.desc;
+    document.getElementById('dock-feynman').innerText = info.feynman;
+    document.getElementById('dock-impact').innerText = info.impact;
 
-    // Reposition camera per experiment
-    if (key === 'gravity') {
-      camera.position.set(0, 30, 42);
+    document.getElementById('code-lang-label').innerText = info.codeTitle;
+    document.getElementById('code-display').innerText = info.code;
+
+    // Reset camera target
+    if (key === 'neural') {
+      camera.position.set(0, 10, 36);
       controls.target.set(0, 0, 0);
-    } else if (key === 'atom') {
-      camera.position.set(0, 24, 32);
-      controls.target.set(0, 0, 0);
-    } else if (key === 'prism') {
-      camera.position.set(0, 18, 30);
+    } else if (key === 'bst') {
+      camera.position.set(0, 6, 32);
+      controls.target.set(0, 2, 0);
+    } else if (key === 'sorting') {
+      camera.position.set(0, 8, 30);
       controls.target.set(0, 0, 0);
     }
 
-    showToast(`🔬 Experiment Loaded: ${data.title}`);
+    showToast(`💻 Module Loaded: ${info.title}`);
   }
 
   // =========================================================================
-  // Main Render Loop
+  // Render Loop
   // =========================================================================
   let clock = new THREE.Clock();
 
   function animate() {
     requestAnimationFrame(animate);
 
-    const delta = clock.getDelta();
     const time = clock.getElapsedTime();
-
     controls.update();
 
-    if (activeExperiment === 'gravity') {
-      updateGravitySim(delta);
-      sunGlow.rotation.y = time * 0.2;
-    } else if (activeExperiment === 'atom') {
-      updateAtomSim(time, delta);
-    } else if (activeExperiment === 'prism') {
-      prismMesh.rotation.y = Math.sin(time * 0.4) * 0.05;
+    if (activeModule === 'neural') {
+      // Subtle pulsing halo rings
+      neuralLayers.forEach(layer => {
+        layer.forEach(n => {
+          n.ring.rotation.z = time * 0.5;
+        });
+      });
+    } else if (activeModule === 'bst') {
+      // Gentle floating motion
+      bstGroup.position.y = Math.sin(time * 1.5) * 0.2;
     }
 
     renderer.render(scene, camera);
@@ -581,123 +727,85 @@
   }
 
   // =========================================================================
-  // UI & Slider Event Listeners
+  // UI Handlers & Button Listeners
   // =========================================================================
   function initUI() {
-    // Tab switching
-    document.querySelectorAll('.exp-tab').forEach(btn => {
-      btn.addEventListener('click', () => switchExperiment(btn.dataset.exp));
+    // Module Tabs
+    document.querySelectorAll('.mod-tab').forEach(btn => {
+      btn.addEventListener('click', () => switchModule(btn.dataset.mod));
     });
 
-    // Reset Lab Button
-    document.getElementById('btn-reset-exp').addEventListener('click', () => {
-      switchExperiment(activeExperiment);
-      showToast('↺ Simulation Reset to Initial Physics State');
+    // Reset Lab
+    document.getElementById('btn-reset-module').addEventListener('click', () => {
+      switchModule(activeModule);
+      showToast('↺ Simulation Reset to Initial State');
     });
 
-    // Sound Button
+    // Audio Toggle
     const btnSound = document.getElementById('btn-sound');
     btnSound.addEventListener('click', () => {
       const on = audio.toggle();
       btnSound.querySelector('.btn-text').innerText = on ? 'Audio: ON' : 'Audio: OFF';
-      showToast(on ? '🎵 Science Audio Active' : '🔇 Audio Muted');
+      showToast(on ? '🎵 Audio Active' : '🔇 Audio Muted');
     });
 
-    // --- Gravity Controls ---
-    const sliderG = document.getElementById('slider-g-const');
-    sliderG.addEventListener('input', e => {
-      gConstant = parseFloat(e.target.value);
-      document.getElementById('val-g-const').innerText = `${gConstant.toFixed(1)}x`;
-      audio.playGravityHum();
+    // Neural Controls
+    document.getElementById('btn-forward-prop').addEventListener('click', triggerForwardProp);
+    document.getElementById('btn-train-epoch').addEventListener('click', triggerBackprop);
+
+    // BST Controls
+    document.getElementById('btn-bst-insert').addEventListener('click', () => {
+      const input = document.getElementById('input-bst-val');
+      const val = parseInt(input.value);
+      if (!isNaN(val)) {
+        insertBSTValue(val, true);
+        input.value = Math.floor(Math.random() * 80) + 10;
+      }
     });
 
-    const sliderSunMass = document.getElementById('slider-sun-mass');
-    sliderSunMass.addEventListener('input', e => {
-      sunMass = parseFloat(e.target.value);
-      document.getElementById('val-sun-mass').innerText = `${sunMass} M☉`;
-      sunMesh.scale.setScalar(Math.pow(sunMass / 1000, 0.33));
+    document.getElementById('btn-bst-reset').addEventListener('click', () => {
+      buildBinarySearchTree();
+      showToast('🌲 New Random BST Generated');
     });
 
-    const sliderSimSpeed = document.getElementById('slider-sim-speed');
-    sliderSimSpeed.addEventListener('input', e => {
-      simSpeed = parseFloat(e.target.value);
-      document.getElementById('val-sim-speed').innerText = `${simSpeed.toFixed(1)}x`;
+    document.getElementById('btn-bst-inorder').addEventListener('click', async () => {
+      const sortedList = traverseInOrder(bstRoot);
+      showToast(`In-Order Sorted Traversal: ${sortedList.map(n => n.val).join(' ➔ ')}`);
+
+      for (let i = 0; i < sortedList.length; i++) {
+        const node = sortedList[i];
+        if (node.mesh) {
+          node.mesh.scale.set(3.2, 3.2, 1);
+          audio.playPitch(300 + node.val * 8, 0.12);
+          await sleep(240);
+          node.mesh.scale.set(2.4, 2.4, 1);
+        }
+      }
     });
 
-    document.getElementById('btn-add-planet').addEventListener('click', () => {
-      const dist = 12 + Math.random() * 18;
-      const v = Math.sqrt((gConstant * sunMass) / dist) * (0.85 + Math.random() * 0.3);
-      const angle = Math.random() * Math.PI * 2;
-      const px = Math.cos(angle) * dist;
-      const pz = Math.sin(angle) * dist;
-      const vx = -Math.sin(angle) * v;
-      const vz = Math.cos(angle) * v;
-      const colors = [0x00f0ff, 0x10b981, 0xf59e0b, 0xf43f5e, 0xa855f7];
-      const c = colors[Math.floor(Math.random() * colors.length)];
-
-      spawnPlanet(px, 0, pz, vx, 0, vz, c, 0.5 + Math.random() * 0.7, 'Custom Planet');
-      audio.playGravityHum();
-      showToast('🪐 New Planet Launched into Orbit!');
+    // Sorting Controls
+    document.getElementById('btn-start-sort').addEventListener('click', () => {
+      const algo = document.getElementById('select-algo').value;
+      if (algo === 'quicksort') runQuickSort();
+      else runBubbleSort();
     });
 
-    document.getElementById('btn-clear-trails').addEventListener('click', () => {
-      planets.forEach(p => {
-        p.trailPoints = [];
-      });
-      showToast('Trails Cleared');
+    document.getElementById('btn-shuffle-array').addEventListener('click', () => {
+      if (!isSortingActive) {
+        shuffleNewArray();
+        showToast('🔀 Array Shuffled Randomly');
+      }
     });
 
-    // --- Atom Controls ---
-    document.querySelectorAll('.btn-shell').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.btn-shell').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        targetShellN = parseInt(btn.dataset.shell);
-      });
-    });
-
-    document.getElementById('btn-quantum-leap').addEventListener('click', () => {
-      triggerQuantumTransition(targetShellN);
-    });
-
-    const sliderESpeed = document.getElementById('slider-electron-speed');
-    sliderESpeed.addEventListener('input', e => {
-      electronSpeedFactor = parseFloat(e.target.value);
-      document.getElementById('val-electron-speed').innerText = `${electronSpeedFactor.toFixed(1)}x`;
-    });
-
-    // --- Prism Controls ---
-    const sliderAngle = document.getElementById('slider-beam-angle');
-    sliderAngle.addEventListener('input', e => {
-      incidentAngleDeg = parseFloat(e.target.value);
-      document.getElementById('val-beam-angle').innerText = `${incidentAngleDeg}°`;
-      updatePrismBeams();
-    });
-
-    const sliderGlassIor = document.getElementById('slider-glass-ior');
-    sliderGlassIor.addEventListener('input', e => {
-      glassIor = parseFloat(e.target.value);
-      document.getElementById('val-glass-ior').innerText = `${glassIor.toFixed(2)}`;
-      prismMesh.material.ior = glassIor;
-      updatePrismBeams();
-    });
-
-    const sliderDisp = document.getElementById('slider-dispersion-width');
-    sliderDisp.addEventListener('input', e => {
-      dispersionSpread = parseFloat(e.target.value);
-      document.getElementById('val-disp-width').innerText = `${dispersionSpread.toFixed(1)}x`;
-      updatePrismBeams();
-    });
-
-    // Bottom Dock Collapse Toggle
-    const dock = document.getElementById('concept-dock');
+    // Bottom Explainer Toggle
+    const dock = document.getElementById('cs-dock');
     document.getElementById('btn-toggle-dock').addEventListener('click', () => {
       dock.classList.toggle('collapsed');
     });
   }
 
   function showToast(msg) {
-    const toast = document.getElementById('lab-toast');
+    const toast = document.getElementById('cs-toast');
     toast.innerText = msg;
     toast.classList.add('visible');
     setTimeout(() => toast.classList.remove('visible'), 2800);

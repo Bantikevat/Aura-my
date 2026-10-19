@@ -1,28 +1,28 @@
 /* ==========================================================================
-   OMNILAB 3D - INTERACTIVE SCIENCE & PHYSICS LAB STYLES (styles.css)
+   ALGOVERSE 3D - COMPUTER SCIENCE & AI LAB STYLES (styles.css)
    ========================================================================== */
 
 :root {
-  --bg-deep: #070a12;
-  --bg-surface: rgba(15, 23, 42, 0.75);
-  --bg-surface-elevated: rgba(30, 41, 59, 0.85);
+  --bg-deep: #050811;
+  --bg-surface: rgba(10, 15, 29, 0.85);
+  --bg-surface-elevated: rgba(18, 25, 46, 0.9);
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(56, 189, 248, 0.35);
+  --border-glow: rgba(0, 240, 255, 0.35);
 
-  /* Scientific Accents */
+  /* Neon Coding Tokens */
   --neon-cyan: #00f0ff;
   --neon-green: #10b981;
+  --neon-purple: #a855f7;
   --neon-amber: #f59e0b;
   --neon-rose: #f43f5e;
-  --neon-purple: #a855f7;
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
+  --text-dim: #64748b;
 
   --font-main: 'Outfit', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --font-serif: 'Playfair Display', serif;
+  --font-code: 'JetBrains Mono', monospace;
 
-  --shadow-lg: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
   --blur-strong: blur(16px);
   --radius-sm: 8px;
   --radius-md: 14px;
@@ -49,7 +49,6 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* 3D Canvas Viewport */
 #canvas-container {
   position: absolute;
   top: 0;
@@ -67,9 +66,9 @@ html, body {
 }
 
 /* ==========================================================================
-   Top Navigation HUD
+   Top CS Navigation HUD
    ========================================================================== */
-.lab-nav {
+.cs-nav {
   position: absolute;
   top: 18px;
   left: 24px;
@@ -88,22 +87,21 @@ html, body {
   z-index: 10;
 }
 
-.lab-brand {
+.cs-brand {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.brand-atom {
-  font-size: 1.8rem;
+.brand-terminal {
+  font-family: var(--font-code);
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: var(--radius-sm);
   color: var(--neon-cyan);
-  animation: atom-spin 15s linear infinite;
-  display: inline-block;
-}
-
-@keyframes atom-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 .brand-text h1 {
@@ -119,22 +117,22 @@ html, body {
 .brand-sub {
   font-size: 0.68rem;
   color: var(--text-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   letter-spacing: 0.5px;
 }
 
-/* Experiment Selector Tabs */
-.experiment-tabs {
+/* Module Tabs */
+.module-tabs {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.4);
   padding: 5px;
   border-radius: var(--radius-full);
   border: 1px solid var(--border-subtle);
 }
 
-.exp-tab {
+.mod-tab {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -149,25 +147,25 @@ html, body {
   transition: var(--transition-smooth);
 }
 
-.exp-tab:hover {
+.mod-tab:hover {
   color: #fff;
   background: rgba(255, 255, 255, 0.05);
 }
 
-.exp-tab.active {
+.mod-tab.active {
   background: var(--neon-cyan);
   color: #04101e;
-  box-shadow: 0 0 16px rgba(0, 240, 255, 0.35);
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
 }
 
 /* Nav Actions */
-.nav-actions {
+.cs-nav-actions {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.nav-btn {
+.btn-hud {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -182,25 +180,25 @@ html, body {
   transition: var(--transition-smooth);
 }
 
-.nav-btn:hover {
+.btn-hud:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: var(--border-glow);
 }
 
-.nav-btn.btn-primary {
-  background: rgba(0, 240, 255, 0.15);
+.btn-hud.btn-reset {
+  background: rgba(0, 240, 255, 0.12);
   border-color: var(--neon-cyan);
   color: var(--neon-cyan);
 }
 
 /* ==========================================================================
-   Right Physics Parameters Control Panel
+   Right Floating CS Control Panel
    ========================================================================== */
-.physics-panel {
+.cs-panel {
   position: absolute;
   top: 96px;
   right: 24px;
-  width: 320px;
+  width: 330px;
   background: var(--bg-surface);
   backdrop-filter: var(--blur-strong);
   -webkit-backdrop-filter: var(--blur-strong);
@@ -216,52 +214,96 @@ html, body {
 
 .panel-header {
   border-bottom: 1px solid var(--border-subtle);
-  padding-bottom: 10px;
+  padding-bottom: 8px;
 }
 
 .panel-tag {
   font-size: 0.65rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   color: var(--neon-cyan);
   letter-spacing: 1.5px;
   font-weight: 700;
 }
 
 .panel-header h3 {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   margin-top: 2px;
 }
 
-.controls-body {
+.panel-body {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
-.ctrl-row {
+.ctrl-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.ctrl-row label {
-  font-size: 0.78rem;
+.ctrl-group label {
+  font-size: 0.75rem;
   color: var(--text-muted);
-  font-family: var(--font-mono);
-  display: flex;
-  justify-content: space-between;
+  font-family: var(--font-code);
 }
 
-.ctrl-row label span {
-  color: #fff;
-  font-weight: 600;
+.layer-pill-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  font-size: 0.68rem;
+  font-family: var(--font-code);
+  padding: 3px 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--neon-cyan);
+}
+
+.pill-arrow {
+  font-size: 0.65rem;
+  color: var(--text-dim);
 }
 
 input[type="range"] {
   width: 100%;
   accent-color: var(--neon-cyan);
   cursor: pointer;
+}
+
+select {
+  width: 100%;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-family: var(--font-code);
+  font-size: 0.78rem;
+  outline: none;
+}
+
+.input-action-row {
+  display: flex;
+  gap: 8px;
+}
+
+.input-action-row input {
+  flex: 1;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-family: var(--font-code);
+  font-size: 0.85rem;
+  outline: none;
 }
 
 .ctrl-actions {
@@ -271,7 +313,7 @@ input[type="range"] {
   margin-top: 6px;
 }
 
-.btn-ctrl {
+.btn-action {
   width: 100%;
   padding: 9px;
   border-radius: var(--radius-sm);
@@ -284,12 +326,12 @@ input[type="range"] {
   transition: var(--transition-smooth);
 }
 
-.btn-ctrl:hover {
+.btn-action:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: var(--border-glow);
 }
 
-.btn-ctrl.btn-add-planet {
+.btn-action.btn-fire {
   background: linear-gradient(135deg, #0284c7, #00f0ff);
   color: #04101e;
   border: none;
@@ -297,42 +339,16 @@ input[type="range"] {
   box-shadow: 0 0 16px rgba(0, 240, 255, 0.35);
 }
 
-.btn-ctrl.btn-leap {
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
-  color: #fff;
+.btn-action-sm {
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
   border: none;
   font-weight: 700;
-  box-shadow: 0 0 16px rgba(168, 85, 247, 0.35);
-}
-
-/* Atom Shell Buttons */
-.shell-buttons {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 6px;
-}
-
-.btn-shell {
-  padding: 7px;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  font-family: var(--font-mono);
+  font-size: 0.82rem;
   cursor: pointer;
-  transition: var(--transition-smooth);
 }
 
-.btn-shell.active {
-  background: rgba(168, 85, 247, 0.2);
-  border-color: var(--neon-purple);
-  color: var(--neon-purple);
-  font-weight: 700;
-}
-
-/* Photon Meter */
-.photon-meter {
+.metric-hud {
   background: rgba(0, 0, 0, 0.35);
   padding: 10px 12px;
   border-radius: var(--radius-sm);
@@ -342,52 +358,51 @@ input[type="range"] {
   gap: 6px;
 }
 
-.meter-title {
-  font-size: 0.65rem;
-  font-family: var(--font-mono);
-  color: var(--neon-purple);
-  letter-spacing: 1px;
-}
-
-.meter-row {
+.m-row {
   display: flex;
   justify-content: space-between;
   font-size: 0.75rem;
-  font-family: var(--font-mono);
-}
-
-/* Telemetry Box */
-.telemetry-box {
-  background: rgba(0, 0, 0, 0.35);
-  padding: 12px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-subtle);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.telemetry-label {
-  font-size: 0.65rem;
-  font-family: var(--font-mono);
-  color: var(--text-muted);
-  letter-spacing: 1px;
-}
-
-.telemetry-line {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
 }
 
 .text-cyan { color: var(--neon-cyan); }
 .text-green { color: var(--neon-green); }
+.text-purple { color: var(--neon-purple); }
+.text-amber { color: var(--neon-amber); }
+
+/* Code Preview Box */
+.code-preview-box {
+  background: rgba(4, 7, 16, 0.95);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.code-header {
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.code-tab-title {
+  font-size: 0.65rem;
+  font-family: var(--font-code);
+  color: var(--neon-cyan);
+}
+
+.code-snippet {
+  padding: 10px;
+  font-family: var(--font-code);
+  font-size: 0.72rem;
+  color: #cbd5e1;
+  overflow-x: auto;
+  line-height: 1.4;
+}
 
 /* ==========================================================================
-   Bottom Scientific Concept Dock (Collapsible Explainer)
+   Bottom Explainer Dock
    ========================================================================== */
-.concept-dock {
+.cs-dock {
   position: absolute;
   bottom: 0;
   left: 24px;
@@ -403,21 +418,21 @@ input[type="range"] {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.concept-dock.collapsed .dock-content {
+.cs-dock.collapsed .dock-grid {
   display: none;
 }
-.concept-dock.collapsed .dock-arrow {
+.cs-dock.collapsed .dock-arrow {
   transform: rotate(180deg);
 }
 
-.dock-toggle-btn {
+.dock-toggle {
   width: 100%;
   padding: 10px 24px;
   background: none;
   border: none;
   color: var(--neon-cyan);
   font-size: 0.8rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-weight: 700;
   letter-spacing: 1.5px;
   display: flex;
@@ -427,7 +442,7 @@ input[type="range"] {
   cursor: pointer;
 }
 
-.dock-content {
+.dock-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
@@ -441,44 +456,42 @@ input[type="range"] {
   gap: 6px;
 }
 
-.dock-badge {
+.dock-subhead {
   font-size: 0.65rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   color: var(--neon-cyan);
   letter-spacing: 1px;
   font-weight: 700;
 }
 
-.formula-display {
-  font-family: var(--font-mono);
-  font-size: 1.2rem;
+.formula-text {
+  font-family: var(--font-code);
+  font-size: 1.15rem;
   font-weight: 700;
   color: #fff;
   letter-spacing: 1px;
 }
 
-.formula-desc, .dock-col p {
+.dock-col p {
   font-size: 0.8rem;
   color: var(--text-muted);
   line-height: 1.45;
 }
 
-/* ==========================================================================
-   Toast Notification
-   ========================================================================== */
-.lab-toast {
+/* Toast */
+.cs-toast {
   position: fixed;
   top: 96px;
   left: 50%;
   transform: translateX(-50%);
   padding: 9px 18px;
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(10, 15, 29, 0.95);
   border: 1px solid var(--border-glow);
   backdrop-filter: blur(10px);
   border-radius: var(--radius-full);
   color: var(--neon-cyan);
   font-size: 0.8rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   box-shadow: var(--shadow-lg);
   z-index: 1000;
   opacity: 0;
@@ -486,12 +499,12 @@ input[type="range"] {
   transition: opacity 0.25s ease;
 }
 
-.lab-toast.visible {
+.cs-toast.visible {
   opacity: 1;
 }
 
 @media (max-width: 900px) {
-  .physics-panel { display: none; }
-  .dock-content { grid-template-columns: 1fr; }
-  .experiment-tabs .tab-title { display: none; }
+  .cs-panel { display: none; }
+  .dock-grid { grid-template-columns: 1fr; }
+  .module-tabs .tab-title { display: none; }
 }
