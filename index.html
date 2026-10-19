@@ -3,293 +3,190 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Feynman Vault | First-Principles Deep Learning & Memory System</title>
-  <meta name="description" content="A scientific study and permanent memory retention tool based on Richard Feynman's technique, First-Principles thinking, and Ebbinghaus spaced repetition.">
+  <title>OmniLab 3D | Interactive Science & Physics Simulation Lab</title>
+  <meta name="description" content="A real-time 3D interactive physics and science laboratory designed to make IIT, Quantum, and Fundamental Science concepts 100x easier to master through visual experimentation.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <!-- Three.js & OrbitControls -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
-<body class="theme-dark">
-  <!-- Top Global Navigation Bar -->
-  <header class="app-header">
-    <div class="brand">
-      <div class="brand-symbol">⚛</div>
+<body class="lab-body">
+  <!-- 3D WebGL Simulation Viewport -->
+  <div id="canvas-container"></div>
+
+  <!-- Top Global Laboratory HUD -->
+  <header class="lab-nav">
+    <div class="lab-brand">
+      <div class="brand-atom">⚛</div>
       <div class="brand-text">
-        <h1>FEYNMAN <span>VAULT</span></h1>
-        <p class="tagline">First-Principles Deep Learning & Memory System</p>
+        <h1>OMNILAB <span>3D</span></h1>
+        <p class="brand-sub">Visual Science & Physics Simulation Engine</p>
       </div>
     </div>
 
-    <!-- Scientific Retention Metrics -->
-    <div class="header-metrics">
-      <div class="metric-block">
-        <span class="m-title">TOTAL CONCEPTS</span>
-        <span class="m-number text-cyan" id="stat-total">3</span>
-      </div>
-      <div class="m-divider"></div>
-      <div class="metric-block">
-        <span class="m-title">REVISIONS DUE TODAY</span>
-        <span class="m-number text-amber" id="stat-due">1</span>
-      </div>
-      <div class="m-divider"></div>
-      <div class="metric-block">
-        <span class="m-title">PERMANENT MEMORY</span>
-        <span class="m-number text-green" id="stat-mastered">1</span>
-      </div>
+    <!-- Active Experiment Selector Tabs -->
+    <div class="experiment-tabs">
+      <button class="exp-tab active" data-exp="gravity">
+        <span class="tab-icon">🪐</span>
+        <span class="tab-title">1. Gravity & Orbits</span>
+      </button>
+      <button class="exp-tab" data-exp="atom">
+        <span class="tab-icon">⚛️</span>
+        <span class="tab-title">2. Quantum Bohr Atom</span>
+      </button>
+      <button class="exp-tab" data-exp="prism">
+        <span class="tab-icon">🌈</span>
+        <span class="tab-title">3. Prism Light Dispersion</span>
+      </button>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="header-actions">
-      <button class="btn-action" id="btn-toggle-sound" title="Calm 432Hz Study Ambience">
-        <span class="icon">🎵</span>
-        <span class="text">Study Sound</span>
+    <!-- Top Action Controls -->
+    <div class="nav-actions">
+      <button class="nav-btn" id="btn-sound" title="Toggle Science Audio Synthesizer">
+        <span class="btn-icon">🎵</span>
+        <span class="btn-text">Audio: ON</span>
       </button>
-
-      <button class="btn-action" id="btn-toggle-timer" title="Open Pomodoro Timer">
-        <span class="icon">⏱️</span>
-        <span class="text" id="header-timer-display">25:00</span>
-      </button>
-
-      <button class="btn-action btn-highlight" id="btn-add-concept">
-        <span class="icon">+</span>
-        <span class="text">Learn New Concept</span>
+      <button class="nav-btn btn-primary" id="btn-reset-exp" title="Reset Current Simulation">
+        <span class="btn-icon">↺</span>
+        <span class="btn-text">Reset Lab</span>
       </button>
     </div>
   </header>
 
-  <!-- Main Workspace -->
-  <main class="main-container">
-    <!-- Scientific Navigation Tabs -->
-    <nav class="mode-tabs">
-      <button class="tab-btn active" data-tab="concepts">
-        <span class="tab-icon">🧠</span>
-        <span class="tab-title">All Concepts (Feynman Cards)</span>
-      </button>
-      <button class="tab-btn" data-tab="spaced">
-        <span class="tab-icon">⏳</span>
-        <span class="tab-title">Spaced Memory Vault (Due for Review)</span>
-        <span class="tab-badge" id="tab-due-badge">1</span>
-      </button>
-      <button class="tab-btn" data-tab="recall">
-        <span class="tab-icon">🎯</span>
-        <span class="tab-title">Active Recall Test (Self-Quiz)</span>
-      </button>
-    </nav>
-
-    <!-- TAB 1: ALL CONCEPTS VIEW -->
-    <section class="tab-content active" id="tab-concepts">
-      <div class="section-top">
-        <div class="search-filter-row">
-          <input type="text" id="search-input" placeholder="Search concepts, formulas, or subjects..." autocomplete="off">
-          <div class="subject-chips" id="subject-filters">
-            <button class="chip active" data-subject="all">All Subjects</button>
-            <button class="chip" data-subject="Physics">Physics</button>
-            <button class="chip" data-subject="Computer Science">Computer Science</button>
-            <button class="chip" data-subject="Mathematics">Mathematics</button>
-            <button class="chip" data-subject="Chemistry">Chemistry</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Concepts Grid Container -->
-      <div class="concepts-grid" id="concepts-grid">
-        <!-- Rendered dynamically by app.js -->
-      </div>
-    </section>
-
-    <!-- TAB 2: SPACED REPETITION VAULT (EBBINGHAUS SCIENTIFIC MEMORY) -->
-    <section class="tab-content" id="tab-spaced">
-      <div class="spaced-explanation-card">
-        <div class="science-badge">🔬 THE SCIENCE OF PERMANENT MEMORY</div>
-        <h3>The Ebbinghaus Forgetting Curve Formula</h3>
-        <p>Without review, your brain loses 70% of new information within 24 hours. By reviewing at exact intervals (<strong>Day 1, Day 3, Day 7, Day 21</strong>), neural synapses lock the concept into <strong>Permanent Long-Term Storage</strong>.</p>
-      </div>
-
-      <div class="spaced-stages-container">
-        <!-- Stage 1 -->
-        <div class="stage-column">
-          <div class="stage-header stage-l1">
-            <h4>LEVEL 1: DAY 1 REVIEW</h4>
-            <span class="stage-count" id="count-l1">1</span>
-          </div>
-          <div class="stage-list" id="list-l1"></div>
-        </div>
-
-        <!-- Stage 2 -->
-        <div class="stage-column">
-          <div class="stage-header stage-l2">
-            <h4>LEVEL 2: DAY 3 REVIEW</h4>
-            <span class="stage-count" id="count-l2">1</span>
-          </div>
-          <div class="stage-list" id="list-l2"></div>
-        </div>
-
-        <!-- Stage 3 -->
-        <div class="stage-column">
-          <div class="stage-header stage-l3">
-            <h4>LEVEL 3: DAY 7 REVIEW</h4>
-            <span class="stage-count" id="count-l3">0</span>
-          </div>
-          <div class="stage-list" id="list-l3"></div>
-        </div>
-
-        <!-- Mastered Stage -->
-        <div class="stage-column">
-          <div class="stage-header stage-mastered">
-            <h4>🎓 PERMANENT MEMORY</h4>
-            <span class="stage-count" id="count-mastered">1</span>
-          </div>
-          <div class="stage-list" id="list-mastered"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 3: ACTIVE RECALL TEST ARENA -->
-    <section class="tab-content" id="tab-recall">
-      <div class="recall-arena" id="recall-arena">
-        <div class="recall-welcome-card" id="recall-welcome">
-          <div class="arena-icon">🎯</div>
-          <h2>Active Recall Test Arena</h2>
-          <p>Scientific proof shows that testing yourself is 300% more effective than passive reading. The system will show you a concept title; you test your brain to explain it, then reveal the truth to verify!</p>
-          <button class="btn-highlight btn-large" id="btn-start-quiz">Start Self-Quiz Session</button>
-        </div>
-
-        <!-- Active Flashcard Card Container -->
-        <div class="recall-card-wrapper" id="recall-active-card" style="display: none;">
-          <div class="recall-card">
-            <div class="recall-card-header">
-              <span class="recall-subject" id="quiz-subject">Physics</span>
-              <span class="recall-index" id="quiz-progress-text">Card 1 of 3</span>
-            </div>
-            <h2 class="recall-title" id="quiz-title">Newton's Third Law of Motion</h2>
-            <div class="recall-prompt">
-              <p>🤔 <strong>Test Yourself:</strong> How would you explain this to a 10-year-old? What is the real-world example?</p>
-            </div>
-
-            <!-- Hidden Answer Section -->
-            <div class="recall-answer-box" id="quiz-answer-box" style="display: none;">
-              <div class="answer-section">
-                <span class="ans-label">👦 10-YEAR-OLD FEYNMAN EXPLANATION:</span>
-                <p id="quiz-feynman-ans"></p>
-              </div>
-              <div class="answer-section">
-                <span class="ans-label">🌍 REAL-WORLD ANALOGY:</span>
-                <p id="quiz-analogy-ans"></p>
-              </div>
-              <div class="answer-section">
-                <span class="ans-label">⚡ FIRST PRINCIPLES ROOT CAUSE:</span>
-                <p id="quiz-root-ans"></p>
-              </div>
-            </div>
-
-            <div class="recall-controls">
-              <button class="btn-reveal" id="btn-reveal-answer">Reveal Explanation</button>
-              
-              <div class="grading-buttons" id="quiz-grade-buttons" style="display: none;">
-                <button class="btn-grade btn-forgot" id="btn-quiz-forgot">❌ Forgot (Needs Review)</button>
-                <button class="btn-grade btn-remembered" id="btn-quiz-remembered">✅ Remembered Clearly!</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Floating Pomodoro Deep Study Widget -->
-  <div class="pomodoro-dock" id="pomodoro-dock">
-    <div class="pomo-header">
-      <span class="pomo-title">DEEP FOCUS POMODORO</span>
-      <button class="btn-pomo-close" id="btn-close-pomo">✕</button>
+  <!-- Right Floating Physics Control Panel (Interactive Parameters) -->
+  <aside class="physics-panel" id="physics-panel">
+    <div class="panel-header">
+      <span class="panel-tag" id="panel-exp-tag">PHYSICS CONTROLLER</span>
+      <h3 id="panel-exp-title">Gravitational Mechanics</h3>
     </div>
-    <div class="pomo-timer-display" id="pomo-display">25:00</div>
-    <div class="pomo-mode-badge" id="pomo-mode">STUDY SESSION (25M)</div>
-    <div class="pomo-actions">
-      <button class="btn-pomo-ctrl" id="btn-pomo-start">Start</button>
-      <button class="btn-pomo-ctrl" id="btn-pomo-reset">Reset</button>
+
+    <!-- Dynamic Sliders / Controls (Switched per Experiment) -->
+    <div class="controls-body" id="controls-container">
+      <!-- Gravity Controls (Default) -->
+      <div class="exp-controls-group" id="controls-gravity">
+        <div class="ctrl-row">
+          <label for="slider-g-const">Gravitational Constant ($G$): <span id="val-g-const">1.0x</span></label>
+          <input type="range" id="slider-g-const" min="0.2" max="3.0" step="0.1" value="1.0">
+        </div>
+        <div class="ctrl-row">
+          <label for="slider-sun-mass">Central Star Mass ($M$): <span id="val-sun-mass">1000 M☉</span></label>
+          <input type="range" id="slider-sun-mass" min="200" max="2500" step="100" value="1000">
+        </div>
+        <div class="ctrl-row">
+          <label for="slider-sim-speed">Simulation Speed: <span id="val-sim-speed">1.0x</span></label>
+          <input type="range" id="slider-sim-speed" min="0.2" max="2.5" step="0.1" value="1.0">
+        </div>
+        <div class="ctrl-actions">
+          <button class="btn-ctrl btn-add-planet" id="btn-add-planet">+ Launch New Planet</button>
+          <button class="btn-ctrl" id="btn-clear-trails">Clear Orbits</button>
+        </div>
+      </div>
+
+      <!-- Quantum Atom Controls -->
+      <div class="exp-controls-group" id="controls-atom" style="display: none;">
+        <div class="ctrl-row">
+          <label>Target Electron Shell ($n$):</label>
+          <div class="shell-buttons">
+            <button class="btn-shell" data-shell="1">n = 1 (Ground)</button>
+            <button class="btn-shell active" data-shell="2">n = 2</button>
+            <button class="btn-shell" data-shell="3">n = 3</button>
+            <button class="btn-shell" data-shell="4">n = 4</button>
+          </div>
+        </div>
+        <div class="ctrl-row">
+          <label for="slider-electron-speed">Orbital Frequency: <span id="val-electron-speed">1.0x</span></label>
+          <input type="range" id="slider-electron-speed" min="0.5" max="3.0" step="0.1" value="1.0">
+        </div>
+        <div class="ctrl-actions">
+          <button class="btn-ctrl btn-leap" id="btn-quantum-leap">⚡ Trigger Quantum Leap</button>
+        </div>
+        <div class="photon-meter">
+          <span class="meter-title">EMITTED PHOTON METRICS:</span>
+          <div class="meter-row">
+            <span>Wavelength ($\lambda$):</span>
+            <strong class="text-cyan" id="meter-wavelength">656 nm (Balmer Red)</strong>
+          </div>
+          <div class="meter-row">
+            <span>Energy ($\Delta E$):</span>
+            <strong class="text-green" id="meter-energy">1.89 eV</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prism Light Controls -->
+      <div class="exp-controls-group" id="controls-prism" style="display: none;">
+        <div class="ctrl-row">
+          <label for="slider-beam-angle">Light Incident Angle ($\theta$): <span id="val-beam-angle">45°</span></label>
+          <input type="range" id="slider-beam-angle" min="20" max="75" step="1" value="45">
+        </div>
+        <div class="ctrl-row">
+          <label for="slider-glass-ior">Glass Refractive Index ($n$): <span id="val-glass-ior">1.52 (Crown Glass)</span></label>
+          <input type="range" id="slider-glass-ior" min="1.3" max="2.4" step="0.02" value="1.52">
+        </div>
+        <div class="ctrl-row">
+          <label for="slider-dispersion-width">Dispersion Spread: <span id="val-disp-width">1.0x</span></label>
+          <input type="range" id="slider-dispersion-width" min="0.5" max="2.5" step="0.1" value="1.0">
+        </div>
+        <div class="ctrl-actions">
+          <button class="btn-ctrl" id="btn-toggle-ray-paths">Toggle Normal Lines</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Energy & Formula Monitor -->
+    <div class="telemetry-box">
+      <span class="telemetry-label">REAL-TIME PHYSICS TELEMETRY:</span>
+      <div class="telemetry-line">
+        <span id="telem-label-1">Kinetic Energy:</span>
+        <strong id="telem-val-1">4.82 x 10³ J</strong>
+      </div>
+      <div class="telemetry-line">
+        <span id="telem-label-2">Potential Energy:</span>
+        <strong id="telem-val-2">-1.24 x 10⁴ J</strong>
+      </div>
+      <div class="telemetry-line">
+        <span id="telem-label-3">Total Conservation:</span>
+        <strong class="text-green" id="telem-val-3">CONSERVED (ΔE = 0)</strong>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Bottom Scientific Concept Breakdown Dock (The First-Principles Explainer) -->
+  <div class="concept-dock" id="concept-dock">
+    <button class="dock-toggle-btn" id="btn-toggle-dock">
+      <span class="dock-arrow">▼</span>
+      <span class="dock-title">FIRST-PRINCIPLES & IIT THEORY EXPLAINER</span>
+    </button>
+    
+    <div class="dock-content">
+      <div class="dock-col">
+        <div class="dock-badge">📐 FUNDAMENTAL EQUATION</div>
+        <div class="formula-display" id="dock-formula">F = G (m₁ m₂) / r²</div>
+        <p class="formula-desc" id="dock-formula-desc">Newton's Universal Gravitation Law: Every particle attracts every other particle with a force proportional to the product of their masses and inversely proportional to the square of the distance.</p>
+      </div>
+
+      <div class="dock-col">
+        <div class="dock-badge">👦 10-YEAR-OLD FEYNMAN EXPLANATION</div>
+        <p id="dock-feynman">Suraj ek vishal baraf ki trampoline par rakhi bhari ball jaisa hai jo chaaron taraf gadda bana deta hai. Planets us gadde mein girne ki koshish karte hain, lekin unki aage badhne ki speed unhe gol-gol ghumati rehti hai!</p>
+      </div>
+
+      <div class="dock-col">
+        <div class="dock-badge">🌍 REAL-WORLD / IIT EXAM IMPACT</div>
+        <p id="dock-impact">ISRO & NASA is law ka use karte hain gravitational slingshot karke Mangalyaan aur Voyager ko bina petrol/fuel ke doosre planets tak phenkne ke liye.</p>
+      </div>
     </div>
   </div>
 
-  <!-- FEYNMAN CONCEPT BUILDER MODAL (The Scientific Breakdown Form) -->
-  <div class="modal-backdrop" id="concept-modal">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <div class="modal-title-group">
-          <span class="modal-badge">THE FEYNMAN METHOD</span>
-          <h2>Deconstruct & Master a Concept</h2>
-        </div>
-        <button class="modal-close" id="btn-close-modal">✕</button>
-      </div>
-
-      <form id="concept-form">
-        <div class="form-row">
-          <div class="form-group flex-2">
-            <label for="form-title">Concept / Formula Name</label>
-            <input type="text" id="form-title" placeholder="e.g. Newton's 3rd Law, Binary Search, Ohm's Law" required autocomplete="off">
-          </div>
-          <div class="form-group flex-1">
-            <label for="form-subject">Subject</label>
-            <select id="form-subject" required>
-              <option value="Physics">Physics</option>
-              <option value="Computer Science">Computer Science</option>
-              <option value="Mathematics">Mathematics</option>
-              <option value="Chemistry">Chemistry</option>
-              <option value="General Science">General Science</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Step 1: Standard Definition -->
-        <div class="form-group">
-          <label for="form-book-def">
-            <span>📖 Step 1: Standard Book Definition</span>
-            <small>(Kitaabi bhasha ya formal statement)</small>
-          </label>
-          <input type="text" id="form-book-def" placeholder="e.g. For every action, there is an equal and opposite reaction." required>
-        </div>
-
-        <!-- Step 2: The 10-Year-Old Explanation -->
-        <div class="form-group highlight-group">
-          <label for="form-feynman-exp">
-            <span>👦 Step 2: The Feynman Test (Explain to a 10-Year-Old)</span>
-            <small>(Bina kisi jargon ke, bilkul aasaan shabdon mein likho)</small>
-          </label>
-          <textarea id="form-feynman-exp" rows="3" placeholder="e.g. Jab aap deewar ko dhakka dete ho, toh deewar bhi aapko utne hi zor se wapas dhakka deti hai..." required></textarea>
-        </div>
-
-        <!-- Step 3: Real World Analogy -->
-        <div class="form-group">
-          <label for="form-analogy">
-            <span>🌍 Step 3: Real-World Analogy / Everyday Example</span>
-            <small>(Asal zindagi mein yeh kahan hota hai?)</small>
-          </label>
-          <textarea id="form-analogy" rows="2" placeholder="e.g. Rocket ka udna: rocket neeche gas phenkta hai, aur gas rocket ko upar aasmaan mein dhakelti hai." required></textarea>
-        </div>
-
-        <!-- Step 4: First Principles Root Cause -->
-        <div class="form-group">
-          <label for="form-root-cause">
-            <span>⚡ Step 4: The 'Why' (First Principles Root)</span>
-            <small>(Yeh sach kyun hai? Iske peeche fundamental law kya hai?)</small>
-          </label>
-          <input type="text" id="form-root-cause" placeholder="e.g. Conservation of Momentum (Gati ka sanrakshan)." required>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn-secondary" id="btn-cancel-modal">Cancel</button>
-          <button type="submit" class="btn-highlight">
-            <span>⚛</span> Save to Permanent Memory
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+  <!-- Interactive 3D Click Overlay Tooltip -->
+  <div class="inspect-hud" id="inspect-hud"></div>
 
   <!-- Notification Toast -->
-  <div class="toast-hub" id="toast-hub"></div>
+  <div class="lab-toast" id="lab-toast"></div>
 
-  <!-- Main JavaScript Logic -->
+  <!-- Main 3D Simulation Controller -->
   <script src="app.js"></script>
 </body>
 </html>
