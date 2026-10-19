@@ -3,275 +3,174 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DevStudio 3D | Autonomous Virtual IT Office & Spatial Task Hub</title>
-  <meta name="description" content="An interactive 3D WebGL virtual IT tech agency and spatial task workspace where autonomous agents collaborate, code, and execute tasks in real time.">
+  <title>AETHER | Generative Spatial Constellation & Mind Hub</title>
+  <meta name="description" content="A revolutionary, zero-library generative physics and spatial constellation engine for thoughts, deep focus, and task orchestration.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=JetBrains+Mono:wght@300;400;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <!-- Three.js & OrbitControls via reliable CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
-<body class="theme-night">
-  <!-- 3D Canvas Container -->
-  <div id="canvas-container"></div>
+<body class="universe-body">
+  <!-- Pure Mathematical Generative Canvas (Zero External 3D Libraries) -->
+  <canvas id="generative-canvas"></canvas>
 
-  <!-- Ambient Cinematic Overlay Vignette -->
-  <div class="vignette-overlay"></div>
+  <!-- Ambient Chromatic Lens Overlay -->
+  <div class="chromatic-lens"></div>
 
-  <!-- Top Navigation & Status HUD -->
-  <header class="top-nav">
-    <div class="brand">
-      <div class="brand-pulse"></div>
-      <div class="brand-text">
-        <h1>DEVSTUDIO <span>3D</span></h1>
-        <p class="subtitle">Autonomous IT Studio & Task HQ</p>
+  <!-- Top Spatial Navigation HUD -->
+  <header class="spatial-hud">
+    <div class="hud-brand">
+      <div class="singularity-core"></div>
+      <div class="brand-info">
+        <h1>AETHER <span>SPATIAL</span></h1>
+        <p class="brand-tag">Generative Neural Constellation</p>
       </div>
     </div>
 
-    <!-- Agency Metrics Bar -->
-    <div class="metrics-bar">
-      <div class="metric-item">
-        <span class="metric-label">HQ Status</span>
-        <span class="metric-val status-live"><span class="dot"></span> Online</span>
+    <!-- Live Mathematical Stats -->
+    <div class="spatial-metrics">
+      <div class="metric-cell">
+        <span class="m-label">ENTROPY</span>
+        <span class="m-val" id="metric-entropy">0.042 λ</span>
       </div>
-      <div class="metric-divider"></div>
-      <div class="metric-item">
-        <span class="metric-label">Active Agents</span>
-        <span class="metric-val" id="metric-agents">4 / 4 Busy</span>
+      <div class="metric-sep"></div>
+      <div class="metric-cell">
+        <span class="m-label">NODES</span>
+        <span class="m-val text-cyan" id="metric-nodes">5 Active</span>
       </div>
-      <div class="metric-divider"></div>
-      <div class="metric-item">
-        <span class="metric-label">Tasks Done</span>
-        <span class="metric-val text-neon-cyan" id="metric-completed">0</span>
+      <div class="metric-sep"></div>
+      <div class="metric-cell">
+        <span class="m-label">HARMONY</span>
+        <span class="m-val text-gold" id="metric-harmony">98.4%</span>
       </div>
-      <div class="metric-divider"></div>
-      <div class="metric-item">
-        <span class="metric-label">Server Health</span>
-        <span class="metric-val text-neon-green" id="metric-uptime">99.9%</span>
+      <div class="metric-sep"></div>
+      <div class="metric-cell">
+        <span class="m-label">FREQUENCY</span>
+        <span class="m-val text-violet">432 Hz</span>
       </div>
     </div>
 
-    <!-- HUD Action Controls -->
-    <div class="hud-actions">
-      <!-- Lo-Fi Ambient Audio Toggle -->
-      <button class="hud-btn" id="btn-audio" title="Toggle Lo-Fi Tech Ambience & Keyboards">
-        <span class="btn-icon">🎵</span>
-        <span class="btn-text">Lo-Fi Sound</span>
+    <!-- Spatial Action Controls -->
+    <div class="hud-controls">
+      <button class="spatial-btn" id="btn-sound" title="Harmonic 432Hz Sound Engine">
+        <span class="btn-glyph">✦</span>
+        <span class="btn-text">Harmonic Sound</span>
       </button>
 
-      <!-- Day / Cyberpunk Night Mode Toggle -->
-      <button class="hud-btn" id="btn-theme" title="Toggle Day / Cyberpunk Hackathon Mode">
-        <span class="btn-icon">⚡</span>
-        <span class="btn-text">Cyberpunk Mode</span>
+      <button class="spatial-btn" id="btn-pulse" title="Trigger Gravitational Shockwave">
+        <span class="btn-glyph">⚡</span>
+        <span class="btn-text">Quantum Pulse</span>
       </button>
 
-      <!-- Add New Task Button -->
-      <button class="hud-btn btn-primary" id="btn-new-task">
-        <span class="btn-icon">+</span>
-        <span class="btn-text">Assign Task</span>
+      <button class="spatial-btn btn-manifest" id="btn-create-node">
+        <span class="btn-glyph">+</span>
+        <span class="btn-text">Manifest Node</span>
       </button>
     </div>
   </header>
 
-  <!-- Camera Preset Navigation Toolbar (Bottom Left) -->
-  <div class="camera-toolbar">
-    <div class="toolbar-label">CAMERA PRESETS</div>
-    <div class="camera-btn-group">
-      <button class="cam-btn active" data-cam="overview" title="Isometric Bird's Eye View">🌐 Overview</button>
-      <button class="cam-btn" data-cam="frontend" title="Frontend Dev Station">💻 Dev Bay</button>
-      <button class="cam-btn" data-cam="servers" title="Server Rack & DevOps Room">🖧 Server Room</button>
-      <button class="cam-btn" data-cam="meeting" title="Conference & War Room">📊 War Room</button>
-      <button class="cam-btn" data-cam="lounge" title="Coffee & Chill Lounge">☕ Lounge</button>
+  <!-- Bottom Floating Interactive Controls -->
+  <div class="bottom-dock">
+    <div class="dock-container">
+      <div class="dock-label">GRAVITATIONAL MODES</div>
+      <div class="dock-buttons">
+        <button class="dock-btn active" data-mode="constellation">🌌 Constellation</button>
+        <button class="dock-btn" data-mode="vortex">🌀 Vortex Ring</button>
+        <button class="dock-btn" data-mode="neural">🧠 Synapse Web</button>
+        <button class="dock-btn" data-mode="chaos">✨ Quantum Chaos</button>
+      </div>
+    </div>
+    <div class="dock-hint">
+      <span>🖱️ Click & Drag Nodes • Mouse Repels Particles • Scroll to Adjust Gravity</span>
     </div>
   </div>
 
-  <!-- Agent Roster & Live Status Panel (Left Floating) -->
-  <aside class="agent-panel" id="agent-panel">
-    <div class="panel-header">
-      <span class="panel-title">AI SQUAD ROSTER</span>
-      <span class="badge-count">4 ACTIVE</span>
-    </div>
-    <div class="agent-list">
-      <!-- Agent 1: Alex -->
-      <div class="agent-card" data-agent="alex">
-        <div class="agent-avatar avatar-alex">
-          <span>AL</span>
-          <div class="agent-status-ring ring-working"></div>
-        </div>
-        <div class="agent-info">
-          <div class="agent-name-role">
-            <h4>Alex Rivera</h4>
-            <span class="role-badge role-frontend">Frontend Architect</span>
-          </div>
-          <div class="agent-activity" id="activity-alex">Coding UI System...</div>
-          <div class="agent-progress-bar">
-            <div class="progress-fill" id="prog-alex" style="width: 45%;"></div>
-          </div>
-        </div>
+  <!-- Node Focus Holographic Modal (Deep Work Inspection) -->
+  <div class="node-inspector" id="node-inspector">
+    <div class="inspector-card">
+      <button class="inspector-close" id="btn-close-inspector">✕</button>
+      <div class="inspector-header">
+        <span class="inspector-tag" id="inspect-tag">CELESTIAL NODE</span>
+        <h2 id="inspect-title">Architecture Singularities</h2>
       </div>
-
-      <!-- Agent 2: Maya -->
-      <div class="agent-card" data-agent="maya">
-        <div class="agent-avatar avatar-maya">
-          <span>MY</span>
-          <div class="agent-status-ring ring-working"></div>
-        </div>
-        <div class="agent-info">
-          <div class="agent-name-role">
-            <h4>Maya Lin</h4>
-            <span class="role-badge role-backend">Backend / API Lead</span>
+      <div class="inspector-body">
+        <p id="inspect-desc">Detailed neural thought wave with high gravitational pull across the ecosystem.</p>
+        
+        <div class="inspector-energy-gauge">
+          <div class="energy-label-row">
+            <span>Resonance / Completion</span>
+            <span id="inspect-energy-val">75%</span>
           </div>
-          <div class="agent-activity" id="activity-maya">Optimizing Database...</div>
-          <div class="agent-progress-bar">
-            <div class="progress-fill" id="prog-maya" style="width: 70%;"></div>
+          <div class="energy-bar">
+            <div class="energy-fill" id="inspect-energy-fill" style="width: 75%;"></div>
           </div>
         </div>
-      </div>
 
-      <!-- Agent 3: Titan -->
-      <div class="agent-card" data-agent="titan">
-        <div class="agent-avatar avatar-titan">
-          <span>TI</span>
-          <div class="agent-status-ring ring-standby"></div>
+        <div class="inspector-actions">
+          <button class="btn-inspect btn-resonate" id="btn-resonate-node">
+            <span>✨</span> Amplify Resonance
+          </button>
+          <button class="btn-inspect btn-dissolve" id="btn-dissolve-node">
+            <span>💥</span> Detonate (Complete)
+          </button>
         </div>
-        <div class="agent-info">
-          <div class="agent-name-role">
-            <h4>Titan K</h4>
-            <span class="role-badge role-devops">DevOps & Cloud Sec</span>
-          </div>
-          <div class="agent-activity" id="activity-titan">Monitoring Server Racks</div>
-          <div class="agent-progress-bar">
-            <div class="progress-fill" id="prog-titan" style="width: 20%;"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Agent 4: Sarah -->
-      <div class="agent-card" data-agent="sarah">
-        <div class="agent-avatar avatar-sarah">
-          <span>SA</span>
-          <div class="agent-status-ring ring-meeting"></div>
-        </div>
-        <div class="agent-info">
-          <div class="agent-name-role">
-            <h4>Sarah Chen</h4>
-            <span class="role-badge role-pm">Product & QA Lead</span>
-          </div>
-          <div class="agent-activity" id="activity-sarah">Reviewing Sprint Roadmap</div>
-          <div class="agent-progress-bar">
-            <div class="progress-fill" id="prog-sarah" style="width: 85%;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Task Kanban / Execution Drawer (Right Floating) -->
-  <aside class="task-panel" id="task-panel">
-    <div class="panel-header">
-      <div class="panel-title-group">
-        <span class="panel-title">TASK PIPELINE</span>
-        <span class="badge-count" id="task-total-badge">3</span>
-      </div>
-      <button class="btn-icon-only" id="btn-toggle-task-panel" title="Collapse Panel">✕</button>
-    </div>
-
-    <!-- Filter Tabs -->
-    <div class="task-filters">
-      <button class="filter-tab active" data-filter="all">All</button>
-      <button class="filter-tab" data-filter="active">In Progress</button>
-      <button class="filter-tab" data-filter="done">Completed</button>
-    </div>
-
-    <!-- Task List Scroll Area -->
-    <div class="task-scroll-list" id="task-list-container">
-      <!-- Tasks dynamically injected by app.js -->
-    </div>
-  </aside>
-
-  <!-- Interactive 3D Click Tooltip / Workstation HUD Card (Pop-up on 3D Object Click) -->
-  <div class="inspection-card" id="inspection-card">
-    <button class="inspection-close" id="btn-close-inspect">✕</button>
-    <div class="inspection-header">
-      <span class="inspection-type" id="inspect-category">WORKSTATION</span>
-      <h3 id="inspect-title">Frontend Bay #1</h3>
-    </div>
-    <div class="inspection-body">
-      <p id="inspect-description">Dual 4K ultra-wide curve monitors displaying live React component tree and CSS layout debuggers.</p>
-      <div class="inspection-stats">
-        <div class="stat-pill">
-          <span class="stat-label">Assigned:</span>
-          <span class="stat-val" id="inspect-agent">Alex Rivera</span>
-        </div>
-        <div class="stat-pill">
-          <span class="stat-label">Status:</span>
-          <span class="stat-val status-working" id="inspect-status">Coding (Active)</span>
-        </div>
-      </div>
-      <div class="inspection-actions">
-        <button class="btn-sm btn-primary" id="btn-inspect-assign">Assign Task</button>
-        <button class="btn-sm" id="btn-inspect-focus">Focus Camera</button>
       </div>
     </div>
   </div>
 
-  <!-- New Task Modal Dialog -->
-  <div class="modal-backdrop" id="task-modal">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <div class="modal-title-group">
-          <span class="modal-badge">MISSION CONTROL</span>
-          <h2>Deploy New Task to 3D Office</h2>
-        </div>
-        <button class="modal-close" id="btn-close-modal">✕</button>
+  <!-- Create New Node Dialog -->
+  <div class="creation-modal" id="creation-modal">
+    <div class="creation-dialog">
+      <div class="dialog-header">
+        <span class="dialog-pre">AETHER QUANTUM CORE</span>
+        <h3>Birth a New Thought Node</h3>
+        <button class="dialog-close" id="btn-close-modal">✕</button>
       </div>
-      <form id="new-task-form">
-        <div class="form-group">
-          <label for="task-title">Task Title</label>
-          <input type="text" id="task-title" placeholder="e.g. Build Payment Gateway or Redesign Landing Page" required autocomplete="off">
+      <form id="creation-form">
+        <div class="field-group">
+          <label for="node-name">Concept / Mission Title</label>
+          <input type="text" id="node-name" placeholder="e.g. Build Zero-Latency Compiler" required autocomplete="off">
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="task-agent">Assign Agent</label>
-            <select id="task-agent" required>
-              <option value="alex">Alex Rivera (Frontend Specialist)</option>
-              <option value="maya">Maya Lin (Backend & Database)</option>
-              <option value="titan">Titan K (DevOps & Server Cluster)</option>
-              <option value="sarah">Sarah Chen (QA & Product Sprint)</option>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="node-archetype">Archetype Resonance</label>
+            <select id="node-archetype">
+              <option value="cyan">Singularity (Deep Tech)</option>
+              <option value="gold">Solaris (Vision & Strategy)</option>
+              <option value="violet">Ethereal (Creative Architecture)</option>
+              <option value="rose">Supernova (Urgent Hotfix)</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="task-priority">Priority Level</label>
-            <select id="task-priority">
-              <option value="normal">Normal Priority</option>
-              <option value="high">High Priority (Urgent)</option>
-              <option value="critical">Critical (Hotfix)</option>
+          <div class="field-group">
+            <label for="node-mass">Gravitational Mass</label>
+            <select id="node-mass">
+              <option value="1.0">Medium Energy (Standard)</option>
+              <option value="1.6">Heavy Gravity (Major Milestone)</option>
+              <option value="0.7">Micro Particle (Quick Task)</option>
             </select>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="task-desc">Task Instructions / Specs</label>
-          <textarea id="task-desc" rows="3" placeholder="Provide instructions for the agent..."></textarea>
+        <div class="field-group">
+          <label for="node-notes">Neural Intent / Description</label>
+          <textarea id="node-notes" rows="2" placeholder="Describe the mission parameters..."></textarea>
         </div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn-secondary" id="btn-cancel-modal">Cancel</button>
-          <button type="submit" class="btn-primary">
-            <span>🚀</span> Send to 3D Agent
+        <div class="dialog-footer">
+          <button type="button" class="btn-text-cancel" id="btn-cancel-modal">Cancel</button>
+          <button type="submit" class="btn-manifest-submit">
+            <span>✦</span> Ignite into Constellation
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Live Toast Notification Container -->
-  <div class="toast-container" id="toast-container"></div>
+  <!-- Generative Toast HUD -->
+  <div class="aether-toast" id="aether-toast"></div>
 
-  <!-- Main JavaScript File -->
+  <!-- Pure Generative Core Engine -->
   <script src="app.js"></script>
 </body>
 </html>

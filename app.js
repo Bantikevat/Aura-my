@@ -1,181 +1,127 @@
 /**
- * DEVSTUDIO 3D - Autonomous Virtual IT Office & Spatial Task Hub
- * Built with Three.js & Vanilla JavaScript
- * Zero external asset dependencies - 100% Procedural & Self-Contained
+ * AETHER - Pure Mathematical Generative Spatial Constellation Engine
+ * Zero External Libraries (No Three.js, No Spline, No Frameworks)
+ * 100% Pure HTML5 Canvas & Web Audio API Generative Mathematics
  */
 
 (function () {
   'use strict';
 
   // =========================================================================
-  // State & Data Models
+  // Vector2 Mathematical Physics Core
   // =========================================================================
-  const AGENTS = {
-    alex: {
-      id: 'alex',
-      name: 'Alex Rivera',
-      role: 'Frontend Architect',
-      deskPos: { x: -7, z: -3 },
-      color: 0x00f0ff,
-      avatarClass: 'avatar-alex',
-      roleClass: 'role-frontend',
-      state: 'working', // 'working' | 'idle' | 'walking' | 'meeting'
-      currentTask: null,
-      progress: 45,
-      mesh: null,
-      chairMesh: null
-    },
-    maya: {
-      id: 'maya',
-      name: 'Maya Lin',
-      role: 'Backend / API Lead',
-      deskPos: { x: -7, z: 3 },
-      color: 0x10b981,
-      avatarClass: 'avatar-maya',
-      roleClass: 'role-backend',
-      state: 'working',
-      currentTask: null,
-      progress: 70,
-      mesh: null,
-      chairMesh: null
-    },
-    titan: {
-      id: 'titan',
-      name: 'Titan K',
-      role: 'DevOps & Cloud Sec',
-      deskPos: { x: 7, z: 6 }, // Server room workstation
-      color: 0xf59e0b,
-      avatarClass: 'avatar-titan',
-      roleClass: 'role-devops',
-      state: 'working',
-      currentTask: null,
-      progress: 25,
-      mesh: null,
-      chairMesh: null
-    },
-    sarah: {
-      id: 'sarah',
-      name: 'Sarah Chen',
-      role: 'Product & QA Lead',
-      deskPos: { x: 5, z: -4 }, // War room / PM desk
-      color: 0xa855f7,
-      avatarClass: 'avatar-sarah',
-      roleClass: 'role-pm',
-      state: 'working',
-      currentTask: null,
-      progress: 85,
-      mesh: null,
-      chairMesh: null
+  class Vec2 {
+    constructor(x = 0, y = 0) {
+      this.x = x;
+      this.y = y;
     }
+    set(x, y) { this.x = x; this.y = y; return this; }
+    add(v) { this.x += v.x; this.y += v.y; return this; }
+    sub(v) { this.x -= v.x; this.y -= v.y; return this; }
+    mult(n) { this.x *= n; this.y *= n; return this; }
+    div(n) { if (n !== 0) { this.x /= n; this.y /= n; } return this; }
+    mag() { return Math.sqrt(this.x * this.x + this.y * this.y); }
+    dist(v) { const dx = this.x - v.x, dy = this.y - v.y; return Math.sqrt(dx * dx + dy * dy); }
+    normalize() { const m = this.mag(); if (m !== 0) this.div(m); return this; }
+    clone() { return new Vec2(this.x, this.y); }
+  }
+
+  // Archetype Color Profiles
+  const ARCHETYPES = {
+    cyan: { primary: '#00f0ff', secondary: '#0284c7', glow: 'rgba(0, 240, 255, 0.4)', name: 'Singularity' },
+    gold: { primary: '#fbbf24', secondary: '#d97706', glow: 'rgba(251, 191, 36, 0.4)', name: 'Solaris' },
+    violet: { primary: '#c084fc', secondary: '#7c3aed', glow: 'rgba(192, 132, 252, 0.4)', name: 'Ethereal' },
+    rose: { primary: '#f43f5e', secondary: '#be123c', glow: 'rgba(244, 63, 94, 0.4)', name: 'Supernova' }
   };
 
-  let tasks = [
-    {
-      id: 't-1',
-      title: 'Design Spatial 3D UI & Glassmorphism HUD',
-      agent: 'alex',
-      priority: 'high',
-      status: 'in-progress',
-      progress: 75,
-      desc: 'Implement responsive glass panels, real-time metrics, and Three.js canvas HUD overlay.'
-    },
-    {
-      id: 't-2',
-      title: 'Build Microservices Telemetry & API Endpoints',
-      agent: 'maya',
-      priority: 'normal',
-      status: 'in-progress',
-      progress: 60,
-      desc: 'Set up REST/WebSocket pipelines for real-time task sync and state persistence.'
-    },
-    {
-      id: 't-3',
-      title: 'Deploy Kubernetes Cluster & Zero-Downtime Pipeline',
-      agent: 'titan',
-      priority: 'critical',
-      status: 'in-progress',
-      progress: 30,
-      desc: 'Configure Docker containers, health checks, and automatic rolling upgrades.'
-    },
-    {
-      id: 't-4',
-      title: 'Sprint 42 Roadmap Review & QA Validation',
-      agent: 'sarah',
-      priority: 'normal',
-      status: 'completed',
-      progress: 100,
-      desc: 'Verify cross-browser 60 FPS benchmarks and finalize release deliverables.'
-    }
-  ];
-
   // =========================================================================
-  // Web Audio API Sound Synthesizer (Zero External Audio Files)
+  // Web Audio Harmonic Synthesizer (432 Hz Tuning)
   // =========================================================================
-  class SoundFX {
+  class HarmonicAudio {
     constructor() {
       this.ctx = null;
       this.enabled = false;
-      this.ambientGain = null;
+      this.droneGain = null;
     }
 
     init() {
       if (!this.ctx) {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        this.ctx = new AudioContext();
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        this.ctx = new AudioCtx();
       }
       if (this.ctx.state === 'suspended') {
         this.ctx.resume();
       }
       this.enabled = true;
-      this.playAmbience();
+      this.startSpaceDrone();
     }
 
-    playAmbience() {
+    startSpaceDrone() {
       if (!this.enabled || !this.ctx) return;
-      // Soft Lo-Fi drone chord
-      const freqs = [130.81, 164.81, 196.00, 246.94]; // Cmaj7 low chord
-      this.ambientGain = this.ctx.createGain();
-      this.ambientGain.gain.setValueAtTime(0.015, this.ctx.currentTime);
-      this.ambientGain.connect(this.ctx.destination);
+      // 432 Hz Fundamental Harmonic & Sub-harmonics
+      const baseFreq = 108.0; // 432 / 4
+      const harmonics = [baseFreq, baseFreq * 1.5, baseFreq * 2, baseFreq * 2.667];
 
-      freqs.forEach(f => {
+      this.droneGain = this.ctx.createGain();
+      this.droneGain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+      this.droneGain.connect(this.ctx.destination);
+
+      harmonics.forEach(freq => {
         const osc = this.ctx.createOscillator();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(f, this.ctx.currentTime);
-        osc.connect(this.ambientGain);
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        osc.connect(this.droneGain);
         osc.start();
       });
     }
 
-    playKeyClick() {
-      if (!this.enabled || !this.ctx) return;
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(1200 + Math.random() * 800, this.ctx.currentTime);
-      gain.gain.setValueAtTime(0.02, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.04);
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc.start();
-      osc.stop(this.ctx.currentTime + 0.05);
-    }
-
-    playSuccessChime() {
+    playCrystalResonance(archetype = 'cyan') {
       if (!this.enabled || !this.ctx) return;
       const now = this.ctx.currentTime;
-      const notes = [523.25, 659.25, 783.99, 1046.50]; // C E G C arpeggio
-      notes.forEach((freq, idx) => {
+      const freqs = archetype === 'gold' ? [432, 540, 648] : [432, 518.4, 648, 864];
+      
+      freqs.forEach((f, idx) => {
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, now + idx * 0.08);
-        gain.gain.setValueAtTime(0.05, now + idx * 0.08);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.4);
+        osc.frequency.setValueAtTime(f, now + idx * 0.05);
+        gain.gain.setValueAtTime(0.04, now + idx * 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.05 + 0.6);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
-        osc.start(now + idx * 0.08);
-        osc.stop(now + idx * 0.08 + 0.45);
+        osc.start(now + idx * 0.05);
+        osc.stop(now + idx * 0.05 + 0.65);
+      });
+    }
+
+    playDetonation() {
+      if (!this.enabled || !this.ctx) return;
+      const now = this.ctx.currentTime;
+      // Low bass impact + shimmering high chime
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(150, now);
+      osc.frequency.exponentialRampToValueAtTime(30, now + 0.5);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.55);
+
+      // Celestial shimmer
+      [864, 1080, 1296, 1728].forEach((f, i) => {
+        const hOsc = this.ctx.createOscillator();
+        const hGain = this.ctx.createGain();
+        hOsc.type = 'sine';
+        hOsc.frequency.setValueAtTime(f, now + 0.1 + i * 0.07);
+        hGain.gain.setValueAtTime(0.05, now + 0.1 + i * 0.07);
+        hGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1 + i * 0.07 + 0.8);
+        hOsc.connect(hGain);
+        hGain.connect(this.ctx.destination);
+        hOsc.start(now + 0.1 + i * 0.07);
+        hOsc.stop(now + 0.1 + i * 0.07 + 0.85);
       });
     }
 
@@ -191,1103 +137,628 @@
     }
   }
 
-  const sound = new SoundFX();
+  const audio = new HarmonicAudio();
 
   // =========================================================================
-  // Three.js 3D Virtual IT Studio
+  // Generative Mind / Thought Node Class
   // =========================================================================
-  let scene, camera, renderer, controls;
-  const interactiveObjects = [];
-  let raycaster, mouse;
-  let serverLEDs = [];
-  let steamParticles;
-  let codeTextureCanvases = [];
-  let isNightMode = true;
+  class AetherNode {
+    constructor(id, title, desc, archetype = 'cyan', mass = 1.0, x, y) {
+      this.id = id;
+      this.title = title;
+      this.desc = desc;
+      this.archetype = archetype;
+      this.mass = mass;
+      this.baseRadius = 26 * mass;
+      this.radius = this.baseRadius;
+      
+      this.pos = new Vec2(x || window.innerWidth / 2, y || window.innerHeight / 2);
+      this.vel = new Vec2((Math.random() - 0.5) * 0.8, (Math.random() - 0.5) * 0.8);
+      this.acc = new Vec2(0, 0);
 
-  // Camera targets for smooth animation
-  let cameraTargetPos = new THREE.Vector3(18, 16, 20);
-  let cameraTargetLookAt = new THREE.Vector3(0, 1, 0);
-
-  const CAMERA_PRESETS = {
-    overview: { pos: new THREE.Vector3(18, 16, 20), look: new THREE.Vector3(0, 1, 0) },
-    frontend: { pos: new THREE.Vector3(-4, 6, -1), look: new THREE.Vector3(-7, 2, -3) },
-    servers: { pos: new THREE.Vector3(5, 5, 8), look: new THREE.Vector3(8, 2.5, 4) },
-    meeting: { pos: new THREE.Vector3(3, 7, -2), look: new THREE.Vector3(6, 1.5, -4) },
-    lounge: { pos: new THREE.Vector3(-3, 6, 6), look: new THREE.Vector3(-3, 1.5, 7) }
-  };
-
-  function init3D() {
-    const container = document.getElementById('canvas-container');
-
-    // Scene & Fog
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x090c14);
-    scene.fog = new THREE.FogExp2(0x090c14, 0.025);
-
-    // Camera
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.5, 120);
-    camera.position.copy(cameraTargetPos);
-
-    // Renderer
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
-    container.appendChild(renderer.domElement);
-
-    // OrbitControls
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.maxPolarAngle = Math.PI / 2.05; // Don't go below floor
-    controls.minDistance = 4;
-    controls.maxDistance = 40;
-    controls.target.copy(cameraTargetLookAt);
-
-    // Raycasting for 3D clicks
-    raycaster = new THREE.Raycaster();
-    mouse = new THREE.Vector2();
-
-    // Build the World
-    setupLights();
-    buildOfficeFloorAndWalls();
-    buildDeveloperBays();
-    buildServerRoom();
-    buildConferenceRoom();
-    buildChillLounge();
-    buildAgents();
-    setupSteamEffect();
-
-    // Event Listeners
-    window.addEventListener('resize', onWindowResize);
-    window.addEventListener('pointerdown', onDocumentPointerDown);
-    window.addEventListener('pointermove', onDocumentPointerMove);
-
-    // Start Animation Loop
-    animate();
-  }
-
-  // =========================================================================
-  // Lighting System
-  // =========================================================================
-  let ambientLight, mainDirLight, serverPointLight, devPointLight, warRoomLight;
-
-  function setupLights() {
-    // Ambient Light
-    ambientLight = new THREE.AmbientLight(0x1e293b, 1.2);
-    scene.add(ambientLight);
-
-    // Main Overhead Directional Light
-    mainDirLight = new THREE.DirectionalLight(0xe0f2fe, 1.4);
-    mainDirLight.position.set(15, 25, 12);
-    mainDirLight.castShadow = true;
-    mainDirLight.shadow.mapSize.width = 2048;
-    mainDirLight.shadow.mapSize.height = 2048;
-    mainDirLight.shadow.camera.near = 0.5;
-    mainDirLight.shadow.camera.far = 60;
-    const d = 16;
-    mainDirLight.shadow.camera.left = -d;
-    mainDirLight.shadow.camera.right = d;
-    mainDirLight.shadow.camera.top = d;
-    mainDirLight.shadow.camera.bottom = -d;
-    mainDirLight.shadow.bias = -0.0005;
-    scene.add(mainDirLight);
-
-    // Cyan Neon Accent Light over Dev Bay
-    devPointLight = new THREE.PointLight(0x00f0ff, 2.2, 16);
-    devPointLight.position.set(-7, 4, 0);
-    scene.add(devPointLight);
-
-    // Amber/Green Point Light inside Server Room
-    serverPointLight = new THREE.PointLight(0x10b981, 2.5, 14);
-    serverPointLight.position.set(8, 4, 4);
-    scene.add(serverPointLight);
-
-    // Violet Point Light inside Conference Room
-    warRoomLight = new THREE.PointLight(0xa855f7, 2.0, 14);
-    warRoomLight.position.set(6, 4, -4);
-    scene.add(warRoomLight);
-  }
-
-  // =========================================================================
-  // Procedural 3D Office Construction
-  // =========================================================================
-  function buildOfficeFloorAndWalls() {
-    // Main Floor with Subtle Grid Pattern
-    const floorGeo = new THREE.PlaneGeometry(32, 26);
-    const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 512;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#0f172a';
-    ctx.fillRect(0, 0, 512, 512);
-    ctx.strokeStyle = '#1e293b';
-    ctx.lineWidth = 4;
-    const step = 64;
-    for (let x = 0; x <= 512; x += step) {
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 512); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(0, x); ctx.lineTo(512, x); ctx.stroke();
+      this.resonance = Math.floor(Math.random() * 40) + 40; // 0 - 100%
+      this.phase = Math.random() * Math.PI * 2;
+      this.satellites = Math.floor(Math.random() * 3) + 2; // Orbital sub-particles
+      this.isHovered = false;
+      this.isDragging = false;
     }
-    const floorTexture = new THREE.CanvasTexture(canvas);
-    floorTexture.wrapS = THREE.RepeatWrapping;
-    floorTexture.wrapT = THREE.RepeatWrapping;
-    floorTexture.repeat.set(6, 5);
 
-    const floorMat = new THREE.MeshStandardMaterial({
-      map: floorTexture,
-      roughness: 0.4,
-      metalness: 0.2
-    });
-    const floor = new THREE.Mesh(floorGeo, floorMat);
-    floor.rotation.x = -Math.PI / 2;
-    floor.receiveShadow = true;
-    scene.add(floor);
+    update(time, mode) {
+      this.phase += 0.03;
+      // Organic breathing radius using harmonic trigonometric waves
+      this.radius = this.baseRadius + Math.sin(this.phase) * 3;
 
-    // Baseboard Perimeter Trim (gives high-end finish)
-    const trimMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, metalness: 0.8, roughness: 0.2 });
-    const trimNorth = new THREE.Mesh(new THREE.BoxGeometry(32, 0.4, 0.4), trimMat);
-    trimNorth.position.set(0, 0.2, -13);
-    scene.add(trimNorth);
+      // Gravitational physics modes
+      if (mode === 'vortex') {
+        const center = new Vec2(window.innerWidth / 2, window.innerHeight / 2);
+        const toCenter = center.clone().sub(this.pos);
+        const d = Math.max(toCenter.mag(), 50);
+        // Tangential angular force + inward gravity
+        const tangent = new Vec2(-toCenter.y, toCenter.x).normalize().mult(1.8);
+        toCenter.normalize().mult(120 / d);
+        this.acc.add(tangent).add(toCenter);
+      } else if (mode === 'neural') {
+        // High damping, crystalline structure
+        this.vel.mult(0.92);
+      } else if (mode === 'chaos') {
+        // Random micro quantum impulses
+        this.acc.add(new Vec2((Math.random() - 0.5) * 0.4, (Math.random() - 0.5) * 0.4));
+      }
 
-    const trimSouth = new THREE.Mesh(new THREE.BoxGeometry(32, 0.4, 0.4), trimMat);
-    trimSouth.position.set(0, 0.2, 13);
-    scene.add(trimSouth);
+      this.vel.add(this.acc);
+      this.vel.mult(0.96); // Drag coefficient
+      this.pos.add(this.vel);
+      this.acc.set(0, 0);
 
-    const trimEast = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.4, 26), trimMat);
-    trimEast.position.set(16, 0.2, 0);
-    scene.add(trimEast);
+      // Soft Boundary Reflection
+      const pad = this.radius + 40;
+      if (this.pos.x < pad) { this.pos.x = pad; this.vel.x *= -0.8; }
+      if (this.pos.x > window.innerWidth - pad) { this.pos.x = window.innerWidth - pad; this.vel.x *= -0.8; }
+      if (this.pos.y < pad + 60) { this.pos.y = pad + 60; this.vel.y *= -0.8; }
+      if (this.pos.y > window.innerHeight - pad - 60) { this.pos.y = window.innerHeight - pad - 60; this.vel.y *= -0.8; }
+    }
 
-    const trimWest = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.4, 26), trimMat);
-    trimWest.position.set(-16, 0.2, 0);
-    scene.add(trimWest);
+    draw(ctx, time) {
+      const colors = ARCHETYPES[this.archetype] || ARCHETYPES.cyan;
 
-    // Glass Wall Partition for Server Room & War Room
-    const glassMat = new THREE.MeshPhysicalMaterial({
-      color: 0x38bdf8,
-      transparent: true,
-      opacity: 0.25,
-      roughness: 0.1,
-      metalness: 0.1,
-      transmission: 0.9,
-      ior: 1.5
-    });
+      ctx.save();
+      ctx.translate(this.pos.x, this.pos.y);
 
-    // Server Room Glass Wall (Separates right back quadrant)
-    const serverWall = new THREE.Mesh(new THREE.BoxGeometry(0.2, 4.5, 12), glassMat);
-    serverWall.position.set(2, 2.25, 7);
-    scene.add(serverWall);
+      // 1. Multi-Layer Volumetric Bioluminescent Glow
+      const glowGrad = ctx.createRadialGradient(0, 0, this.radius * 0.2, 0, 0, this.radius * 2.8);
+      glowGrad.addColorStop(0, colors.glow);
+      glowGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = glowGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, this.radius * 2.8, 0, Math.PI * 2);
+      ctx.fill();
 
-    // War Room Glass Partition (Separates right front quadrant)
-    const warRoomWall = new THREE.Mesh(new THREE.BoxGeometry(0.2, 4.5, 12), glassMat);
-    warRoomWall.position.set(2, 2.25, -7);
-    scene.add(warRoomWall);
+      // 2. Quantum Membrane Rings
+      ctx.strokeStyle = colors.primary;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+      ctx.stroke();
 
-    // Architectural Pillars
-    const pillarMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.5 });
-    const pillarPositions = [
-      [-15.5, -12.5], [15.5, -12.5],
-      [-15.5, 12.5], [15.5, 12.5],
-      [2, 0]
-    ];
-    pillarPositions.forEach(([px, pz]) => {
-      const pillar = new THREE.Mesh(new THREE.BoxGeometry(0.8, 6, 0.8), pillarMat);
-      pillar.position.set(px, 3, pz);
-      pillar.castShadow = true;
-      pillar.receiveShadow = true;
-      scene.add(pillar);
-    });
+      // Inner refractive core
+      const coreGrad = ctx.createRadialGradient(-this.radius * 0.3, -this.radius * 0.3, 2, 0, 0, this.radius);
+      coreGrad.addColorStop(0, '#ffffff');
+      coreGrad.addColorStop(0.4, colors.primary);
+      coreGrad.addColorStop(1, colors.secondary);
+      ctx.fillStyle = coreGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, this.radius * 0.85, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 3. Orbital Satellites (Sub-task quantum particles)
+      for (let i = 0; i < this.satellites; i++) {
+        const satAngle = time * (1.5 + i * 0.4) + (i * (Math.PI * 2 / this.satellites));
+        const satDist = this.radius + 14 + Math.sin(time * 2 + i) * 4;
+        const sx = Math.cos(satAngle) * satDist;
+        const sy = Math.sin(satAngle) * satDist;
+
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = colors.primary;
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      // 4. Node Typography Label
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = '600 13px "Outfit", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(this.title, 0, this.radius + 22);
+
+      ctx.fillStyle = colors.primary;
+      ctx.font = '500 10px "JetBrains Mono", monospace';
+      ctx.fillText(`${this.resonance}% RESONANCE`, 0, this.radius + 36);
+
+      ctx.restore();
+    }
   }
 
-  // Helper to create glowing animated screen texture
-  function createCodeScreenTexture(label, colorHex) {
-    const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 256;
-    const ctx = canvas.getContext('2d');
-
-    function redraw(frame) {
-      ctx.fillStyle = '#040d1a';
-      ctx.fillRect(0, 0, 512, 256);
-
-      // Header bar
-      ctx.fillStyle = '#0f2744';
-      ctx.fillRect(0, 0, 512, 32);
-      ctx.fillStyle = colorHex;
-      ctx.font = 'bold 16px monospace';
-      ctx.fillText(`● DevStudio IDE - [${label}.tsx]`, 16, 22);
-
-      // Syntax highlighted simulated code lines
-      ctx.font = '13px monospace';
-      const lines = [
-        'import { useState, useEffect } from "react";',
-        'import { ThreeEngine, ParticleSystem } from "@dev/core";',
-        'export const SpatialCluster = () => {',
-        '  const [status, setStatus] = useState("OPTIMAL");',
-        '  const metrics = useTelemetry({ interval: 50 });',
-        '  // Execute autonomous task execution pipeline',
-        '  return <VirtualAgentWorker live={true} fps={60} />;',
-        '};'
-      ];
-
-      lines.forEach((line, i) => {
-        const y = 60 + i * 22;
-        ctx.fillStyle = i % 2 === 0 ? colorHex : '#94a3b8';
-        ctx.fillText(line, 20, y);
-      });
-
-      // Animated cursor blink
-      if (Math.floor(frame / 20) % 2 === 0) {
-        ctx.fillStyle = colorHex;
-        ctx.fillRect(20 + ctx.measureText(lines[lines.length - 1]).width + 4, 60 + (lines.length - 1) * 22 - 12, 8, 16);
+  // =========================================================================
+  // Background Cosmic Dust & Starfield System
+  // =========================================================================
+  class StarfieldDust {
+    constructor(count = 140) {
+      this.particles = [];
+      for (let i = 0; i < count; i++) {
+        this.particles.push({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          size: Math.random() * 1.8 + 0.4,
+          speed: Math.random() * 0.2 + 0.05,
+          alpha: Math.random() * 0.6 + 0.2,
+          pulse: Math.random() * Math.PI * 2
+        });
       }
     }
 
-    const texture = new THREE.CanvasTexture(canvas);
-    codeTextureCanvases.push({ canvas, ctx, texture, redraw, label, colorHex });
-    return texture;
+    resize(w, h) {
+      this.particles.forEach(p => {
+        p.x = Math.random() * w;
+        p.y = Math.random() * h;
+      });
+    }
+
+    updateAndDraw(ctx, time) {
+      ctx.save();
+      this.particles.forEach(p => {
+        p.y -= p.speed;
+        p.pulse += 0.02;
+        if (p.y < 0) p.y = window.innerHeight;
+
+        const dynamicAlpha = p.alpha + Math.sin(p.pulse) * 0.2;
+        ctx.fillStyle = `rgba(224, 242, 254, ${Math.max(dynamicAlpha, 0.1)})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.restore();
+    }
   }
 
   // =========================================================================
-  // Zone 1: Developer Bays (Alex & Maya Desks)
+  // Shockwave Pulse Ring System
   // =========================================================================
-  function buildDeveloperBays() {
-    createWorkstation(-7, -3, 'alex', 'Alex Rivera (Frontend Bay)', 0x00f0ff);
-    createWorkstation(-7, 3, 'maya', 'Maya Lin (Backend Bay)', 0x10b981);
+  class ShockwaveRing {
+    constructor(x, y, color = '#00f0ff') {
+      this.x = x;
+      this.y = y;
+      this.radius = 10;
+      this.maxRadius = Math.max(window.innerWidth, window.innerHeight) * 0.7;
+      this.color = color;
+      this.alpha = 0.8;
+      this.active = true;
+    }
+
+    update() {
+      this.radius += 18;
+      this.alpha -= 0.018;
+      if (this.alpha <= 0) this.active = false;
+    }
+
+    draw(ctx) {
+      if (!this.active) return;
+      ctx.save();
+      ctx.strokeStyle = this.color;
+      ctx.globalAlpha = Math.max(this.alpha, 0);
+      ctx.lineWidth = 3;
+      ctx.shadowColor = this.color;
+      ctx.shadowBlur = 20;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
   }
 
-  function createWorkstation(x, z, agentId, title, glowColor) {
-    const group = new THREE.Group();
-    group.position.set(x, 0, z);
+  // =========================================================================
+  // Generative Universe Controller & Engine
+  // =========================================================================
+  let canvas, ctx;
+  let nodes = [];
+  let starfield;
+  let shockwaves = [];
+  let activeMode = 'constellation';
+  let hoveredNode = null;
+  let draggedNode = null;
+  let selectedNode = null;
 
-    // Desk Top (Matte Dark Carbon)
-    const deskTopMat = new THREE.MeshStandardMaterial({ color: 0x182234, roughness: 0.3, metalness: 0.5 });
-    const deskTop = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.15, 2.2), deskTopMat);
-    deskTop.position.set(0, 1.4, 0);
-    deskTop.castShadow = true;
-    deskTop.receiveShadow = true;
-    group.add(deskTop);
+  const mouse = new Vec2(-1000, -1000);
+  const dragOffset = new Vec2(0, 0);
 
-    // Desk Legs (Steel)
-    const legMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, metalness: 0.8, roughness: 0.2 });
-    const legGeo = new THREE.CylinderGeometry(0.08, 0.08, 1.4, 16);
-    const legOffsets = [[-1.9, -0.9], [1.9, -0.9], [-1.9, 0.9], [1.9, 0.9]];
-    legOffsets.forEach(([lx, lz]) => {
-      const leg = new THREE.Mesh(legGeo, legMat);
-      leg.position.set(lx, 0.7, lz);
-      leg.castShadow = true;
-      group.add(leg);
+  // Initial Presets
+  const INITIAL_CONSTELLATIONS = [
+    { title: 'Neural Operating System', desc: 'Synthesizing kernel abstractions with zero-latency thread dispatching.', arch: 'cyan', mass: 1.4 },
+    { title: 'Autonomous Micro-Agents', desc: 'Self-coordinating spatial agents solving architectural bottlenecks.', arch: 'gold', mass: 1.2 },
+    { title: 'Harmonic 432Hz Sound Core', desc: 'Generative wave synthesis aligned to natural frequency mathematics.', arch: 'violet', mass: 1.0 },
+    { title: 'Zero-Library Web Canvas', desc: 'Bypassing generic 3D frameworks for direct mathematical GPU memory manipulation.', arch: 'cyan', mass: 1.3 },
+    { title: 'Quantum Memory Palace', desc: 'Non-linear spatial thought filing system for deep work focus.', arch: 'rose', mass: 1.1 }
+  ];
+
+  function initUniverse() {
+    canvas = document.getElementById('generative-canvas');
+    ctx = canvas.getContext('2d');
+
+    resizeCanvas();
+    starfield = new StarfieldDust(160);
+
+    // Spawn Initial Living Nodes in an organic spatial orbit
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    const spread = Math.min(window.innerWidth, window.innerHeight) * 0.32;
+
+    INITIAL_CONSTELLATIONS.forEach((data, idx) => {
+      const angle = (idx / INITIAL_CONSTELLATIONS.length) * Math.PI * 2;
+      const x = cx + Math.cos(angle) * spread + (Math.random() - 0.5) * 60;
+      const y = cy + Math.sin(angle) * spread + (Math.random() - 0.5) * 60;
+      const node = new AetherNode('n-' + idx, data.title, data.desc, data.arch, data.mass, x, y);
+      nodes.push(node);
     });
 
-    // Dual Curved Ultra-wide Monitors
-    const screenTexture = createCodeScreenTexture(agentId.toUpperCase(), agentId === 'alex' ? '#00f0ff' : '#10b981');
-    const screenMat = new THREE.MeshBasicMaterial({ map: screenTexture });
-    const screenFrameMat = new THREE.MeshStandardMaterial({ color: 0x020617, metalness: 0.9, roughness: 0.1 });
+    // Window & Mouse Events
+    window.addEventListener('resize', onResize);
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointerup', onPointerUp);
 
-    // Monitor 1 (Left curved)
-    const mon1 = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.9, 0.08), screenFrameMat);
-    mon1.position.set(-0.9, 2.2, 0.4);
-    mon1.rotation.y = 0.2;
-    const mon1Display = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 0.82), screenMat);
-    mon1Display.position.set(-0.9, 2.2, 0.45);
-    mon1Display.rotation.y = 0.2;
-    group.add(mon1, mon1Display);
+    initUI();
+    renderLoop();
+  }
 
-    // Monitor 2 (Right curved)
-    const mon2 = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.9, 0.08), screenFrameMat);
-    mon2.position.set(0.9, 2.2, 0.4);
-    mon2.rotation.y = -0.2;
-    const mon2Display = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 0.82), screenMat);
-    mon2Display.position.set(0.9, 2.2, 0.45);
-    mon2Display.rotation.y = -0.2;
-    group.add(mon2, mon2Display);
+  function resizeCanvas() {
+    canvas.width = window.innerWidth * window.devicePixelRatio;
+    canvas.height = window.innerHeight * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  }
 
-    // Monitor Stand
-    const stand = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.8, 0.1), legMat);
-    stand.position.set(0, 1.8, 0.35);
-    group.add(stand);
-
-    // Mechanical Keyboard with RGB Underglow
-    const kb = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.05, 0.35), new THREE.MeshStandardMaterial({ color: 0x020617 }));
-    kb.position.set(0, 1.5, -0.2);
-    group.add(kb);
-
-    // Mouse & Pad
-    const pad = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.02, 0.7), new THREE.MeshStandardMaterial({ color: 0x0b1329 }));
-    pad.position.set(0, 1.48, -0.2);
-    group.add(pad);
-
-    // Coffee Mug
-    const mugMat = new THREE.MeshStandardMaterial({ color: glowColor, roughness: 0.2 });
-    const mug = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.1, 0.24, 16), mugMat);
-    mug.position.set(1.4, 1.6, -0.2);
-    group.add(mug);
-
-    // High-End Ergonomic Office Chair
-    const chairGroup = new THREE.Group();
-    chairGroup.position.set(0, 0, -1.1);
-
-    const chairMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.6 });
-    const seat = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.12, 0.9), chairMat);
-    seat.position.y = 1.0;
-    const back = new THREE.Mesh(new THREE.BoxGeometry(0.85, 1.0, 0.12), chairMat);
-    back.position.set(0, 1.5, -0.4);
-    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.8, 16), legMat);
-    stem.position.y = 0.5;
-
-    chairGroup.add(seat, back, stem);
-    group.add(chairGroup);
-    AGENTS[agentId].chairMesh = chairGroup;
-
-    // Interactive Raycast Click Target
-    deskTop.userData = {
-      type: 'workstation',
-      id: agentId,
-      title: title,
-      desc: `Specialized workspace with dual monitors, active Git branches, and automated CI/CD pipeline hooks.`,
-      agent: AGENTS[agentId].name,
-      status: 'Active Coding'
-    };
-    interactiveObjects.push(deskTop);
-
-    scene.add(group);
+  function onResize() {
+    resizeCanvas();
+    if (starfield) starfield.resize(window.innerWidth, window.innerHeight);
   }
 
   // =========================================================================
-  // Zone 2: Server Room / DevOps & Cloud Infrastructure
+  // Physics & Particle Math Computations
   // =========================================================================
-  function buildServerRoom() {
-    const group = new THREE.Group();
-    group.position.set(8, 0, 4);
+  function applyInterNodeForces() {
+    const maxConnectionDist = 260;
 
-    // 3 Enterprise Server Racks
-    for (let i = 0; i < 3; i++) {
-      const rackX = (i - 1) * 2.2;
-      const rack = new THREE.Mesh(
-        new THREE.BoxGeometry(1.6, 5.0, 1.4),
-        new THREE.MeshStandardMaterial({ color: 0x090d16, metalness: 0.9, roughness: 0.2 })
-      );
-      rack.position.set(rackX, 2.5, 0);
-      rack.castShadow = true;
-      group.add(rack);
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const nA = nodes[i];
+        const nB = nodes[j];
 
-      // Server Blade Slots & Blinking LEDs
-      for (let s = 0; s < 7; s++) {
-        const slotY = 0.8 + s * 0.6;
-        const slot = new THREE.Mesh(
-          new THREE.BoxGeometry(1.4, 0.45, 0.05),
-          new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.5 })
-        );
-        slot.position.set(rackX, slotY, 0.72);
-        group.add(slot);
+        const delta = nB.pos.clone().sub(nA.pos);
+        const dist = Math.max(delta.mag(), 1);
 
-        // 3 LEDs per blade
-        for (let l = 0; l < 3; l++) {
-          const ledMat = new THREE.MeshBasicMaterial({ color: (l === 0 ? 0x10b981 : (l === 1 ? 0x00f0ff : 0xf59e0b)) });
-          const led = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.06, 0.02), ledMat);
-          led.position.set(rackX - 0.4 + l * 0.4, slotY, 0.76);
-          group.add(led);
-          serverLEDs.push({ mesh: led, mat: ledMat, baseColor: ledMat.color.getHex(), phase: Math.random() * Math.PI * 2 });
+        if (dist < maxConnectionDist) {
+          // Spring Equilibrium Force (Constellation Connection)
+          const targetDist = 180 * (nA.mass + nB.mass) * 0.5;
+          const forceMag = (dist - targetDist) * 0.0006;
+          const force = delta.clone().normalize().mult(forceMag);
+
+          if (!nA.isDragging) nA.acc.add(force);
+          if (!nB.isDragging) nB.acc.sub(force);
+        }
+
+        // Particle Repulsion (Avoid overlapping)
+        const minDist = nA.radius + nB.radius + 30;
+        if (dist < minDist) {
+          const repelMag = (minDist - dist) * 0.04;
+          const repel = delta.clone().normalize().mult(repelMag);
+          if (!nA.isDragging) nA.acc.sub(repel);
+          if (!nB.isDragging) nB.acc.add(repel);
         }
       }
-
-      rack.userData = {
-        type: 'server',
-        id: 'titan',
-        title: `Enterprise Server Cluster #${i + 1}`,
-        desc: `High-availability cloud rack hosting Docker containers, PostgreSQL replicas, and Kafka event streams.`,
-        agent: 'Titan K (DevOps)',
-        status: '99.9% Uptime'
-      };
-      interactiveObjects.push(rack);
     }
 
-    // DevOps Monitoring Terminal Desk for Titan
-    const devopsDesk = new THREE.Mesh(
-      new THREE.BoxGeometry(2.8, 0.15, 1.4),
-      new THREE.MeshStandardMaterial({ color: 0x182234, roughness: 0.4 })
-    );
-    devopsDesk.position.set(0, 1.4, 2.8);
-    group.add(devopsDesk);
-
-    const devopsMonitor = new THREE.Mesh(
-      new THREE.BoxGeometry(1.8, 1.0, 0.08),
-      new THREE.MeshBasicMaterial({ map: createCodeScreenTexture('DEVOPS_METRICS', '#f59e0b') })
-    );
-    devopsMonitor.position.set(0, 2.2, 2.8);
-    devopsMonitor.rotation.y = Math.PI;
-    group.add(devopsMonitor);
-
-    devopsDesk.userData = {
-      type: 'workstation',
-      id: 'titan',
-      title: 'DevOps & Cloud Security Ops Center',
-      desc: 'Live telemetry, AWS cluster health monitors, and automated container rollback systems.',
-      agent: 'Titan K',
-      status: 'Cluster Optimal'
-    };
-    interactiveObjects.push(devopsDesk);
-
-    scene.add(group);
-  }
-
-  // =========================================================================
-  // Zone 3: Conference / War Room
-  // =========================================================================
-  function buildConferenceRoom() {
-    const group = new THREE.Group();
-    group.position.set(6, 0, -4);
-
-    // Large Conference Meeting Table
-    const tableTop = new THREE.Mesh(
-      new THREE.CylinderGeometry(2.4, 2.4, 0.15, 32),
-      new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.2, metalness: 0.4 })
-    );
-    tableTop.position.set(0, 1.4, 0);
-    tableTop.castShadow = true;
-    group.add(tableTop);
-
-    // Table Base
-    const tableBase = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.8, 1.2, 1.4, 16),
-      new THREE.MeshStandardMaterial({ color: 0x0f172a, metalness: 0.8 })
-    );
-    tableBase.position.set(0, 0.7, 0);
-    group.add(tableBase);
-
-    // Floating Holographic Glass Whiteboard / Roadmap Display
-    const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 256;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#090d16';
-    ctx.fillRect(0, 0, 512, 256);
-    ctx.strokeStyle = '#a855f7';
-    ctx.lineWidth = 4;
-    ctx.strokeRect(4, 4, 504, 248);
-
-    ctx.fillStyle = '#a855f7';
-    ctx.font = 'bold 20px monospace';
-    ctx.fillText('SPRINT 42 ROADMAP & ARCHITECTURE', 24, 38);
-
-    ctx.fillStyle = '#f8fafc';
-    ctx.font = '14px sans-serif';
-    ctx.fillText('✓ 3D Virtual Studio Engine Initialized', 30, 80);
-    ctx.fillText('✓ Autonomous Multi-Agent Pathfinding Active', 30, 115);
-    ctx.fillText('✓ Real-Time Web Audio Synthesizer Hooked', 30, 150);
-    ctx.fillText('⚡ Next: Global Launch & Community Demo', 30, 185);
-
-    const boardTex = new THREE.CanvasTexture(canvas);
-    const boardMat = new THREE.MeshBasicMaterial({ map: boardTex });
-    const board = new THREE.Mesh(new THREE.BoxGeometry(4.2, 2.2, 0.08), boardMat);
-    board.position.set(0, 3.2, -4.5);
-    group.add(board);
-
-    // 4 Meeting Chairs
-    const angles = [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2];
-    angles.forEach(ang => {
-      const chair = new THREE.Mesh(
-        new THREE.BoxGeometry(0.8, 1.4, 0.8),
-        new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.6 })
-      );
-      chair.position.set(Math.cos(ang) * 2.8, 0.7, Math.sin(ang) * 2.8);
-      chair.rotation.y = -ang + Math.PI / 2;
-      group.add(chair);
+    // Mouse Magnetic Interaction Lens
+    nodes.forEach(node => {
+      const dMouse = mouse.dist(node.pos);
+      if (dMouse < 180 && !node.isDragging) {
+        // Subtle magnetic repulsion with gentle lens curvature
+        const repelForce = node.pos.clone().sub(mouse).normalize().mult((180 - dMouse) * 0.08);
+        node.acc.add(repelForce);
+      }
     });
-
-    tableTop.userData = {
-      type: 'meeting',
-      id: 'sarah',
-      title: 'War Room & Sprint Command Center',
-      desc: 'Central strategic hub where Product Leads, QA, and Architects align on deliverables.',
-      agent: 'Sarah Chen (Lead)',
-      status: 'Sprint Active'
-    };
-    interactiveObjects.push(tableTop);
-
-    scene.add(group);
   }
 
   // =========================================================================
-  // Zone 4: Chill Lounge & Coffee Bar
+  // Bioluminescent Synaptic Filaments Drawing
   // =========================================================================
-  function buildChillLounge() {
-    const group = new THREE.Group();
-    group.position.set(-3, 0, 7);
+  function drawConstellationFilaments(time) {
+    const maxDist = 260;
 
-    // Modern Sectional Couch
-    const couchMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.7 });
-    const couchSeat = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.5, 1.4), couchMat);
-    couchSeat.position.set(0, 0.45, 0);
-    const couchBack = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.9, 0.4), couchMat);
-    couchBack.position.set(0, 0.9, 0.7);
-    group.add(couchSeat, couchBack);
+    ctx.save();
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const nA = nodes[i];
+        const nB = nodes[j];
+        const d = nA.pos.dist(nB.pos);
 
-    // Coffee Counter
-    const counterMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.3 });
-    const counter = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.4, 1.0), counterMat);
-    counter.position.set(3.2, 0.7, 0);
-    group.add(counter);
+        if (d < maxDist) {
+          const alpha = (1 - (d / maxDist)) * 0.7;
 
-    // High-Tech Espresso Machine
-    const coffeeMachine = new THREE.Mesh(
-      new THREE.BoxGeometry(0.8, 0.7, 0.6),
-      new THREE.MeshStandardMaterial({ color: 0x00f0ff, metalness: 0.8, roughness: 0.2 })
-    );
-    coffeeMachine.position.set(3.2, 1.75, 0);
-    group.add(coffeeMachine);
+          // Vibrating curved bezier string
+          const midX = (nA.pos.x + nB.pos.x) / 2;
+          const midY = (nA.pos.y + nB.pos.y) / 2;
+          // Organic sine wave flex
+          const wave = Math.sin(time * 3 + (i * 2 + j)) * 8;
+          const ctrlX = midX + wave;
+          const ctrlY = midY - wave;
 
-    // Indoor Potted Plant
-    const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.3, 0.7, 16), new THREE.MeshStandardMaterial({ color: 0x475569 }));
-    pot.position.set(-2.6, 0.35, 0);
-    const foliage = new THREE.Mesh(new THREE.SphereGeometry(0.65, 8, 8), new THREE.MeshStandardMaterial({ color: 0x10b981, roughness: 0.9 }));
-    foliage.position.set(-2.6, 0.9, 0);
-    group.add(pot, foliage);
+          // Gradient filament between nodes
+          const grad = ctx.createLinearGradient(nA.pos.x, nA.pos.y, nB.pos.x, nB.pos.y);
+          grad.addColorStop(0, ARCHETYPES[nA.archetype].primary);
+          grad.addColorStop(1, ARCHETYPES[nB.archetype].primary);
 
-    counter.userData = {
-      type: 'lounge',
-      id: 'lounge',
-      title: 'Dev Energy Bar & Lo-Fi Lounge',
-      desc: 'Free espresso machine and relaxation zone for developers recharging between sprints.',
-      agent: 'Public Lounge',
-      status: 'Espresso Ready'
-    };
-    interactiveObjects.push(counter);
+          ctx.strokeStyle = grad;
+          ctx.globalAlpha = alpha;
+          ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          ctx.moveTo(nA.pos.x, nA.pos.y);
+          ctx.quadraticCurveTo(ctrlX, ctrlY, nB.pos.x, nB.pos.y);
+          ctx.stroke();
 
-    scene.add(group);
-  }
+          // Energy Packet Pulse traveling along the filament
+          const packetT = (time * 0.8 + (i * 0.3)) % 1;
+          const px = (1 - packetT) * (1 - packetT) * nA.pos.x + 2 * (1 - packetT) * packetT * ctrlX + packetT * packetT * nB.pos.x;
+          const py = (1 - packetT) * (1 - packetT) * nA.pos.y + 2 * (1 - packetT) * packetT * ctrlY + packetT * packetT * nB.pos.y;
 
-  // =========================================================================
-  // Coffee Steam Particles
-  // =========================================================================
-  function setupSteamEffect() {
-    const particleCount = 40;
-    const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount; i++) {
-      pos[i * 3] = 0.2 + (Math.random() - 0.5) * 0.2;
-      pos[i * 3 + 1] = 1.9 + Math.random() * 0.8;
-      pos[i * 3 + 2] = 7.0 + (Math.random() - 0.5) * 0.2;
+          ctx.fillStyle = '#ffffff';
+          ctx.shadowColor = ARCHETYPES[nA.archetype].primary;
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.arc(px, py, 2.2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
     }
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const mat = new THREE.PointsMaterial({
-      color: 0xe0f2fe,
-      size: 0.12,
-      transparent: true,
-      opacity: 0.4,
-      blending: THREE.AdditiveBlending
+    ctx.restore();
+  }
+
+  // =========================================================================
+  // Main Mathematical Render Loop (120 FPS capable)
+  // =========================================================================
+  let clockTime = 0;
+
+  function renderLoop() {
+    requestAnimationFrame(renderLoop);
+    clockTime += 0.016;
+
+    // 1. Clear with deep void atmospheric fade (leaving ethereal motion trails)
+    ctx.fillStyle = 'rgba(3, 5, 11, 0.35)';
+    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+    // 2. Starfield Ethereal Dust
+    starfield.updateAndDraw(ctx, clockTime);
+
+    // 3. Shockwave Rings
+    shockwaves.forEach(sw => {
+      sw.update();
+      sw.draw(ctx);
     });
-    steamParticles = new THREE.Points(geo, mat);
-    scene.add(steamParticles);
-  }
+    shockwaves = shockwaves.filter(sw => sw.active);
 
-  // =========================================================================
-  // 3D Procedural Humanoid Agents (Avatars)
-  // =========================================================================
-  function buildAgents() {
-    Object.keys(AGENTS).forEach(key => {
-      const agent = AGENTS[key];
-      const agentGroup = new THREE.Group();
-      agentGroup.position.set(agent.deskPos.x, 0, agent.deskPos.y);
+    // 4. Inter-Node Physics & Gravitational Calculations
+    applyInterNodeForces();
 
-      // Body / Torso
-      const torsoMat = new THREE.MeshStandardMaterial({ color: agent.color, roughness: 0.4 });
-      const torso = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.7, 0.35), torsoMat);
-      torso.position.y = 1.25;
-      torso.castShadow = true;
-      agentGroup.add(torso);
+    // 5. Synaptic Energy Filaments
+    drawConstellationFilaments(clockTime);
 
-      // Head
-      const headMat = new THREE.MeshStandardMaterial({ color: 0xffdbac, roughness: 0.7 });
-      const head = new THREE.Mesh(new THREE.SphereGeometry(0.24, 16, 16), headMat);
-      head.position.y = 1.85;
-      agentGroup.add(head);
-
-      // Cyber Visor / Glasses
-      const visorMat = new THREE.MeshBasicMaterial({ color: agent.color });
-      const visor = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.09, 0.1), visorMat);
-      visor.position.set(0, 1.87, 0.2);
-      agentGroup.add(visor);
-
-      // Left Arm
-      const leftArm = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.6, 0.16), torsoMat);
-      leftArm.position.set(-0.42, 1.2, 0);
-      agentGroup.add(leftArm);
-
-      // Right Arm
-      const rightArm = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.6, 0.16), torsoMat);
-      rightArm.position.set(0.42, 1.2, 0);
-      agentGroup.add(rightArm);
-
-      // Floating 3D Role/Status Orb
-      const orb = new THREE.Mesh(
-        new THREE.SphereGeometry(0.1, 16, 16),
-        new THREE.MeshBasicMaterial({ color: agent.color })
-      );
-      orb.position.set(0, 2.3, 0);
-      agentGroup.add(orb);
-
-      agent.mesh = agentGroup;
-      agent.leftArm = leftArm;
-      agent.rightArm = rightArm;
-      agent.orb = orb;
-
-      // Make agent clickable
-      torso.userData = {
-        type: 'agent',
-        id: agent.id,
-        title: agent.name,
-        desc: `${agent.role} currently assigned to active sprint execution.`,
-        agent: agent.name,
-        status: 'Active'
-      };
-      interactiveObjects.push(torso);
-
-      scene.add(agentGroup);
+    // 6. Draw Living Nodes
+    nodes.forEach(node => {
+      node.update(clockTime, activeMode);
+      node.draw(ctx, clockTime);
     });
+
+    // 7. Update Entropy Metric in Real-Time
+    updateLiveMetrics();
+  }
+
+  function updateLiveMetrics() {
+    const entropyEl = document.getElementById('metric-entropy');
+    const nodesEl = document.getElementById('metric-nodes');
+    if (entropyEl && Math.random() < 0.05) {
+      const e = (0.038 + Math.random() * 0.008).toFixed(3);
+      entropyEl.innerText = `${e} λ`;
+    }
+    if (nodesEl) {
+      nodesEl.innerText = `${nodes.length} Active`;
+    }
   }
 
   // =========================================================================
-  // Raycasting & Click Interactions
+  // Interactive Pointer Events (Dragging & Clicking)
   // =========================================================================
-  function onDocumentPointerMove(event) {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-  }
+  function onPointerMove(e) {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
 
-  function onDocumentPointerDown(event) {
-    // Ignore clicks if clicking on HTML UI panels
-    if (event.target.closest('.top-nav, .agent-panel, .task-panel, .camera-toolbar, .inspection-card, .modal-backdrop')) {
+    if (draggedNode) {
+      draggedNode.pos.x = mouse.x - dragOffset.x;
+      draggedNode.pos.y = mouse.y - dragOffset.y;
+      draggedNode.vel.set(0, 0);
       return;
     }
 
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(interactiveObjects, false);
-
-    if (intersects.length > 0) {
-      const data = intersects[0].object.userData;
-      if (data && data.title) {
-        openInspectionCard(data, intersects[0].point);
+    // Check hover state
+    let foundHover = null;
+    nodes.forEach(n => {
+      if (mouse.dist(n.pos) < n.radius + 10) {
+        foundHover = n;
       }
+    });
+
+    if (foundHover !== hoveredNode) {
+      hoveredNode = foundHover;
+      canvas.style.cursor = hoveredNode ? 'grab' : 'crosshair';
     }
   }
 
-  function openInspectionCard(data, point) {
-    const card = document.getElementById('inspection-card');
-    document.getElementById('inspect-category').innerText = data.type.toUpperCase();
-    document.getElementById('inspect-title').innerText = data.title;
-    document.getElementById('inspect-description').innerText = data.desc;
-    document.getElementById('inspect-agent').innerText = data.agent;
-    document.getElementById('inspect-status').innerText = data.status;
+  function onPointerDown(e) {
+    // Ignore clicks on HUD elements
+    if (e.target.closest('.spatial-hud, .bottom-dock, .node-inspector, .creation-modal')) {
+      return;
+    }
+
+    if (hoveredNode) {
+      draggedNode = hoveredNode;
+      draggedNode.isDragging = true;
+      dragOffset.set(mouse.x - draggedNode.pos.x, mouse.y - draggedNode.pos.y);
+      canvas.style.cursor = 'grabbing';
+      audio.playCrystalResonance(draggedNode.archetype);
+    }
+  }
+
+  function onPointerUp(e) {
+    if (draggedNode) {
+      draggedNode.isDragging = false;
+      // If barely moved, treat as inspection click
+      if (draggedNode.pos.dist(mouse) < 15 || Math.abs(dragOffset.x) + Math.abs(dragOffset.y) < 10) {
+        openNodeInspector(draggedNode);
+      }
+      draggedNode = null;
+      canvas.style.cursor = 'grab';
+    }
+  }
+
+  // =========================================================================
+  // Inspector & UI Modal Controllers
+  // =========================================================================
+  function openNodeInspector(node) {
+    selectedNode = node;
+    const card = document.getElementById('node-inspector');
+    document.getElementById('inspect-tag').innerText = `${node.archetype.toUpperCase()} SINGULARITY`;
+    document.getElementById('inspect-title').innerText = node.title;
+    document.getElementById('inspect-desc').innerText = node.desc;
+    document.getElementById('inspect-energy-val').innerText = `${node.resonance}%`;
+    document.getElementById('inspect-energy-fill').style.width = `${node.resonance}%`;
+
     card.classList.add('active');
-
-    // Link Assign Task button to this agent
-    const assignBtn = document.getElementById('btn-inspect-assign');
-    assignBtn.onclick = () => {
-      openTaskModal(data.id);
-    };
-
-    // Focus Camera on Object
-    const focusBtn = document.getElementById('btn-inspect-focus');
-    focusBtn.onclick = () => {
-      if (point) {
-        focusCameraOn(point.x + 2, point.y + 3, point.z + 4, point.x, point.y, point.z);
-      }
-    };
   }
 
-  function focusCameraOn(px, py, pz, lx, ly, lz) {
-    cameraTargetPos.set(px, py, pz);
-    cameraTargetLookAt.set(lx, ly, lz);
+  function closeNodeInspector() {
+    document.getElementById('node-inspector').classList.remove('active');
+    selectedNode = null;
   }
 
-  // =========================================================================
-  // Main Render Loop & Animations
-  // =========================================================================
-  let clock = new THREE.Clock();
-  let frameCount = 0;
-
-  function animate() {
-    requestAnimationFrame(animate);
-
-    const delta = clock.getDelta();
-    const time = clock.getElapsedTime();
-    frameCount++;
-
-    // Smooth Camera Transition Lerp
-    camera.position.lerp(cameraTargetPos, 0.05);
-    controls.target.lerp(cameraTargetLookAt, 0.05);
-    controls.update();
-
-    // 1. Blinking Server LEDs Animation
-    serverLEDs.forEach(led => {
-      const blink = Math.sin(time * 8 + led.phase) > 0.3;
-      led.mesh.visible = blink;
-    });
-
-    // 2. Coffee Steam Particle Motion
-    if (steamParticles) {
-      const pos = steamParticles.geometry.attributes.position.array;
-      for (let i = 0; i < pos.length / 3; i++) {
-        pos[i * 3 + 1] += 0.015; // Move up
-        if (pos[i * 3 + 1] > 2.8) {
-          pos[i * 3 + 1] = 1.8; // Reset back to mug
-        }
-      }
-      steamParticles.geometry.attributes.position.needsUpdate = true;
-    }
-
-    // 3. Redraw Animated IDE Screen Textures every 3 frames
-    if (frameCount % 3 === 0) {
-      codeTextureCanvases.forEach(item => {
-        item.redraw(frameCount);
-        item.texture.needsUpdate = true;
-      });
-    }
-
-    // 4. Autonomous Agent Character Animations (Typing & Breathing)
-    Object.keys(AGENTS).forEach(key => {
-      const agent = AGENTS[key];
-      if (agent.mesh) {
-        // Subtle floating status orb
-        agent.orb.position.y = 2.3 + Math.sin(time * 3 + (key.charCodeAt(0) % 5)) * 0.08;
-
-        if (agent.state === 'working') {
-          // Rapid typing arm motion
-          agent.leftArm.rotation.x = -Math.PI / 4 + Math.sin(time * 14 + 1) * 0.15;
-          agent.rightArm.rotation.x = -Math.PI / 4 + Math.cos(time * 16 + 2) * 0.15;
-          // Random keyboard sound (if sound enabled)
-          if (sound.enabled && Math.random() < 0.04) {
-            sound.playKeyClick();
-          }
-        } else {
-          // Idle breathing
-          agent.mesh.position.y = Math.sin(time * 2) * 0.03;
-        }
-      }
-    });
-
-    renderer.render(scene, camera);
-  }
-
-  function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }
-
-  // =========================================================================
-  // UI & Task Management DOM Controller
-  // =========================================================================
   function initUI() {
-    renderTaskList();
-    updateMetrics();
-
-    // Camera Preset Buttons
-    document.querySelectorAll('.cam-btn').forEach(btn => {
-      btn.addEventListener('click', e => {
-        document.querySelectorAll('.cam-btn').forEach(b => b.classList.remove('active'));
+    // Mode Buttons in Bottom Dock
+    document.querySelectorAll('.dock-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.dock-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const camKey = btn.dataset.cam;
-        if (CAMERA_PRESETS[camKey]) {
-          focusCameraOn(
-            CAMERA_PRESETS[camKey].pos.x,
-            CAMERA_PRESETS[camKey].pos.y,
-            CAMERA_PRESETS[camKey].pos.z,
-            CAMERA_PRESETS[camKey].look.x,
-            CAMERA_PRESETS[camKey].look.y,
-            CAMERA_PRESETS[camKey].look.z
-          );
-        }
+        activeMode = btn.dataset.mode;
+        showToast(`🌌 Mode Switched: ${btn.innerText}`);
+        triggerQuantumPulse(window.innerWidth / 2, window.innerHeight / 2);
       });
     });
 
     // Sound Toggle Button
-    const btnAudio = document.getElementById('btn-audio');
-    btnAudio.addEventListener('click', () => {
-      const on = sound.toggle();
+    const btnSound = document.getElementById('btn-sound');
+    btnSound.addEventListener('click', () => {
+      const on = audio.toggle();
       if (on) {
-        btnAudio.classList.add('active');
-        btnAudio.querySelector('.btn-text').innerText = 'Audio: ON';
-        showToast('🎵 Lo-Fi Ambience & Keyboard Sound Active');
+        btnSound.classList.add('active');
+        btnSound.querySelector('.btn-text').innerText = 'Harmonic: 432Hz ON';
+        showToast('✦ 432Hz Harmonic Frequency Active');
       } else {
-        btnAudio.classList.remove('active');
-        btnAudio.querySelector('.btn-text').innerText = 'Lo-Fi Sound';
+        btnSound.classList.remove('active');
+        btnSound.querySelector('.btn-text').innerText = 'Harmonic Sound';
         showToast('🔇 Audio Muted');
       }
     });
 
-    // Day / Cyberpunk Night Mode Toggle
-    const btnTheme = document.getElementById('btn-theme');
-    btnTheme.addEventListener('click', () => {
-      isNightMode = !isNightMode;
-      document.body.classList.toggle('theme-day', !isNightMode);
-      document.body.classList.toggle('theme-night', isNightMode);
-
-      if (isNightMode) {
-        scene.background.setHex(0x090c14);
-        scene.fog.color.setHex(0x090c14);
-        ambientLight.intensity = 1.2;
-        mainDirLight.intensity = 1.4;
-        devPointLight.intensity = 2.2;
-        serverPointLight.intensity = 2.5;
-        btnTheme.querySelector('.btn-text').innerText = 'Cyberpunk Mode';
-        showToast('⚡ Cyberpunk Hackathon Mode Active');
-      } else {
-        scene.background.setHex(0xe2e8f0);
-        scene.fog.color.setHex(0xe2e8f0);
-        ambientLight.intensity = 2.2;
-        mainDirLight.intensity = 2.5;
-        devPointLight.intensity = 0.8;
-        serverPointLight.intensity = 1.0;
-        btnTheme.querySelector('.btn-text').innerText = 'Daylight Studio';
-        showToast('☀️ Daylight Silicon Valley Studio Active');
-      }
+    // Quantum Pulse Shockwave Button
+    const btnPulse = document.getElementById('btn-pulse');
+    btnPulse.addEventListener('click', () => {
+      triggerQuantumPulse(window.innerWidth / 2, window.innerHeight / 2);
+      audio.playDetonation();
+      showToast('⚡ Gravitational Shockwave Released');
     });
 
-    // Add Task Modal Buttons
-    const btnNewTask = document.getElementById('btn-new-task');
-    const modal = document.getElementById('task-modal');
+    // Manifest Node (New Node Modal)
+    const btnCreate = document.getElementById('btn-create-node');
+    const modal = document.getElementById('creation-modal');
     const btnCloseModal = document.getElementById('btn-close-modal');
     const btnCancelModal = document.getElementById('btn-cancel-modal');
 
-    btnNewTask.addEventListener('click', () => openTaskModal());
-    btnCloseModal.addEventListener('click', () => closeModal());
-    btnCancelModal.addEventListener('click', () => closeModal());
+    btnCreate.addEventListener('click', () => {
+      modal.classList.add('active');
+      document.getElementById('node-name').focus();
+    });
 
-    // Task Form Submit
-    const form = document.getElementById('new-task-form');
-    form.addEventListener('submit', e => {
+    const closeModal = () => modal.classList.remove('active');
+    btnCloseModal.addEventListener('click', closeModal);
+    btnCancelModal.addEventListener('click', closeModal);
+
+    // Form Submission
+    document.getElementById('creation-form').addEventListener('submit', e => {
       e.preventDefault();
-      const title = document.getElementById('task-title').value.trim();
-      const agent = document.getElementById('task-agent').value;
-      const priority = document.getElementById('task-priority').value;
-      const desc = document.getElementById('task-desc').value.trim();
+      const title = document.getElementById('node-name').value.trim();
+      const arch = document.getElementById('node-archetype').value;
+      const mass = parseFloat(document.getElementById('node-mass').value);
+      const desc = document.getElementById('node-notes').value.trim();
 
       if (!title) return;
 
-      const newTask = {
-        id: 't-' + Date.now(),
+      // Spawn at center with initial burst velocity
+      const newNode = new AetherNode(
+        'n-' + Date.now(),
         title,
-        agent,
-        priority,
-        desc: desc || 'Direct execution order dispatched to autonomous 3D agent.',
-        status: 'in-progress',
-        progress: 10
-      };
+        desc || 'Neural thought wave igniting the constellation web.',
+        arch,
+        mass,
+        window.innerWidth / 2 + (Math.random() - 0.5) * 80,
+        window.innerHeight / 2 + (Math.random() - 0.5) * 80
+      );
+      newNode.vel.set((Math.random() - 0.5) * 6, (Math.random() - 0.5) * 6);
+      nodes.push(newNode);
 
-      tasks.unshift(newTask);
-      renderTaskList();
-      updateMetrics();
+      triggerQuantumPulse(newNode.pos.x, newNode.pos.y, ARCHETYPES[arch].primary);
+      audio.playCrystalResonance(arch);
+      showToast(`✦ Manifested: "${title}"`);
+
       closeModal();
-      form.reset();
-
-      // Trigger agent work animation
-      AGENTS[agent].state = 'working';
-      AGENTS[agent].progress = 15;
-      updateAgentUI(agent);
-
-      showToast(`🚀 Dispatched to ${AGENTS[agent].name}!`);
-
-      // Automatically simulate progress over time
-      simulateTaskProgress(newTask.id, agent);
+      document.getElementById('creation-form').reset();
     });
 
-    // Close Inspection Tooltip
-    document.getElementById('btn-close-inspect').addEventListener('click', () => {
-      document.getElementById('inspection-card').classList.remove('active');
+    // Close Inspector
+    document.getElementById('btn-close-inspector').addEventListener('click', closeNodeInspector);
+
+    // Resonate Node Button
+    document.getElementById('btn-resonate-node').addEventListener('click', () => {
+      if (selectedNode) {
+        selectedNode.resonance = Math.min(selectedNode.resonance + 15, 100);
+        document.getElementById('inspect-energy-val').innerText = `${selectedNode.resonance}%`;
+        document.getElementById('inspect-energy-fill').style.width = `${selectedNode.resonance}%`;
+        audio.playCrystalResonance(selectedNode.archetype);
+        triggerQuantumPulse(selectedNode.pos.x, selectedNode.pos.y, ARCHETYPES[selectedNode.archetype].primary);
+        showToast(`✨ Amplified Resonance: ${selectedNode.resonance}%`);
+      }
     });
 
-    // Toggle Task Drawer
-    const btnToggleTask = document.getElementById('btn-toggle-task-panel');
-    btnToggleTask.addEventListener('click', () => {
-      document.getElementById('task-panel').classList.toggle('collapsed');
-    });
-
-    // Filter Tabs
-    document.querySelectorAll('.filter-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        renderTaskList(tab.dataset.filter);
-      });
-    });
-
-    // Agent Card Clicks in Roster
-    document.querySelectorAll('.agent-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const agentKey = card.dataset.agent;
-        if (AGENTS[agentKey]) {
-          const desk = AGENTS[agentKey].deskPos;
-          focusCameraOn(desk.x + 3, 5, desk.y + 4, desk.x, 1.5, desk.y);
-          showToast(`Focused on ${AGENTS[agentKey].name}`);
+    // Detonate (Complete) Node Button
+    document.getElementById('btn-dissolve-node').addEventListener('click', () => {
+      if (selectedNode) {
+        const idx = nodes.indexOf(selectedNode);
+        if (idx !== -1) {
+          triggerQuantumPulse(selectedNode.pos.x, selectedNode.pos.y, '#f43f5e');
+          audio.playDetonation();
+          showToast(`💥 Singularity Completed & Dissolved!`);
+          nodes.splice(idx, 1);
+          closeNodeInspector();
         }
-      });
+      }
     });
   }
 
-  function openTaskModal(preselectedAgent) {
-    if (preselectedAgent && document.getElementById('task-agent')) {
-      document.getElementById('task-agent').value = preselectedAgent;
-    }
-    document.getElementById('task-modal').classList.add('active');
-    document.getElementById('task-title').focus();
-  }
-
-  function closeModal() {
-    document.getElementById('task-modal').classList.remove('active');
-  }
-
-  function renderTaskList(filter = 'all') {
-    const container = document.getElementById('task-list-container');
-    container.innerHTML = '';
-
-    const filtered = tasks.filter(t => {
-      if (filter === 'active') return t.status === 'in-progress';
-      if (filter === 'done') return t.status === 'completed';
-      return true;
-    });
-
-    document.getElementById('task-total-badge').innerText = filtered.length;
-
-    filtered.forEach(task => {
-      const card = document.createElement('div');
-      card.className = `task-card priority-${task.priority}`;
-
-      const agentData = AGENTS[task.agent] || { name: task.agent };
-
-      card.innerHTML = `
-        <div class="task-card-header">
-          <div class="task-title">${task.title}</div>
-          <span class="task-status-badge ${task.status === 'completed' ? 'status-completed' : 'status-in-progress'}">
-            ${task.status === 'completed' ? 'DONE' : task.progress + '%'}
-          </span>
-        </div>
-        <div class="task-meta">
-          <span class="task-agent-tag">⚡ ${agentData.name}</span>
-          <span>${task.priority.toUpperCase()}</span>
-        </div>
-        <div class="task-progress-mini">
-          <div class="task-progress-fill" style="width: ${task.progress}%;"></div>
-        </div>
-      `;
-
-      card.addEventListener('click', () => {
-        if (AGENTS[task.agent]) {
-          const desk = AGENTS[task.agent].deskPos;
-          focusCameraOn(desk.x + 3, 5, desk.y + 4, desk.x, 1.5, desk.y);
-        }
-      });
-
-      container.appendChild(card);
+  function triggerQuantumPulse(x, y, color = '#00f0ff') {
+    shockwaves.push(new ShockwaveRing(x, y, color));
+    // Physical repulsive impulse on all nearby nodes
+    nodes.forEach(n => {
+      const d = n.pos.dist(new Vec2(x, y));
+      if (d < 400 && d > 0) {
+        const force = n.pos.clone().sub(new Vec2(x, y)).normalize().mult((400 - d) * 0.08);
+        n.acc.add(force);
+      }
     });
   }
 
-  function updateMetrics() {
-    const completed = tasks.filter(t => t.status === 'completed').length;
-    document.getElementById('metric-completed').innerText = completed;
+  function showToast(msg) {
+    const toast = document.getElementById('aether-toast');
+    toast.innerText = msg;
+    toast.classList.add('visible');
+    setTimeout(() => toast.classList.remove('visible'), 2800);
   }
 
-  function updateAgentUI(agentKey) {
-    const progBar = document.getElementById(`prog-${agentKey}`);
-    const activity = document.getElementById(`activity-${agentKey}`);
-    if (progBar) progBar.style.width = AGENTS[agentKey].progress + '%';
-    if (activity) {
-      activity.innerText = AGENTS[agentKey].state === 'working' ? 'Writing Code...' : 'Coffee Break ☕';
-    }
-  }
-
-  // Autonomous Progress Engine
-  function simulateTaskProgress(taskId, agentKey) {
-    const interval = setInterval(() => {
-      const task = tasks.find(t => t.id === taskId);
-      if (!task || task.status === 'completed') {
-        clearInterval(interval);
-        return;
-      }
-
-      task.progress += Math.floor(Math.random() * 15) + 8;
-      if (task.progress >= 100) {
-        task.progress = 100;
-        task.status = 'completed';
-        clearInterval(interval);
-        sound.playSuccessChime();
-        showToast(`🎉 Task Completed by ${AGENTS[agentKey].name}!`);
-        spawnCelebrationParticles(AGENTS[agentKey].deskPos.x, 2.5, AGENTS[agentKey].deskPos.y);
-      }
-
-      AGENTS[agentKey].progress = task.progress;
-      updateAgentUI(agentKey);
-      renderTaskList();
-      updateMetrics();
-    }, 1800);
-  }
-
-  // 3D Particle Celebration Burst on Task Completion
-  function spawnCelebrationParticles(x, y, z) {
-    const pCount = 60;
-    const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array(pCount * 3);
-    const vel = [];
-
-    for (let i = 0; i < pCount; i++) {
-      pos[i * 3] = x;
-      pos[i * 3 + 1] = y;
-      pos[i * 3 + 2] = z;
-      vel.push({
-        x: (Math.random() - 0.5) * 0.15,
-        y: Math.random() * 0.2 + 0.05,
-        z: (Math.random() - 0.5) * 0.15
-      });
-    }
-
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const mat = new THREE.PointsMaterial({
-      color: 0x00f0ff,
-      size: 0.18,
-      transparent: true,
-      opacity: 1
-    });
-
-    const particles = new THREE.Points(geo, mat);
-    scene.add(particles);
-
-    let life = 0;
-    const anim = setInterval(() => {
-      life++;
-      const pArr = particles.geometry.attributes.position.array;
-      for (let i = 0; i < pCount; i++) {
-        pArr[i * 3] += vel[i].x;
-        pArr[i * 3 + 1] += vel[i].y;
-        pArr[i * 3 + 2] += vel[i].z;
-        vel[i].y -= 0.005; // gravity
-      }
-      particles.geometry.attributes.position.needsUpdate = true;
-      mat.opacity -= 0.02;
-
-      if (life > 50) {
-        clearInterval(anim);
-        scene.remove(particles);
-      }
-    }, 25);
-  }
-
-  function showToast(message) {
-    const container = document.getElementById('toast-container');
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.innerText = message;
-    container.appendChild(toast);
-    setTimeout(() => {
-      if (toast.parentNode) toast.parentNode.removeChild(toast);
-    }, 3000);
-  }
-
-  // Initialize Everything on Window Load
-  window.addEventListener('DOMContentLoaded', () => {
-    init3D();
-    initUI();
-  });
+  // Initialize on Window Load
+  window.addEventListener('DOMContentLoaded', initUniverse);
 })();
