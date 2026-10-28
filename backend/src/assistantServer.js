@@ -879,6 +879,44 @@ Return strict JSON:
   return res.status(503).json({ message: 'API key is missing.' });
 });
 
+// ---- MCQ Doubt Solver: explains any MCQ in real-world story + concept + why each option ----
+app.post('/api/assistant/explain-mcq', async (req, res) => {
+  const mcq = String(req.body?.mcq ?? '').trim().slice(0, 2000);
+  const exam = String(req.body?.exam ?? 'SSC JE').trim().slice(0, 100);
+  if (!mcq) return res.status(400).json({ message: 'MCQ text is required.' });
+
+  const system = `You are an expert teacher for ${exam} exam. A student does not understand an MCQ. Your job:
+1. Identify the concept behind the question.
+2. Explain it in a vivid, real-world story in Hinglish (60% Hindi + 40% English).
+3. Tell WHY each option is right or wrong.
+4. Give a 1-line formula/trick to remember.
+Return strict JSON — no markdown, no backticks:
+{
+  "concept_name": "short name of the concept (e.g. AM Bandwidth, Number Series)",
+  "real_story": "A vivid 3-4 sentence real-world story explaining WHY this concept exists in everyday life. Hinglish, engaging, memorable.",
+  "simple_explanation": "Crystal-clear explanation of the concept in 3-5 lines. Hinglish. Start from basics.",
+  "correct_answer": "The letter/index of the correct option (e.g. b)",
+  "options_explained": [
+    { "option": "a", "text": "option text", "verdict": "Wrong / Correct", "reason": "1-2 line explanation in Hinglish" }
+  ],
+  "memory_trick": "One punchy line or mnemonic to remember this concept forever",
+  "imagine_topic": "A 4-8 word topic string to visualize this concept in 3D (e.g. AM Modulation Bandwidth, Binary Number System)"
+}`;
+
+  if (process.env.GEMINI_API_KEY) {
+    try {
+      const text = await callGemini({ prompt: `MCQ:\n${mcq}`, system, json: true });
+      const parsed = JSON.parse(text);
+      if (!parsed.concept_name) return res.status(502).json({ message: 'Could not parse MCQ.' });
+      return res.json(parsed);
+    } catch (error) {
+      console.error('Gemini explain-mcq error', error);
+      return res.status(500).json({ message: error.message || 'Could not explain MCQ.' });
+    }
+  }
+  return res.status(503).json({ message: 'API key is missing.' });
+});
+
 // Locally binds localhost; in the cloud (Render sets PORT) binds all interfaces so it is reachable.
 const HOST = process.env.PORT ? '0.0.0.0' : '127.0.0.1';
 app.listen(PORT, HOST, () => console.info(`AURA assistant listening on ${HOST}:${PORT}`));

@@ -19,6 +19,7 @@ export default function StudyGamerHeader({ xp, gems, streak, activeTab, setActiv
   const currentRankProgress = Math.min(100, Math.max(0, ((xp - currentRank.minXp) / rankXpSpan) * 100));
 
   const TABS = [
+    { id: 'sscje', label: 'SSC JE Prep', icon: '🎯', badge: 'EXAM MODE' },
     { id: 'forge', label: 'Concept Forge', icon: '🔥', badge: 'DEEP LEARN' },
     { id: 'memory', label: '500x Memory Lock', icon: '🧠', badge: 'LIFE-TIME LOCK' },
     { id: 'flashcards', label: 'Flashcards', icon: '🃏', badge: 'SPACED REP' },

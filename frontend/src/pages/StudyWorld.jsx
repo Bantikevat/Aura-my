@@ -11,6 +11,7 @@ import StudyGamerHeader from '../components/StudyGamerHeader';
 import NeuroMemoryLock from '../components/NeuroMemoryLock';
 import ConceptForge from '../components/ConceptForge';
 import Flashcards from '../components/Flashcards';
+import McqDoubtSolver from '../components/McqDoubtSolver';
 
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.06 } } };
 const fadeUp = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
@@ -79,8 +80,8 @@ export default function StudyWorld() {
   const tasks = allTasks.filter((task) => task.worldId === 'study' && task.status !== 'done');
   const [activeSubject, setActiveSubject] = useState(null);
 
-  // Active view tab: 'memory' | 'arena' | 'focus' | 'exam' | 'imagine' | 'reality' | 'subjects'
-  const [activeTab, setActiveTab] = useState('memory');
+  // Active view tab: 'sscje' | 'memory' | 'arena' | 'focus' | 'exam' | 'imagine' | 'reality' | 'subjects'
+  const [activeTab, setActiveTab] = useState('sscje');
 
   // When another tab (e.g. Exam Compressor) asks to open a concept's world, jump to the Imagine tab.
   const pendingImagine = useAuraStore((s) => s.pendingImagineTopic);
@@ -155,6 +156,13 @@ export default function StudyWorld() {
           setActiveTab={setActiveTab}
         />
       </motion.div>
+
+      {/* SSC JE EXAM PREP — MCQ Doubt Solver + Topic Tracker */}
+      {activeTab === 'sscje' && (
+        <motion.div variants={fadeUp} key="tab-sscje">
+          <McqDoubtSolver onGainXp={gainXp} />
+        </motion.div>
+      )}
 
       {/* CONCEPT FORGE — 5-stage deep learning */}
       {activeTab === 'forge' && (
