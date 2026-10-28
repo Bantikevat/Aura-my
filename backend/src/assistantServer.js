@@ -5,7 +5,7 @@ import cors from 'cors';
 import express from 'express';
 import Anthropic from '@anthropic-ai/sdk';
 
-const PORT = process.env.ASSISTANT_PORT || 5002;
+const PORT = process.env.ASSISTANT_PORT || process.env.PORT || 5002;
 const MODEL = process.env.ASSISTANT_MODEL || 'claude-opus-5-5';
 const ORIGINS = (process.env.CLIENT_URL || 'http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174').split(',');
 
@@ -233,7 +233,9 @@ async function callGeminiChat(messages) {
 }
 
 const app = express();
-app.use(cors({ origin: (o, cb) => cb(null, !o || o.startsWith('http://localhost') || o.startsWith('http://127.0.0.1')) }));
+// Allow local dev plus any deployed frontend origins listed in CLIENT_URL (comma-separated).
+const extraOrigins = (process.env.CLIENT_URL || '').split(',').map((s) => s.trim()).filter(Boolean);
+app.use(cors({ origin: (o, cb) => cb(null, !o || o.startsWith('http://localhost') || o.startsWith('http://127.0.0.1') || extraOrigins.includes(o)) }));
 app.use(express.json({ limit: '1mb' }));
 
 app.get('/api/assistant/health', (req, res) => {
@@ -877,5 +879,6 @@ Return strict JSON:
   return res.status(503).json({ message: 'API key is missing.' });
 });
 
-// 127.0.0.1 only: this endpoint spends the user's API credit and has no login.
-app.listen(PORT, '127.0.0.1', () => console.info(`AURA assistant listening on http://127.0.0.1:${PORT} (Gemini enabled)`));
+// Locally binds localhost; in the cloud (Render sets PORT) binds all interfaces so it is reachable.
+const HOST = process.env.PORT ? '0.0.0.0' : '127.0.0.1';
+app.listen(PORT, HOST, () => console.info(`AURA assistant listening on ${HOST}:${PORT}`));
