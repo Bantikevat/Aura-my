@@ -1,6 +1,17 @@
+import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuraStore, WORLDS } from '../../store/useAuraStore';
+
+function useIsMobile() {
+  const [mobile, setMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+  useEffect(() => {
+    const fn = () => setMobile(window.innerWidth < 768);
+    window.addEventListener('resize', fn);
+    return () => window.removeEventListener('resize', fn);
+  }, []);
+  return mobile;
+}
 
 const worldIcons = {
   hub: (
@@ -60,11 +71,34 @@ export default function Sidebar() {
   const agents = useAuraStore((s) => s.agents);
   const location = useLocation();
   const activeAgents = agents.filter((a) => a.status === 'active');
+  const isMobile = useIsMobile();
+
+  // Auto-close sidebar on mobile after navigation
+  useEffect(() => {
+    if (isMobile && sidebarOpen) toggleSidebar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname, isMobile]);
 
   return (
+    <>
+      {/* Mobile backdrop */}
+      <AnimatePresence>
+        {isMobile && sidebarOpen && (
+          <motion.div
+            className="fixed inset-0 z-30 bg-black/60 md:hidden"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={toggleSidebar}
+          />
+        )}
+      </AnimatePresence>
+
     <motion.aside
       className="fixed left-0 top-0 z-40 flex h-screen flex-col border-r border-white/[0.06] bg-ink-deep/90 backdrop-blur-xl"
-      animate={{ width: sidebarOpen ? 260 : 72 }}
+      animate={
+        isMobile
+          ? { width: 260, x: sidebarOpen ? 0 : -260 }
+          : { width: sidebarOpen ? 260 : 72, x: 0 }
+      }
       transition={{ duration: 0.3, ease: 'easeInOut' }}
     >
       {/* Logo */}
@@ -182,5 +216,6 @@ export default function Sidebar() {
         )}
       </div>
     </motion.aside>
+    </>
   );
 }

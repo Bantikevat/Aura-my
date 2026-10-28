@@ -60,13 +60,13 @@ export default function AppLayout() {
 
       {/* 5. Main Content Area */}
       <div
-        className={`flex flex-1 flex-col overflow-hidden transition-all duration-300 ${
-          sidebarOpen ? 'ml-[260px]' : 'ml-[72px]'
+        className={`flex flex-1 flex-col overflow-hidden transition-all duration-300 ml-0 ${
+          sidebarOpen ? 'md:ml-[260px]' : 'md:ml-[72px]'
         }`}
       >
         <TopBar onTriggerWarp={() => setShowIntro(true)} />
 
-        <main className="flex-1 overflow-y-auto overflow-x-hidden p-6 lg:p-8">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}

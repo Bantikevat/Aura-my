@@ -687,43 +687,45 @@ export default function TopicVirtualWorld({ topic, onClose }) {
 
           {/* Top bar */}
           <div style={{
-            position: 'relative', zIndex: 2, padding: '14px 24px',
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            position: 'relative', zIndex: 2, padding: '10px 14px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
             borderBottom: 'rgba(255,255,255,0.06) 1px solid',
             background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(16px)',
-            flexShrink: 0,
+            flexShrink: 0, flexWrap: 'nowrap',
           }}>
-            <div>
-              <p style={{ color: `${topicData.color}88`, fontSize: 9, letterSpacing: 5, fontWeight: 700, fontFamily: 'system-ui', marginBottom: 2 }}>LEARNING UNIVERSE</p>
-              <h2 style={{ color: '#fff', fontSize: 15, fontWeight: 800, fontFamily: 'system-ui' }}>{topicData.icon} {topic}</h2>
+            <div style={{ flexShrink: 0 }}>
+              <p style={{ color: `${topicData.color}88`, fontSize: 8, letterSpacing: 4, fontWeight: 700, fontFamily: 'system-ui', marginBottom: 2 }}>LEARNING</p>
+              <h2 style={{ color: '#fff', fontSize: 13, fontWeight: 800, fontFamily: 'system-ui', whiteSpace: 'nowrap' }}>{topicData.icon} {topic}</h2>
             </div>
 
-            {/* Progress steps */}
-            <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+            {/* Progress steps — show icons only on small screens */}
+            <div style={{ display: 'flex', gap: 4, alignItems: 'center', overflowX: 'auto', flexShrink: 1 }}>
               {SCENE_LABELS.map((label, i) => (
                 <button key={i} onClick={() => i <= unlockedUpTo && setScene(i)}
                   style={{
-                    padding: '5px 10px', borderRadius: 20, cursor: i <= unlockedUpTo ? 'pointer' : 'not-allowed',
+                    padding: '4px 8px', borderRadius: 20, cursor: i <= unlockedUpTo ? 'pointer' : 'not-allowed',
                     background: scene === i ? `${topicData.color}33` : i < scene ? 'rgba(52,211,153,0.12)' : 'rgba(255,255,255,0.04)',
                     border: `1px solid ${scene === i ? topicData.color : i < scene ? '#34d39944' : 'rgba(255,255,255,0.1)'}`,
                     color: scene === i ? '#fff' : i < scene ? '#34d399' : 'rgba(255,255,255,0.35)',
-                    fontSize: 10, fontWeight: 700, fontFamily: 'system-ui', whiteSpace: 'nowrap',
-                    transition: 'all 0.2s',
+                    fontSize: 9, fontWeight: 700, fontFamily: 'system-ui', whiteSpace: 'nowrap',
+                    transition: 'all 0.2s', flexShrink: 0,
                   }}>
-                  {i < scene ? `✓ ${label}` : label}
+                  {i < scene ? `✓` : `${i + 1}`}
+                  <span style={{ display: window.innerWidth >= 640 ? 'inline' : 'none' }}> {label}</span>
                 </button>
               ))}
             </div>
 
             <button onClick={onClose} style={{
               background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.14)',
-              color: 'rgba(255,255,255,0.7)', padding: '7px 14px', borderRadius: 8,
-              cursor: 'pointer', fontSize: 11, fontWeight: 700, letterSpacing: 1, fontFamily: 'system-ui',
-            }}>✕ EXIT</button>
+              color: 'rgba(255,255,255,0.7)', padding: '6px 12px', borderRadius: 8,
+              cursor: 'pointer', fontSize: 10, fontWeight: 700, letterSpacing: 1, fontFamily: 'system-ui',
+              flexShrink: 0,
+            }}>✕</button>
           </div>
 
           {/* Scene content */}
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 40px', overflow: 'auto', position: 'relative', zIndex: 1 }}>
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'clamp(16px,4vw,40px) clamp(12px,5vw,40px)', overflow: 'auto', position: 'relative', zIndex: 1 }}>
             <AnimatePresence mode="wait">
               {scene === 0 && (
                 <motion.div key="s0" initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -40 }} transition={{ duration: 0.4 }}

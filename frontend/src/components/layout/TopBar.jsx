@@ -8,7 +8,7 @@ import CloudSync from '../CloudSync';
 export default function TopBar({ onTriggerWarp }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { getFormattedDate, getFormattedTime, viewMode, setViewMode } = useAuraStore();
+  const { getFormattedDate, getFormattedTime, viewMode, setViewMode, toggleSidebar } = useAuraStore();
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [cloudOpen, setCloudOpen] = useState(false);
 
@@ -23,9 +23,19 @@ export default function TopBar({ onTriggerWarp }) {
   }
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-white/[0.08] bg-black/40 px-6 backdrop-blur-xl">
-      {/* Left — breadcrumb & Defcon indicator */}
-      <div className="flex items-center gap-3">
+    <header className="flex h-16 items-center justify-between border-b border-white/[0.08] bg-black/40 px-3 sm:px-6 backdrop-blur-xl">
+      {/* Left — hamburger (mobile) + breadcrumb */}
+      <div className="flex items-center gap-2 sm:gap-3">
+        {/* Hamburger: only on mobile */}
+        <button
+          onClick={toggleSidebar}
+          className="flex md:hidden h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.07] transition"
+          aria-label="Toggle menu"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
+            <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
         <div className="relative flex h-3 w-3">
           <span
             className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
@@ -76,7 +86,7 @@ export default function TopBar({ onTriggerWarp }) {
       </div>
 
       {/* Right — controls */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-3">
         {/* Dimensional Warp Jump Button */}
         <button
           onClick={() => {
@@ -84,39 +94,38 @@ export default function TopBar({ onTriggerWarp }) {
             if (onTriggerWarp) onTriggerWarp();
             else window.dispatchEvent(new CustomEvent('aura-warp-jump'));
           }}
-          title="Initiate Hyperspace Warp Jump into Other World"
-          className="flex items-center gap-1.5 rounded-xl border border-cyan-400/40 bg-gradient-to-r from-cyan-950/40 to-purple-950/40 px-2.5 py-1.5 text-xs font-mono font-bold text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.3)] transition hover:scale-105 active:scale-95"
+          title="Warp Jump"
+          className="flex items-center gap-1 rounded-xl border border-cyan-400/40 bg-gradient-to-r from-cyan-950/40 to-purple-950/40 px-2 sm:px-2.5 py-1.5 text-xs font-mono font-bold text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.3)] transition hover:scale-105 active:scale-95"
         >
           <span className="animate-spin [animation-duration:10s]">🌀</span>
-          <span className="hidden sm:inline text-[10px]">WARP JUMP</span>
+          <span className="hidden sm:inline text-[10px]">WARP</span>
         </button>
 
-        {/* Cloud Sync Button */}
+        {/* Cloud Sync — hidden on very small screens */}
         <button
           onClick={() => { setCloudOpen(true); sfx.playBleep(); }}
-          title="Cloud Sync — data backup & multi-device"
-          className="flex items-center gap-1.5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 px-2.5 py-1.5 text-xs font-mono font-bold text-cyan-400 transition hover:bg-cyan-500/20"
+          title="Cloud Sync"
+          className="hidden sm:flex items-center gap-1.5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 px-2.5 py-1.5 text-xs font-mono font-bold text-cyan-400 transition hover:bg-cyan-500/20"
         >
           <span>☁️</span>
-          <span className="hidden sm:inline text-[10px]">SYNC</span>
+          <span className="hidden lg:inline text-[10px]">SYNC</span>
         </button>
 
-        {/* Sound FX Toggle Button */}
+        {/* Sound FX Toggle — hidden on small screens */}
         <button
           onClick={toggleSound}
-          title={soundEnabled ? 'Cyber SFX Active' : 'SFX Muted'}
-          className={`flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-xs font-mono font-bold transition ${
+          title={soundEnabled ? 'SFX On' : 'SFX Off'}
+          className={`hidden sm:flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-xs font-mono font-bold transition ${
             soundEnabled
               ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.2)]'
               : 'border-white/10 bg-white/[0.02] text-slate-500'
           }`}
         >
           <span>{soundEnabled ? '🔊' : '🔇'}</span>
-          <span className="hidden sm:inline text-[10px]">SFX</span>
         </button>
 
         {/* View toggle */}
-        <div className="flex rounded-xl border border-white/[0.08] bg-black/40 p-0.5 text-xs font-bold">
+        <div className="hidden sm:flex rounded-xl border border-white/[0.08] bg-black/40 p-0.5 text-xs font-bold">
           <button
             onClick={() => {
               setViewMode('3d');
