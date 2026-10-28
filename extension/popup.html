@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<style>
+  :root { --gold:#d4af37; --ink:#0b0f1a; --ink2:#161b2e; --text:#f5e9c8; }
+  * { box-sizing:border-box; }
+  body { margin:0; width:320px; background:radial-gradient(circle at 20% 0%,#1d2440,var(--ink) 60%); color:var(--text); font:13px/1.45 system-ui,sans-serif; padding:18px; }
+  h1 { margin:0; font-size:11px; letter-spacing:.2em; color:var(--gold); }
+  .name { margin-top:10px; font-size:17px; font-weight:600; }
+  .muted { opacity:.6; font-size:11px; }
+  .card { margin-top:12px; padding:10px 12px; border:1px solid rgba(212,175,55,.3); border-radius:12px; background:rgba(255,255,255,.03); }
+  button, .file { display:block; width:100%; margin-top:12px; padding:12px; border:0; border-radius:12px; cursor:pointer; text-align:center;
+    font-weight:700; font-size:14px; color:#1a1405; background:linear-gradient(135deg,#f3d77a,#d4af37 55%,#a8821c); box-shadow:0 6px 20px rgba(212,175,55,.3); }
+  .file { background:transparent; color:var(--gold); border:1px dashed var(--gold); box-shadow:none; font-size:12px; font-weight:600; }
+  input[type=file] { display:none; }
+  .ok { color:#7ee0a8; } .warn { color:#ff8a9a; }
+</style>
+</head>
+<body>
+  <h1>AURA FORMPILOT</h1>
+  <div class="name" id="name">Loading…</div>
+  <div class="muted" id="meta"></div>
+  <div class="card" id="status"></div>
+  <button id="fill">Fill this form  ·  Alt+Shift+F</button>
+  <label class="file" id="resumeLabel">Add / replace resume (PDF)<input type="file" id="resume" accept=".pdf,.doc,.docx" /></label>
+  <div class="card muted" id="result" hidden></div>
+  <script src="popup.js"></script>
+</body>
+</html>

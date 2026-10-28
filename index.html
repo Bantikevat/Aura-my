@@ -43,6 +43,10 @@
       </button>
     </div>
 
+      <button class="mod-tab mod-tab-work" data-mod="workspace">
+        <span class="tab-icon">WORK</span>
+        <span class="tab-title">4. Spatial Work OS</span>
+      </button>
     <!-- Header Actions -->
     <div class="cs-nav-actions">
       <button class="btn-hud" id="btn-sound" title="Toggle Synthesizer Sound">
@@ -152,6 +156,23 @@
         </div>
       </div>
     </div>
+
+      <!-- 4. Spatial Work OS Controls -->
+      <div class="mod-controls" id="ctrls-workspace" style="display: none;">
+        <div class="work-intro">Tasks become live objects in a 3D work field. Orbit the system to see what needs attention.</div>
+        <div class="workspace-metrics">
+          <div><span>FOCUS NOW</span><strong id="work-focus">Mobile onboarding</strong></div>
+          <div><span>MISSION HEALTH</span><strong class="text-green">82% on track</strong></div>
+        </div>
+        <div class="ctrl-actions">
+          <button class="btn-action btn-fire" id="btn-work-focus">Start 25m Focus Sprint</button>
+          <button class="btn-action" id="btn-work-shuffle">Rebalance Work Field</button>
+        </div>
+        <div class="metric-hud">
+          <div class="m-row"><span>Critical lane:</span><strong class="text-rose">2 missions</strong></div>
+          <div class="m-row"><span>Deep-work capacity:</span><strong class="text-cyan">3h 42m</strong></div>
+        </div>
+      </div>
 
     <!-- Live Code Preview (Python / JS) -->
     <div class="code-preview-box">

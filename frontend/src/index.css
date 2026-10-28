@@ -1,3 +1,243 @@
-@tailwind base; @tailwind components; @tailwind utilities;
-@layer base { body { @apply min-h-screen bg-ink text-slate-100 font-sans; background-image:radial-gradient(circle at 80% 0%,rgba(38,122,171,.18),transparent 30%),radial-gradient(circle at 0% 100%,rgba(91,57,154,.14),transparent 27%); } button,input,select { font:inherit; } }
-@layer components { .glass { @apply border border-white/10 bg-panel/75 backdrop-blur-xl; } .task-card { @apply rounded-xl border border-white/10 bg-white/[.025] p-4 text-left transition hover:-translate-y-0.5 hover:border-ice/40 hover:bg-white/[.05]; } .task-card.selected { @apply border-ice shadow-[0_0_0_1px_rgba(155,231,255,.18),0_12px_30px_rgba(0,0,0,.22)]; } }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .field { @apply w-full rounded-xl border border-white/[0.08] bg-black/20 px-3 py-2.5 text-sm text-white outline-none placeholder:text-slate-600 focus:border-ice/50; }
+}
+
+/* ============================================
+   AURA — Design System
+   ============================================ */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply min-h-screen bg-ink text-slate-100 font-sans;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(232,200,114,0.08), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(167,139,250,0.06), transparent),
+      radial-gradient(ellipse 40% 30% at 0% 80%, rgba(97,237,186,0.04), transparent);
+    overflow-x: hidden;
+  }
+
+  button, input, select, textarea {
+    font: inherit;
+    color: inherit;
+  }
+
+  ::selection {
+    background: rgba(232,200,114,0.25);
+    color: #fff;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(232,200,114,0.15);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(232,200,114,0.3);
+  }
+}
+
+@layer components {
+  /* Glass panels */
+  .glass {
+    @apply border border-white/[0.06] bg-panel/80 backdrop-blur-xl;
+  }
+
+  .glass-strong {
+    @apply border border-white/10 bg-panel/90 backdrop-blur-2xl shadow-panel-lg;
+  }
+
+  .glass-card {
+    @apply rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5
+           transition-all duration-300 ease-out
+           hover:border-white/10 hover:bg-white/[0.04] hover:shadow-panel-lg;
+  }
+
+  /* Task cards */
+  .task-card {
+    @apply rounded-xl border border-white/[0.06] bg-white/[0.02] p-4
+           text-left transition-all duration-200 ease-out
+           hover:-translate-y-0.5 hover:border-ice/30 hover:bg-white/[0.04];
+  }
+  .task-card.selected {
+    @apply border-ice/40 bg-ice/[0.04]
+           shadow-[0_0_0_1px_rgba(232,200,114,0.12),0_8px_24px_rgba(0,0,0,0.3)];
+  }
+
+  /* World cards (for the Universe page) */
+  .world-card {
+    @apply relative rounded-3xl border border-white/[0.06] bg-panel/60
+           p-6 backdrop-blur-lg transition-all duration-500 ease-out
+           cursor-pointer overflow-hidden;
+  }
+  .world-card::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-500;
+    background: radial-gradient(circle at 50% 50%, var(--world-glow), transparent 70%);
+  }
+  .world-card:hover::before {
+    @apply opacity-100;
+  }
+  .world-card:hover {
+    @apply -translate-y-1 border-white/10 shadow-panel-lg;
+    transform: translateY(-4px) scale(1.01);
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply relative flex items-center gap-3 rounded-xl px-4 py-3
+           text-sm text-slate-400 transition-all duration-200
+           hover:bg-white/[0.04] hover:text-white;
+  }
+  .nav-link.active {
+    @apply bg-white/[0.06] text-white;
+  }
+  .nav-link.active::before {
+    content: '';
+    @apply absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2
+           rounded-r-full bg-ice;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply rounded-xl bg-ice px-5 py-2.5 text-sm font-semibold text-ink
+           transition-all duration-200
+           hover:bg-ice-bright hover:shadow-glow-ice
+           active:scale-[0.97];
+  }
+  .btn-secondary {
+    @apply rounded-xl border border-white/10 bg-white/[0.04] px-5 py-2.5
+           text-sm font-medium text-white transition-all duration-200
+           hover:border-white/20 hover:bg-white/[0.08]
+           active:scale-[0.97];
+  }
+  .btn-ghost {
+    @apply rounded-xl px-4 py-2.5 text-sm text-slate-400
+           transition-all duration-200
+           hover:bg-white/[0.04] hover:text-white;
+  }
+
+  /* Inputs */
+  .input-field {
+    @apply w-full rounded-xl border border-white/10 bg-black/20
+           px-4 py-3 text-sm text-white placeholder-slate-500
+           outline-none transition-all duration-200
+           focus:border-ice/50 focus:bg-black/30
+           focus:shadow-[0_0_0_3px_rgba(232,200,114,0.08)];
+  }
+
+  /* Status dots */
+  .status-dot {
+    @apply h-2 w-2 rounded-full;
+  }
+  .status-dot.active {
+    @apply bg-mint shadow-[0_0_6px_rgba(97,237,186,0.5)];
+  }
+  .status-dot.pending {
+    @apply bg-solar shadow-[0_0_6px_rgba(251,191,36,0.5)];
+  }
+  .status-dot.error {
+    @apply bg-rose shadow-[0_0_6px_rgba(255,110,122,0.5)];
+  }
+
+  /* Section headers */
+  .section-label {
+    @apply font-mono text-[11px] uppercase tracking-widest text-slate-500;
+  }
+
+  /* Stat cards */
+  .stat-card {
+    @apply glass-card flex flex-col gap-2;
+  }
+  .stat-value {
+    @apply font-display text-3xl font-bold;
+  }
+  .stat-label {
+    @apply text-xs text-slate-400;
+  }
+}
+
+@layer utilities {
+  /* Text gradient */
+  .text-gradient-ice {
+    @apply bg-gradient-to-r from-ice to-mint bg-clip-text text-transparent;
+  }
+  .text-gradient-aurora {
+    @apply bg-gradient-to-r from-aurora to-rose-bright bg-clip-text text-transparent;
+  }
+  .text-gradient-solar {
+    @apply bg-gradient-to-r from-solar to-rose bg-clip-text text-transparent;
+  }
+
+  /* Animated glow borders */
+  .border-glow {
+    position: relative;
+  }
+  .border-glow::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(232,200,114,0.2), transparent 50%, rgba(167,139,250,0.2));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .border-glow:hover::after {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   AURA Luxe — obsidian + champagne gold
+   ============================================ */
+.text-gold {
+  background: linear-gradient(120deg, #f6e3a1 0%, #e8c872 35%, #b8923a 70%, #f6e3a1 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: goldShine 6s linear infinite;
+}
+@keyframes goldShine { to { background-position: 200% center; } }
+
+.font-luxe { font-family: 'Cormorant Garamond', 'Outfit', serif; letter-spacing: .02em; }
+
+.glass-strong, .glass-card:hover, .world-card:hover {
+  border-color: rgba(232,200,114,0.22);
+  box-shadow: 0 10px 40px rgba(0,0,0,.55), 0 0 0 1px rgba(232,200,114,0.06), inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+/* Gold-lit primary buttons (existing bg-ice buttons pick up the sheen) */
+button.bg-ice, a.bg-ice {
+  background-image: linear-gradient(135deg, #f6e3a1, #e8c872 50%, #b8923a);
+  box-shadow: 0 6px 22px rgba(232,200,114,.22);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+button.bg-ice:hover, a.bg-ice:hover { transform: translateY(-1px); box-shadow: 0 10px 30px rgba(232,200,114,.38); }
+
+/* Soft film grain + vignette for depth */
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 60;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.45) 100%);
+}

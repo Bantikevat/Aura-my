@@ -21,3 +21,13 @@ orbit-workspace/
 4. Open `http://localhost:5173`.
 
 The client uses local demo data until a user signs in; once authenticated, the API client uses the Express/MongoDB backend.
+
+## Personal assistant (AURA Assistant)
+
+An AI assistant lives inside the app (gold ✦ button, or **Ctrl+K**). It reads your tasks, job queue and profile, and can add tasks, queue jobs, update your profile vault, remember how you work, and open pages. It never submits a job application.
+
+1. Get an API key from console.anthropic.com.
+2. Copy `backend/.env.example` to `backend/.env` and set `ANTHROPIC_API_KEY=...`.
+3. Run `npm run dev:ai` (frontend + assistant server on `127.0.0.1:5002`). It needs no MongoDB or login.
+
+Your profile, tasks and queue are sent to Anthropic with each message so the assistant can use them. Keep the key in `backend/.env` only; it is git-ignored.

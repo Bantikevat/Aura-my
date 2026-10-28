@@ -2,12 +2,19 @@
   "name": "orbit-workspace",
   "private": true,
   "version": "1.0.0",
-  "workspaces": ["frontend", "backend"],
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace frontend\" \"npm run dev --workspace backend\"",
     "frontend": "npm run dev --workspace frontend",
     "backend": "npm run dev --workspace backend",
-    "build": "npm run build --workspace frontend"
+    "build": "npm run build --workspace frontend",
+    "assistant": "npm run assistant --workspace backend",
+    "dev:ai": "concurrently \"npm run dev --workspace frontend\" \"npm run assistant --workspace backend\""
   },
-  "devDependencies": { "concurrently": "^9.1.2" }
+  "devDependencies": {
+    "concurrently": "^9.2.5"
+  }
 }

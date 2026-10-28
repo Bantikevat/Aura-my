@@ -72,6 +72,19 @@ def insert_bst(root, val):
     middle = [x for x in arr if x == pivot]
     right = [x for x in arr if x > pivot]
     return quicksort(left) + middle + quicksort(right)`
+    },
+    workspace: {
+      tag: 'SPATIAL PRODUCTIVITY & EXECUTION',
+      title: 'Orbit Work OS — 3D Mission Field',
+      logic: 'Energy × Priority × Time = Meaningful progress',
+      desc: 'A premium command space where tasks are visible as objects, not noisy cards. The closer and brighter a mission is, the more attention it needs today.',
+      feynman: 'Socho tumhare saare kaam desk par nahi, ek chhote solar system mein hain. Jo planet sabse bright hai, usko pehle complete karna hai!',
+      impact: 'This is the same operating principle used by high-performing product teams: make priority, capacity and deadlines visible in one calm command view.',
+      codeTitle: 'Work OS / Focus Protocol',
+      code: `focus_mission = highest_impact(tasks)
+block_calendar(25, focus_mission)
+ship_smallest_next_step()
+review_energy_before_next_mission()`
     }
   };
 
@@ -139,6 +152,7 @@ def insert_bst(root, val):
   let neuralGroup = new THREE.Group();
   let bstGroup = new THREE.Group();
   let sortingGroup = new THREE.Group();
+  let workspaceGroup = new THREE.Group();
 
   function initThree() {
     const container = document.getElementById('canvas-container');
@@ -177,10 +191,12 @@ def insert_bst(root, val):
     scene.add(neuralGroup);
     scene.add(bstGroup);
     scene.add(sortingGroup);
+    scene.add(workspaceGroup);
 
     buildNeuralNetwork();
     buildBinarySearchTree();
     buildSortingArena();
+    buildWorkspaceField();
 
     switchModule('neural');
 
@@ -650,6 +666,36 @@ def insert_bst(root, val):
   }
 
   // =========================================================================
+  // MODULE 4: SPATIAL WORK OS — large, calm 3D task constellation
+  // =========================================================================
+  const workMissions = [
+    { title: 'Mobile onboarding', priority: 'CRITICAL', color: 0xf43f5e, pos: [-7, 1, 0] },
+    { title: 'Launch narrative', priority: 'HIGH', color: 0xf59e0b, pos: [-2, 4, -1] },
+    { title: 'Design system', priority: 'IN PROGRESS', color: 0x00f0ff, pos: [4, 2, 1] },
+    { title: 'Research synthesis', priority: 'READY', color: 0x10b981, pos: [7, -2, 0] },
+    { title: 'Accessibility audit', priority: 'NEXT', color: 0xa855f7, pos: [-1, -4, 1] }
+  ];
+  let workNodes = [];
+
+  function buildWorkspaceField() {
+    workspaceGroup.clear(); workNodes = [];
+    const hub = new THREE.Mesh(new THREE.IcosahedronGeometry(1.35, 2), new THREE.MeshStandardMaterial({ color: 0x00f0ff, emissive: 0x006677, emissiveIntensity: 1.2, roughness: 0.25 }));
+    workspaceGroup.add(hub);
+    [2.2, 4.2, 6.5, 9].forEach((r, index) => {
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(r, 0.018, 8, 96), new THREE.MeshBasicMaterial({ color: index === 0 ? 0x00f0ff : 0x31526c, transparent: true, opacity: .65 }));
+      ring.rotation.x = Math.PI / 2; workspaceGroup.add(ring);
+    });
+    workMissions.forEach((mission, i) => {
+      const node = new THREE.Group();
+      const sphere = new THREE.Mesh(new THREE.IcosahedronGeometry(0.72, 2), new THREE.MeshStandardMaterial({ color: mission.color, emissive: mission.color, emissiveIntensity: .65, roughness: .32 }));
+      const orbit = new THREE.Mesh(new THREE.TorusGeometry(1.08, .025, 8, 48), new THREE.MeshBasicMaterial({ color: mission.color, transparent: true, opacity: .65 }));
+      orbit.rotation.x = Math.PI / 2;
+      node.add(sphere, orbit); node.position.set(...mission.pos); node.userData = { mission, phase: i * 1.3 };
+      workspaceGroup.add(node); workNodes.push(node);
+    });
+  }
+
+  // =========================================================================
   // Module Switching & Concept Synchronization
   // =========================================================================
   function switchModule(key) {
@@ -658,10 +704,12 @@ def insert_bst(root, val):
     neuralGroup.visible = (key === 'neural');
     bstGroup.visible = (key === 'bst');
     sortingGroup.visible = (key === 'sorting');
+    workspaceGroup.visible = (key === 'workspace');
 
     document.getElementById('ctrls-neural').style.display = (key === 'neural' ? 'block' : 'none');
     document.getElementById('ctrls-bst').style.display = (key === 'bst' ? 'block' : 'none');
     document.getElementById('ctrls-sorting').style.display = (key === 'sorting' ? 'block' : 'none');
+    document.getElementById('ctrls-workspace').style.display = (key === 'workspace' ? 'block' : 'none');
 
     document.querySelectorAll('.mod-tab').forEach(tab => {
       tab.classList.toggle('active', tab.dataset.mod === key);
@@ -688,6 +736,9 @@ def insert_bst(root, val):
       controls.target.set(0, 2, 0);
     } else if (key === 'sorting') {
       camera.position.set(0, 8, 30);
+      controls.target.set(0, 0, 0);
+    } else if (key === 'workspace') {
+      camera.position.set(0, 11, 29);
       controls.target.set(0, 0, 0);
     }
 
