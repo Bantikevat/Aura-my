@@ -419,18 +419,191 @@ export default function ImagineMode() {
     {error && <p className="mt-3 rounded-lg bg-rose/10 p-3 text-xs text-rose">{error}</p>}
 
     <AnimatePresence>
-      {lesson && intro && <motion.div key="intro" initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}
-        className="relative mt-6 overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-[#0a0a12] via-[#0d0b1e] to-[#15090f] p-8 text-center sm:p-12">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(232,200,114,0.12),transparent_60%)]" />
-        <motion.p initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="section-label text-gold">Is question ki duniya me chalo</motion.p>
-        <motion.h3 initial={{ y: 12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="font-luxe mt-2 text-2xl font-bold text-white sm:text-3xl">{lesson.title}</motion.h3>
-        <motion.p initial={{ y: 14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.35 }} className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-200 sm:text-lg">{lesson.problem}</motion.p>
-        {lesson.without_it && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="mx-auto mt-4 max-w-2xl text-sm text-rose"><span className="font-semibold">Iske bina: </span>{lesson.without_it}</motion.p>}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="mt-7 flex flex-wrap justify-center gap-3">
-          <button onClick={() => speak(`${lesson.problem} ${lesson.without_it || ''}`)} className="rounded-xl border border-white/[0.15] px-4 py-2.5 text-sm text-slate-300 hover:bg-white/[0.06]">🔊 Suno</button>
-          <button onClick={enterWorld} className="rounded-xl bg-gradient-to-r from-gold to-amber-500 px-6 py-2.5 text-sm font-black text-slate-950 shadow-[0_0_25px_rgba(232,200,114,0.35)]">Is duniya me jao →</button>
+      {lesson && intro && (
+        <motion.div
+          key="intro"
+          initial={{ opacity: 0, y: 24, rotateX: 8 }}
+          animate={{ opacity: 1, y: 0, rotateX: 0 }}
+          exit={{ opacity: 0, scale: 0.96 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          style={{ perspective: '1200px', marginTop: 28 }}
+        >
+          {/* Outer wooden frame */}
+          <div style={{
+            background: 'linear-gradient(135deg,#5c3011 0%,#8b4a1a 30%,#6b3813 60%,#4a2a0e 100%)',
+            borderRadius: 6,
+            padding: 18,
+            boxShadow: '0 30px 80px rgba(0,0,0,0.9), 0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,200,100,0.2), inset 0 -1px 0 rgba(0,0,0,0.4)',
+            position: 'relative',
+          }}>
+            {/* Frame corner bolts */}
+            {[['4px','4px'],['4px','auto'],['auto','4px'],['auto','auto']].map(([t,r],i)=>(
+              <div key={i} style={{
+                position:'absolute',top:t==='auto'?undefined:8,bottom:t==='auto'?8:undefined,
+                left:r==='auto'?undefined:8,right:r==='auto'?8:undefined,
+                width:12,height:12,borderRadius:'50%',
+                background:'radial-gradient(circle at 35% 35%,#d4a44c,#8b6914)',
+                boxShadow:'0 1px 3px rgba(0,0,0,0.6)',
+              }}/>
+            ))}
+
+            {/* Chalk tray at bottom */}
+            <div style={{
+              position:'absolute',bottom:-6,left:18,right:18,height:10,
+              background:'linear-gradient(to bottom,#4a2e10,#3a2208)',
+              borderRadius:'0 0 4px 4px',
+              display:'flex',alignItems:'center',gap:6,padding:'0 12px',
+            }}>
+              {[...Array(4)].map((_,i)=>(
+                <div key={i} style={{height:5,width:24+i*8,borderRadius:2,background:`rgba(255,255,255,${0.55-i*0.08})`,boxShadow:'0 0 4px rgba(255,255,255,0.3)'}}/>
+              ))}
+            </div>
+
+            {/* The actual chalkboard */}
+            <div style={{
+              background: 'radial-gradient(ellipse at 30% 20%, #1f5c1f 0%, #174d17 40%, #123e12 70%, #0e300e 100%)',
+              borderRadius: 3,
+              padding: '44px 52px 52px',
+              position: 'relative',
+              overflow: 'hidden',
+              minHeight: 340,
+              boxShadow: 'inset 0 0 80px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.3)',
+              backgroundImage: `
+                radial-gradient(ellipse at 30% 20%, #1f5c1f 0%, #174d17 40%, #123e12 70%, #0e300e 100%),
+                repeating-linear-gradient(180deg, transparent 0px, transparent 30px, rgba(255,255,255,0.018) 30px, rgba(255,255,255,0.018) 31px)
+              `,
+            }}>
+
+              {/* Chalk dust smudge spots */}
+              <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,pointerEvents:'none',overflow:'hidden'}}>
+                {[{x:'8%',y:'12%',s:60},{x:'88%',y:'8%',s:45},{x:'15%',y:'85%',s:70},{x:'92%',y:'78%',s:50},{x:'50%',y:'5%',s:90}].map((d,i)=>(
+                  <div key={i} style={{position:'absolute',left:d.x,top:d.y,width:d.s,height:d.s/3,borderRadius:'50%',background:'rgba(255,255,255,0.04)',filter:'blur(8px)',transform:'rotate(-10deg)'}}/>
+                ))}
+              </div>
+
+              {/* Content */}
+              <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+
+                {/* "Is question ki duniya me chalo" */}
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+                  style={{ marginBottom: 6 }}
+                >
+                  <span style={{
+                    fontFamily: "'Caveat', cursive",
+                    fontSize: 15, letterSpacing: 3, fontWeight: 600,
+                    color: 'rgba(255,240,180,0.75)',
+                    textTransform: 'uppercase',
+                    textShadow: '0 0 12px rgba(255,240,180,0.3)',
+                  }}>
+                    ✦ Is Question Ki Duniya Me Chalo ✦
+                  </span>
+                </motion.div>
+
+                {/* Chalk underline */}
+                <motion.div
+                  initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.3, duration: 0.7 }}
+                  style={{ height: 2, background: 'rgba(255,255,255,0.22)', borderRadius: 2, marginBottom: 22, transformOrigin: 'left' }}
+                />
+
+                {/* Title — big handwriting */}
+                <motion.h3
+                  initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.5 }}
+                  style={{
+                    fontFamily: "'Kalam', cursive",
+                    fontSize: 'clamp(22px, 4vw, 38px)',
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    lineHeight: 1.3,
+                    marginBottom: 20,
+                    textShadow: '1px 1px 0 rgba(0,0,0,0.4), 0 0 30px rgba(255,255,255,0.12)',
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  {lesson.title}
+                </motion.h3>
+
+                {/* Problem description */}
+                <motion.p
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.65, duration: 0.6 }}
+                  style={{
+                    fontFamily: "'Kalam', cursive",
+                    fontSize: 'clamp(14px, 2.2vw, 18px)',
+                    color: 'rgba(255,255,255,0.88)',
+                    lineHeight: 1.9,
+                    maxWidth: 560,
+                    margin: '0 auto 16px',
+                    textShadow: '0 1px 3px rgba(0,0,0,0.5)',
+                    letterSpacing: 0.3,
+                  }}
+                >
+                  {lesson.problem}
+                </motion.p>
+
+                {/* "Iske bina" - in red-ish chalk */}
+                {lesson.without_it && (
+                  <motion.div
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}
+                    style={{
+                      background: 'rgba(220,50,50,0.1)',
+                      border: '1px dashed rgba(255,120,120,0.4)',
+                      borderRadius: 8,
+                      padding: '10px 18px',
+                      maxWidth: 520,
+                      margin: '0 auto 24px',
+                    }}
+                  >
+                    <p style={{
+                      fontFamily: "'Kalam', cursive",
+                      fontSize: 15,
+                      color: 'rgba(255,180,180,0.9)',
+                      textShadow: '0 0 10px rgba(255,100,100,0.3)',
+                    }}>
+                      <span style={{ fontWeight: 700 }}>Iske bina: </span>{lesson.without_it}
+                    </p>
+                  </motion.div>
+                )}
+
+                {/* Buttons */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}
+                  style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12 }}
+                >
+                  <button
+                    onClick={() => speak(`${lesson.problem} ${lesson.without_it || ''}`)}
+                    style={{
+                      fontFamily: "'Kalam', cursive",
+                      fontSize: 15, fontWeight: 600,
+                      background: 'rgba(255,255,255,0.08)',
+                      border: '1.5px solid rgba(255,255,255,0.25)',
+                      color: 'rgba(255,255,255,0.85)',
+                      padding: '9px 20px', borderRadius: 8, cursor: 'pointer',
+                      letterSpacing: 0.5,
+                    }}
+                  >
+                    🔊 Suno
+                  </button>
+                  <button
+                    onClick={enterWorld}
+                    style={{
+                      fontFamily: "'Kalam', cursive",
+                      fontSize: 16, fontWeight: 700,
+                      background: 'linear-gradient(135deg,#e8c872,#d4a833)',
+                      border: 'none',
+                      color: '#1a0a00',
+                      padding: '10px 28px', borderRadius: 8, cursor: 'pointer',
+                      boxShadow: '0 0 24px rgba(232,200,114,0.45), 0 4px 12px rgba(0,0,0,0.4)',
+                      letterSpacing: 0.5,
+                    }}
+                  >
+                    Is Duniya Me Jao →
+                  </button>
+                </motion.div>
+              </div>
+            </div>
+          </div>
         </motion.div>
-      </motion.div>}
+      )}
     </AnimatePresence>
 
     {lesson && frame && !intro && <div className="mt-6 grid gap-5 xl:grid-cols-[1.5fr_1fr]">
