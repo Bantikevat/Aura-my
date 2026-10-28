@@ -12,6 +12,7 @@ import NeuroMemoryLock from '../components/NeuroMemoryLock';
 import ConceptForge from '../components/ConceptForge';
 import Flashcards from '../components/Flashcards';
 import McqDoubtSolver from '../components/McqDoubtSolver';
+import TopicVirtualWorld from '../components/TopicVirtualWorld';
 
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.06 } } };
 const fadeUp = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
@@ -79,6 +80,7 @@ export default function StudyWorld() {
   const allTasks = useAuraStore((s) => s.tasks);
   const tasks = allTasks.filter((task) => task.worldId === 'study' && task.status !== 'done');
   const [activeSubject, setActiveSubject] = useState(null);
+  const [virtualTopic, setVirtualTopic] = useState(null);
 
   // Active view tab: 'sscje' | 'memory' | 'arena' | 'focus' | 'exam' | 'imagine' | 'reality' | 'subjects'
   const [activeTab, setActiveTab] = useState('sscje');
@@ -125,6 +127,10 @@ export default function StudyWorld() {
   }
 
   return (
+    <>
+    {virtualTopic && (
+      <TopicVirtualWorld topic={virtualTopic} onClose={() => setVirtualTopic(null)} />
+    )}
     <motion.div variants={stagger} initial="hidden" animate="visible" className="pb-16">
       {/* Header with Title and Mode */}
       <motion.div variants={fadeUp} className="mb-6 flex flex-wrap items-center justify-between gap-4">
@@ -298,8 +304,9 @@ export default function StudyWorld() {
                 return (
                   <motion.div
                     key={topic.id}
-                    className="glass-card flex items-center gap-4 rounded-xl p-4"
+                    className="glass-card flex items-center gap-4 rounded-xl p-4 cursor-pointer"
                     whileHover={{ x: 4 }}
+                    onClick={() => setVirtualTopic(topic.name)}
                   >
                     {/* Mastery ring */}
                     <div className="relative h-11 w-11 flex-shrink-0">
@@ -330,6 +337,21 @@ export default function StudyWorld() {
                     >
                       {m.label}
                     </span>
+
+                    <motion.button
+                      whileHover={{ scale: 1.08 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={(e) => { e.stopPropagation(); setVirtualTopic(topic.name); }}
+                      className="ml-1 flex-shrink-0 rounded-full px-3 py-1.5 text-[10px] font-bold tracking-widest"
+                      style={{
+                        background: 'rgba(167,139,250,0.12)',
+                        border: '1px solid rgba(167,139,250,0.35)',
+                        color: '#a78bfa',
+                        letterSpacing: 1.5,
+                      }}
+                    >
+                      🌌 ENTER
+                    </motion.button>
                   </motion.div>
                 );
               })}
@@ -354,5 +376,6 @@ export default function StudyWorld() {
         </motion.section>
       )}
     </motion.div>
+    </>
   );
 }
